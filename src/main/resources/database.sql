@@ -4,10 +4,10 @@ use QLKHOAHOC;
 # drop database QLKHOAHOC;
 create table StudentGrade
 (
-    EnrollmentI bigint primary key auto_increment,
-    CourseID    bigint not null,
-    StudentID   bigint not null,
-    Gradle      float  not null
+    EnrollmentID bigint primary key auto_increment,
+    CourseID     bigint not null,
+    StudentID    bigint not null,
+    Gradle       float  not null
 );
 create table Department
 (
@@ -44,15 +44,15 @@ create table CourseInstructor
 );
 create table Person
 (
-    PersonID  bigint primary key auto_increment,
-    Lastname  varchar(100) not null,
-    Firstname varchar(100) not null,
-    HireDate date not null,
-    EnrollmentDate date not null
+    PersonID       bigint primary key auto_increment,
+    Lastname       varchar(100) not null,
+    Firstname      varchar(100) not null,
+    HireDate       date         not null,
+    EnrollmentDate date         not null
 );
 create table OfficeAssignment
 (
-    InstructorID bigint primary key auto_increment,
+    InstructorID bigint primary key,
     Location     varchar(500) not null,
     TimesStamp   TIMESTAMP    not null
 );
@@ -73,5 +73,46 @@ alter table `StudentGrade`
 alter table `OfficeAssignment`
     add constraint fk_8 foreign key (InstructorID) references `Person` (PersonID);
 
--- insert statement
-insert into Person values(null,'Thanh','Bui','2002-10-10','2002-10-10'),(null,'Thi','Thien','2002-10-10','2002-10-10');
+-- ############################### insert statement ############################### --
+
+insert into Person
+values (null, 'Thanh', 'Bui', '2022-10-10', '2022-10-10'),
+       (null, 'Thinh', 'Phu', '2022-10-12', '2022-01-01'),
+       (null, 'Pop', 'Pu', '2012-10-08', '2002-05-03'),
+       (null, 'Bo Con', 'Di', '2022-11-15', '2002-12-25'),
+       (null, 'Nghi', 'Phuong', '2023-01-02', '2022-12-12'),
+       (null, 'Ngoc', 'Bao', '2022-10-11', '2002-09-08');
+
+insert into Department
+values (null, 'Phòng chống ma túy', 100000, '2023-10-10', 'ADMIN'),
+       (null, 'Phòng chống mấy đứa cầm Vayne đi top', 100000, '2023-10-10', 'USER');
+
+insert into Course
+values (null, 'Dạy làm giàu phần 1', 100, 1),
+       (null, 'Dạy làm giàu phần 2', 120, 2),
+       (null, 'Bí kíp tán gái quyển 1', 12000, 2),
+       (null, 'Bí kíp tán gái quyển 2', 18000, 2),
+       (null, 'Tại sao con cá biết bơi ?', 10, 1),
+       (null, 'Cách đu idol thành công', 20, 1),
+       (null, 'Cách trờ để sở hữu tánh nóng như kem', 5, 1);
+
+insert into OfficeAssignment
+values (1, 'Tân Xuân, Hóc Môn, Sài Gòn', '2023-10-10 21:22:01'),
+       (2, 'Niu dót, Ờ me ri cà', '2023-12-09 12:18:03');
+
+insert into OnlineCourse
+values (3,'https://bikiptangai/p1'),
+       (4,'https://bikiptangai/p2');
+
+insert into OnsiteCourse
+values (1,'Trần Duy Hưng, Hà Nội',30,'2023-02-03'),
+       (2,'Ngã tư sinh tử, CSGO',23,'2023-03-04');
+
+insert into StudentGrade
+values (null,3,1,10),
+       (null,4,2,9);
+
+-- ##################################### end ##################################### --
+
+-- TIMESTAMP - format YYYY-MM-DD HH:MI:SS
+-- DATE - format YYYY-MM-DD
