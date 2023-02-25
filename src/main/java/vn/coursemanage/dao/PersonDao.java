@@ -1,8 +1,8 @@
 package vn.coursemanage.dao;
 
 
-import vn.coursemanage.model.Person;
 import vn.coursemanage.mapper.PersonMapper;
+import vn.coursemanage.model.Person;
 
 import java.util.List;
 
@@ -13,6 +13,18 @@ public class PersonDao extends AbstractParentDao {
 
     public List<Person> findPerson() {
         return query("select * from Person", new PersonMapper());
+    }
+
+    public List<Person> findPersonByField(String filedName, String searchKey) {
+        // check field is exist in Object class ??
+        if (!isObjContainField(Person.class, filedName))
+            throw new RuntimeException(filedName + " isn't exist in " + " object Person ");
+
+        // create sql query statement
+        StringBuilder sql = new StringBuilder("select * from Person as p");
+        sql.append(" where p." + filedName + " like '%"+searchKey+"%'");
+
+        return query(sql.toString(), new PersonMapper());
     }
 
     public void updatePerson(Person person) {

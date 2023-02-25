@@ -1,5 +1,6 @@
 create database QLKHOAHOC;
 use QLKHOAHOC;
+
 # drop database QLKHOAHOC;
 create table StudentGrade
 (
@@ -45,8 +46,9 @@ create table Person
 (
     PersonID  bigint primary key auto_increment,
     Lastname  varchar(100) not null,
-    Firstname varchar(100) not null
-
+    Firstname varchar(100) not null,
+    HireDate date not null,
+    EnrollmentDate date not null
 );
 create table OfficeAssignment
 (
@@ -70,3 +72,6 @@ alter table `StudentGrade`
     add constraint fk_7 foreign key (StudentID) references `Person` (PersonID);
 alter table `OfficeAssignment`
     add constraint fk_8 foreign key (InstructorID) references `Person` (PersonID);
+
+-- insert statement
+insert into Person values(null,'Thanh','Bui','2002-10-10','2002-10-10'),(null,'Thi','Thien','2002-10-10','2002-10-10');

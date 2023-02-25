@@ -3,7 +3,9 @@ package vn.coursemanage.dao;
 
 import vn.coursemanage.mapper.RowMapper;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.Properties;
 
 public class AbstractParentDao {
     private Connection getConnection() {
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")){
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
             Class.forName("com.mysql.jdbc.Driver");
             Properties prop = new Properties();
 
@@ -21,10 +23,11 @@ public class AbstractParentDao {
             String url = prop.getProperty("db.url");
             String user = prop.getProperty("db.user");
             String password = prop.getProperty("db.password");
-            System.out.println(url + user + password);
+
+            System.out.println("URL :" + url + "\n" + "User :" + user + "\n" + "Password :" + password);
             return DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException | SQLException | IOException e) {
-            System.out.println(e);
+            System.out.println("Incorrect url or user or password :v thanh` don't know : " + e);
             return null;
         }
     }
@@ -61,6 +64,7 @@ public class AbstractParentDao {
             connection = getConnection();
             statement = connection.prepareStatement(sql);
             setStatement(statement, parameters);
+            System.out.println("Query statement: " + statement.toString());
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 results.add(rowMapper.mapRow(resultSet));
@@ -160,4 +164,15 @@ public class AbstractParentDao {
             }
         }
     }
+
+    //check fieldName is exist in obj
+    protected boolean isObjContainField(Class clazz, String fieldName) {
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            if(field.getName().equalsIgnoreCase(fieldName)) return true ;
+        }
+        return false;
+    }
+
 }

@@ -57,4 +57,15 @@ public class Person {
         this.enrollmentDate = enrollmentDate;
     }
     public Person(){}
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "personId=" + personId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", hireDate=" + hireDate +
+                ", enrollmentDate=" + enrollmentDate +
+                '}';
+    }
 }
