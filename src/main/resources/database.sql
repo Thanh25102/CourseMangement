@@ -1,6 +1,5 @@
 create database QLKHOAHOC;
 use QLKHOAHOC;
-
 # drop database QLKHOAHOC;
 create table StudentGrade
 (
@@ -56,9 +55,9 @@ create table OfficeAssignment
     Location     varchar(500) not null,
     TimesStamp   TIMESTAMP    not null
 );
-alter table `onlinecourse`
+alter table `OnsiteCourse`
     add constraint fk_1 foreign key (CourseID) references `Course` (CourseID);
-alter table `onsitecourse`
+alter table `OnsiteCourse`
     add constraint fk_2 foreign key (CourseID) references `Course` (CourseID);
 alter table `Course`
     add constraint fk_3 foreign key (DepartmentID) references `Department` (DepartmentID);
@@ -76,12 +75,11 @@ alter table `OfficeAssignment`
 -- ############################### insert statement ############################### --
 
 insert into Person
-values (null, 'Thanh', 'Bui', '2022-10-10', '2022-10-10'),
-       (null, 'Thinh', 'Phu', '2022-10-12', '2022-01-01'),
-       (null, 'Pop', 'Pu', '2012-10-08', '2002-05-03'),
-       (null, 'Bo Con', 'Di', '2022-11-15', '2002-12-25'),
-       (null, 'Nghi', 'Phuong', '2023-01-02', '2022-12-12'),
-       (null, 'Ngoc', 'Bao', '2022-10-11', '2002-09-08');
+values (null, 'Thanh', 'Bui Manh', '2022-10-10', '2022-10-10'),
+       (null, 'Dai', 'Nguyen Huu', '2022-10-12', '2022-01-01'),
+       (null, 'Thi', 'Vo Thien', '2012-10-08', '2002-05-03'),
+       (null, 'Nghi', 'Pham Hong Phuong', '2023-01-02', '2022-12-12'),
+       (null, 'Thinh', 'Chau Phu', '2022-10-11', '2002-09-08');
 
 insert into Department
 values (null, 'Phòng chống ma túy', 100000, '2023-10-10', 'ADMIN'),

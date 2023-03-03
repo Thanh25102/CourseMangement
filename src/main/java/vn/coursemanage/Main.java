@@ -1,6 +1,5 @@
 package vn.coursemanage;
 
-import vn.coursemanage.dao.PersonDao;
 import vn.coursemanage.gui.MainGUI;
 import vn.coursemanage.model.Person;
 
@@ -12,5 +11,6 @@ public class Main {
 //        repo.findPersonByField("firstName","u")
 //                .forEach(System.out::println);
 //        repo.findPerson().forEach(System.out::println);
+
     }
 }
