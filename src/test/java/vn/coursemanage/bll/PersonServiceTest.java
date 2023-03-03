@@ -6,7 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import vn.coursemanage.dao.PersonDao;
 import vn.coursemanage.exception.FieldNotValidException;
-import vn.coursemanage.exception.PersonNotFoundException;
+import vn.coursemanage.exception.NotFoundRecordException;
 import vn.coursemanage.model.Person;
 
 import java.util.List;
@@ -42,7 +42,7 @@ class PersonServiceTest {
     @DisplayName("Field of person should not exist")
     void searchPersonByFieldNotExist(String fieldName, String searchKey) {
         System.out.println("Field name : " + fieldName + "\nSearch key : " + searchKey);
-        assertThrows(FieldNotValidException.class, () -> personService.searchPersonByField(fieldName, searchKey));
+        assertThrows(FieldNotValidException.class, () -> personService.searchByField(fieldName, searchKey));
     }
 
     @ParameterizedTest
@@ -55,7 +55,7 @@ class PersonServiceTest {
     @DisplayName("Person should be empty")
     void searchPersonByFieldButRecordIsEmpty(String fieldName, String searchKey) {
         System.out.println("Field name : " + fieldName + "\nSearch key : " + searchKey);
-        assertThrows(PersonNotFoundException.class, () -> personService.searchPersonByField(fieldName, searchKey));
+        assertThrows(NotFoundRecordException.class, () -> personService.searchByField(fieldName, searchKey));
     }
 
     @ParameterizedTest
@@ -70,11 +70,11 @@ class PersonServiceTest {
         System.out.println("Field name : " + fieldName + "\nSearch key : " + searchKey);
         List<Person> person = null;
         try {
-            person = personService.searchPersonByField(fieldName, searchKey);
+            person = personService.searchByField(fieldName, searchKey);
             assertNotNull(person);
             assertNotEquals(0, person.size());
             person.forEach(System.out::println);
-        } catch (PersonNotFoundException |FieldNotValidException e) {
+        } catch (NotFoundRecordException | FieldNotValidException e) {
             assertNull(person);
 //            throw new Exception("Person should has record");
         }
@@ -88,7 +88,7 @@ class PersonServiceTest {
     void searchWithLastNameHasRecord(String fieldName, String searchKey){
         List<Person> person = null;
         try {
-            person = personService.searchPersonByField(fieldName, searchKey);
+            person = personService.searchByField(fieldName, searchKey);
             assertNotNull(person);
             assertNotEquals(0, person.size());
             person.forEach(p -> {
@@ -96,7 +96,7 @@ class PersonServiceTest {
                 assertTrue(checked);
             });
             person.forEach(System.out::println);
-        } catch (PersonNotFoundException | FieldNotValidException e) {
+        } catch (NotFoundRecordException | FieldNotValidException e) {
             assertNull(person);
         }
 
@@ -110,9 +110,9 @@ class PersonServiceTest {
     void searchWithPersonIdHasRecord(String fieldName, String searchKey) {
         List<Person> person = null;
         try {
-            person = personService.searchPersonByField(fieldName, searchKey);
+            person = personService.searchByField(fieldName, searchKey);
             assertNotEquals(0,person.size());
-        } catch (PersonNotFoundException | FieldNotValidException e) {
+        } catch (NotFoundRecordException | FieldNotValidException e) {
             Integer size = person == null ? 0 : person.size();
             assertEquals(0, size);
             System.out.println("Size of person : " + size);

@@ -31,7 +31,6 @@ public class AbstractParentDao {
             return null;
         }
     }
-
     private void setStatement(PreparedStatement statement, Object... parameters) {
         try {
             for (int i = 0; i < parameters.length; i++) {
@@ -57,7 +56,6 @@ public class AbstractParentDao {
         }
 
     }
-
     public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters) {
         List<T> results = new ArrayList<>();
         Connection connection = null;
@@ -91,7 +89,6 @@ public class AbstractParentDao {
             }
         }
     }
-
     protected Integer insert(String sql, Object... parameters) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -135,7 +132,6 @@ public class AbstractParentDao {
         }
         return null;
     }
-
     protected void update(String sql, Object... parameter) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -167,6 +163,4 @@ public class AbstractParentDao {
             }
         }
     }
-
-
 }
