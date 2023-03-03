@@ -1,0 +1,31 @@
+version: '3.3'
+services:
+  db:
+    container_name: course_management
+    image: mysql
+    restart: always
+    hostname: course_management
+    ports:
+      - "3305:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PASSWORD_DB}
+      MYSQL_DATABASE: ${NAME_DB}
+      MYSQL_ROOT_HOST: '%'
+      TZ: Asia/Ho_Chi_Minh
+    volumes:
+      - ./.docker/mysql:/var/lib/mysql
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+    networks:
+      - course_management
+  adminer:
+    container_name: course_management_adminer
+    image: adminer
+    restart: always
+    ports:
+      - "8082:8080"
+    networks:
+      - course_management
+networks:
+  course_management:
+    driver: bridge
+

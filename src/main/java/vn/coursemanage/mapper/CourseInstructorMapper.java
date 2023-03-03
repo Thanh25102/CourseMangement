@@ -10,8 +10,8 @@ public class CourseInstructorMapper implements RowMapper<CourseInstructor>{
     public CourseInstructor mapRow(ResultSet rs) {
         CourseInstructor courseInstructor = new CourseInstructor();
         try {
-            courseInstructor.setCourseID(rs.getLong("CourseID"));
-            courseInstructor.setPersonID(rs.getLong("PersonID"));
+            courseInstructor.setCourseId(rs.getLong("CourseID"));
+            courseInstructor.setPersonId(rs.getLong("PersonID"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
