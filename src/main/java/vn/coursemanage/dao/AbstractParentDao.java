@@ -8,15 +8,15 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
 public class AbstractParentDao {
     private Connection getConnection() {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Properties prop = new Properties();
-
             // load a properties file
             prop.load(input);
             // set the properties value
@@ -31,7 +31,6 @@ public class AbstractParentDao {
             return null;
         }
     }
-
     private void setStatement(PreparedStatement statement, Object... parameters) {
         try {
             for (int i = 0; i < parameters.length; i++) {
@@ -47,6 +46,9 @@ public class AbstractParentDao {
                     statement.setTimestamp(index, (Timestamp) parameter);
                 } else if (parameter instanceof Float) {
                     statement.setFloat(index, (Float) parameter);
+                } else if (parameter instanceof Date) {
+                    java.sql.Date sqlDate = new java.sql.Date(((Date) parameter).getTime());
+                    statement.setDate(index, sqlDate);
                 }
             }
         } catch (SQLException e) {
@@ -54,7 +56,6 @@ public class AbstractParentDao {
         }
 
     }
-
     public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters) {
         List<T> results = new ArrayList<>();
         Connection connection = null;
@@ -88,7 +89,6 @@ public class AbstractParentDao {
             }
         }
     }
-
     protected Integer insert(String sql, Object... parameters) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -132,7 +132,6 @@ public class AbstractParentDao {
         }
         return null;
     }
-
     protected void update(String sql, Object... parameter) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -164,15 +163,4 @@ public class AbstractParentDao {
             }
         }
     }
-
-    //check fieldName is exist in obj
-    protected boolean isObjContainField(Class clazz, String fieldName) {
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true);
-            if(field.getName().equalsIgnoreCase(fieldName)) return true ;
-        }
-        return false;
-    }
-
 }

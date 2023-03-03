@@ -1,29 +1,29 @@
 package vn.coursemanage.model;
 
 public class CourseInstructor {
-    private Long courseID, personID;
+    private Long courseId, personId;
 
-    public CourseInstructor(Long courseID, Long personID) {
-        this.courseID = courseID;
-        this.personID = personID;
+    public CourseInstructor(Long courseId, Long personId) {
+        this.courseId = courseId;
+        this.personId = personId;
     }
 
     public CourseInstructor() {
     }
 
-    public Long getCourseID() {
-        return courseID;
+    public Long getCourseId() {
+        return courseId;
     }
 
-    public void setCourseID(Long courseID) {
-        this.courseID = courseID;
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
-    public Long getPersonID() {
-        return personID;
+    public Long getPersonId() {
+        return personId;
     }
 
-    public void setPersonID(Long personID) {
-        this.personID = personID;
+    public void setPersonId(Long personId) {
+        this.personId = personId;
     }
 }
