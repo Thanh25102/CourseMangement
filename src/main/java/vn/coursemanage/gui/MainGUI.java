@@ -27,11 +27,11 @@ public class MainGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        courseManagerGUI1 = new vn.coursemanage.gui.CourseManagerGUI();
-        courseIntructorManagerGUI2 = new vn.coursemanage.gui.CourseIntructorManagerGUI();
-        studentGradeManagerGUI2 = new vn.coursemanage.gui.StudentGradeManagerGUI();
-        personManagerGUI1 = new vn.coursemanage.gui.PersonManagerGUI();
-        departmentManagerGUI1 = new vn.coursemanage.gui.DepartmentManagerGUI();
+        courseManagerGUI1 = new vn.coursemanage.gui.course.CourseManagerGUI();
+        courseIntructorManagerGUI2 = new vn.coursemanage.gui.courseintructor.CourseIntructorManagerGUI();
+        studentGradeManagerGUI2 = new vn.coursemanage.gui.studentgrade.StudentGradeManagerGUI();
+        personManagerGUI1 = new vn.coursemanage.gui.person.PersonManagerGUI();
+        departmentManagerGUI2 = new vn.coursemanage.gui.department.DepartmentManagerGUI();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -40,32 +40,8 @@ public class MainGUI extends javax.swing.JFrame {
         jTabbedPane1.addTab("COURSE", courseManagerGUI1);
         jTabbedPane1.addTab("COURCE INTRUCTOR", courseIntructorManagerGUI2);
         jTabbedPane1.addTab("STUDENT GRADE", studentGradeManagerGUI2);
-
-        javax.swing.GroupLayout personManagerGUI1Layout = new javax.swing.GroupLayout(personManagerGUI1);
-        personManagerGUI1.setLayout(personManagerGUI1Layout);
-        personManagerGUI1Layout.setHorizontalGroup(
-            personManagerGUI1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 835, Short.MAX_VALUE)
-        );
-        personManagerGUI1Layout.setVerticalGroup(
-            personManagerGUI1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 552, Short.MAX_VALUE)
-        );
-
         jTabbedPane1.addTab("PERSON", personManagerGUI1);
-
-        javax.swing.GroupLayout departmentManagerGUI1Layout = new javax.swing.GroupLayout(departmentManagerGUI1);
-        departmentManagerGUI1.setLayout(departmentManagerGUI1Layout);
-        departmentManagerGUI1Layout.setHorizontalGroup(
-            departmentManagerGUI1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 835, Short.MAX_VALUE)
-        );
-        departmentManagerGUI1Layout.setVerticalGroup(
-            departmentManagerGUI1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 552, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("DEPARTMENT", departmentManagerGUI1);
+        jTabbedPane1.addTab("DEPARTMENT", departmentManagerGUI2);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("COURSE MANAGEMENT APPLICATION");
@@ -85,7 +61,7 @@ public class MainGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 583, Short.MAX_VALUE))
         );
 
         jTabbedPane1.getAccessibleContext().setAccessibleDescription("");
@@ -130,12 +106,12 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private vn.coursemanage.gui.CourseIntructorManagerGUI courseIntructorManagerGUI2;
-    private vn.coursemanage.gui.CourseManagerGUI courseManagerGUI1;
-    private vn.coursemanage.gui.DepartmentManagerGUI departmentManagerGUI1;
+    private vn.coursemanage.gui.courseintructor.CourseIntructorManagerGUI courseIntructorManagerGUI2;
+    private vn.coursemanage.gui.course.CourseManagerGUI courseManagerGUI1;
+    private vn.coursemanage.gui.department.DepartmentManagerGUI departmentManagerGUI2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private vn.coursemanage.gui.PersonManagerGUI personManagerGUI1;
-    private vn.coursemanage.gui.StudentGradeManagerGUI studentGradeManagerGUI2;
+    private vn.coursemanage.gui.person.PersonManagerGUI personManagerGUI1;
+    private vn.coursemanage.gui.studentgrade.StudentGradeManagerGUI studentGradeManagerGUI2;
     // End of variables declaration//GEN-END:variables
 }
