@@ -46,8 +46,8 @@ create table Person
     PersonID       bigint primary key auto_increment,
     Lastname       varchar(100) not null,
     Firstname      varchar(100) not null,
-    HireDate       date         not null,
-    EnrollmentDate date         not null
+    HireDate       date          null,
+    EnrollmentDate date          null
 );
 create table OfficeAssignment
 (

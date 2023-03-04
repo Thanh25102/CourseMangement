@@ -4,6 +4,7 @@ import org.apache.commons.text.WordUtils;
 
 import javax.swing.table.AbstractTableModel;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 
 public class BaseTable<T> extends AbstractTableModel {
@@ -11,9 +12,17 @@ public class BaseTable<T> extends AbstractTableModel {
 
     private Field[] fields;
 
-    public BaseTable(List<T> data) {
+    private Field[] ignoreFields;
+
+    public BaseTable(List<T> data, Field... fieldIgnores) {
+        this.ignoreFields = fieldIgnores;
         this.data = data;
-        fields = data.get(0).getClass().getDeclaredFields();
+
+        Field[] rawField = data.get(0).getClass().getDeclaredFields();
+
+        this.fields = Arrays.stream(ignoreFields).flatMap(ignore ->
+                Arrays.stream(rawField).filter(field -> !field.getName().equalsIgnoreCase(ignore.getName()))
+        ).toArray(Field[]::new);
     }
 
     @Override
@@ -47,6 +56,6 @@ public class BaseTable<T> extends AbstractTableModel {
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         return (getValueAt(0, columnIndex) != null) ?
-                    getValueAt(0, columnIndex).getClass() : Object.class;
+                getValueAt(0, columnIndex).getClass() : Object.class;
     }
 }

@@ -56,7 +56,7 @@ public class AbstractParentDao {
         }
 
     }
-    public <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters) {
+    protected <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters) {
         List<T> results = new ArrayList<>();
         Connection connection = null;
         PreparedStatement statement = null;
