@@ -1,7 +1,7 @@
 package vn.coursemanage.model;
 
 public class StudentGrade {
-    private Long enrollmentID,courseID,studentID;
+    private Long enrollmentID, courseID, studentID;
     private float grade;
 
     public StudentGrade(Long enrollmentID, Long courseID, Long studentID, float grade) {
@@ -10,7 +10,10 @@ public class StudentGrade {
         this.studentID = studentID;
         this.grade = grade;
     }
-    public StudentGrade(){}
+
+    public StudentGrade() {
+    }
+
     public Long getEnrollmentID() {
         return enrollmentID;
     }

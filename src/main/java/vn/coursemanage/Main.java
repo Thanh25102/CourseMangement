@@ -1,7 +1,6 @@
 package vn.coursemanage;
 
 import vn.coursemanage.gui.MainGUI;
-import vn.coursemanage.model.Person;
 
 public class Main {
     public static void main(String[] args) {

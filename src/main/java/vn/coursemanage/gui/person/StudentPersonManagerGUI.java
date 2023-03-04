@@ -4,6 +4,8 @@
  */
 package vn.coursemanage.gui.person;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import vn.coursemanage.bll.PersonService;
 import vn.coursemanage.dao.PersonDao;
 import vn.coursemanage.gui.tablemodel.BaseTable;
@@ -15,7 +17,7 @@ import java.lang.reflect.Field;
  * @author popu
  */
 public class StudentPersonManagerGUI extends javax.swing.JPanel {
-
+    private static final Logger LOGGER = LogManager.getLogger(StudentPersonManagerGUI.class);
     /**
      * Creates new form OnlineCourseManagerGUI
      */
@@ -34,6 +36,7 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
                     hireDate
             ));
         } catch (NoSuchFieldException e) {
+            LOGGER.error("Field isn't exist in Model class !");
             jTable1.setModel(new BaseTable<>(
                     personService.findStudent()
             ));

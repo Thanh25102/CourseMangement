@@ -1,5 +1,7 @@
 package vn.coursemanage.bll;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import vn.coursemanage.exception.FieldNotValidException;
 import vn.coursemanage.exception.NotFoundRecordException;
 
@@ -7,13 +9,17 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 abstract class BaseServices<T> {
+    private static final Logger LOGGER = LogManager.getLogger(BaseServices.class);
     private Class<T> type;
-    protected BaseServices(Class<T> type){
+
+    protected BaseServices(Class<T> type) {
         this.type = type;
     }
+
     protected abstract List<T> findByField(String fieldName, String searchKey) throws FieldNotValidException, NotFoundRecordException;
+
     /**
-     *  Check fieldName is existed in object
+     * Check fieldName is existed in object
      */
     protected boolean isObjContainField(Class clazz, String fieldName) {
         Field[] fields = clazz.getDeclaredFields();
@@ -23,14 +29,19 @@ abstract class BaseServices<T> {
         }
         return false;
     }
+
     public List<T> searchByField(String fieldName, String searchKey) throws NotFoundRecordException, FieldNotValidException {
         // check field is exist in Object class ??
-        if (!isObjContainField(type, fieldName))
+        if (!isObjContainField(type, fieldName)) {
+            LOGGER.error("Field " + fieldName + " isn't exist in class :" + type.getSimpleName());
             throw new FieldNotValidException(fieldName + " isn't exist in class " + type.getSimpleName());
+        }
 
-        List<T> result = findByField(fieldName,searchKey);
-        if (result == null || result.size() == 0)
+        List<T> result = findByField(fieldName, searchKey);
+        if (result == null || result.size() == 0) {
+            LOGGER.error("Can't find any record with search key is : " + searchKey);
             throw new NotFoundRecordException("Can't find any record with search key is : " + searchKey);
+        }
 
         return result;
     }

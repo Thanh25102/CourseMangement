@@ -14,7 +14,9 @@ public class OnsiteCourse {
         this.days = days;
         this.time = time;
     }
-    public OnsiteCourse(){}
+
+    public OnsiteCourse() {
+    }
 
     public Long getCourseID() {
         return courseID;
