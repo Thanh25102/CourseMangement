@@ -85,7 +85,7 @@ class PersonServiceTest {
             "lastName:Thanh",
             "lastName:Thi",
     }, delimiter = ':')
-    void searchWithLastNameHasRecord(String fieldName, String searchKey){
+    void searchWithLastNameHasRecord(String fieldName, String searchKey) {
         List<Person> person = null;
         try {
             person = personService.searchByField(fieldName, searchKey);
@@ -111,7 +111,7 @@ class PersonServiceTest {
         List<Person> person = null;
         try {
             person = personService.searchByField(fieldName, searchKey);
-            assertNotEquals(0,person.size());
+            assertNotEquals(0, person.size());
         } catch (NotFoundRecordException | FieldNotValidException e) {
             Integer size = person == null ? 0 : person.size();
             assertEquals(0, size);

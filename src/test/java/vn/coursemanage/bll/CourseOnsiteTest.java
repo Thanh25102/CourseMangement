@@ -2,16 +2,15 @@ package vn.coursemanage.bll;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import vn.coursemanage.dao.CourseDao;
 import vn.coursemanage.dao.OnsiteCourseDao;
-import vn.coursemanage.mapper.OnsiteCourseMapper;
-import vn.coursemanage.model.Course;
 import vn.coursemanage.model.OnsiteCourse;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 class CourseOnsiteTest {
 
     private OnsiteCourseDao onsiteCourseDao;
@@ -21,7 +20,7 @@ class CourseOnsiteTest {
     );
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         onsiteCourseDao = mock(OnsiteCourseDao.class);
         when(onsiteCourseDao.findAll()).thenReturn(mockData);
         courseService = new OnsiteCourseService(onsiteCourseDao);
@@ -29,6 +28,6 @@ class CourseOnsiteTest {
 
     @Test
     void getAll() {
-        assertEquals(courseService.findAll(),mockData);
+        assertEquals(courseService.findAll(), mockData);
     }
 }

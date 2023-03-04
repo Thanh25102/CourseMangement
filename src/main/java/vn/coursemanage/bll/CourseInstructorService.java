@@ -7,17 +7,20 @@ import vn.coursemanage.model.CourseInstructor;
 
 import java.util.List;
 
-public class CourseInstructorService extends BaseServices<CourseInstructor>{
+public class CourseInstructorService extends BaseServices<CourseInstructor> {
     private final CourseInstructorDao courseInstructorDao;
+
     protected CourseInstructorService(CourseInstructorDao courseInstructorDao) {
         super(CourseInstructor.class);
         this.courseInstructorDao = courseInstructorDao;
     }
+
     @Override
     protected List<CourseInstructor> findByField(String fieldName, String searchKey) throws FieldNotValidException, NotFoundRecordException {
-        return courseInstructorDao.findByField(fieldName,searchKey);
+        return courseInstructorDao.findByField(fieldName, searchKey);
     }
-    private List<CourseInstructor> findAll(){
+
+    private List<CourseInstructor> findAll() {
         return courseInstructorDao.findAll();
     }
 }

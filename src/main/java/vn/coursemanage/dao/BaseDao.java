@@ -1,18 +1,21 @@
 package vn.coursemanage.dao;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import vn.coursemanage.mapper.RowMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-public class AbstractParentDao {
+public class BaseDao {
+    private static final Logger LOGGER = LogManager.getLogger(BaseDao.class);
+
     private Connection getConnection() {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -23,14 +26,18 @@ public class AbstractParentDao {
             String url = prop.getProperty("db.url");
             String user = prop.getProperty("db.user");
             String password = prop.getProperty("db.password");
-
-            System.out.println("URL :" + url + "\n" + "User :" + user + "\n" + "Password :" + password);
+            LOGGER.info("####Connection Information####" +
+                    "\n\tURL :" + url +
+                    "\n\t" + "User :" + user +
+                    "\n\t" + "Password :" + password);
             return DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException | SQLException | IOException e) {
-            System.out.println("Incorrect url or user or password :v thanh` don't know : " + e);
+            LOGGER.error("Incorrect url or user or password to connect with db");
+            LOGGER.error("Can't open file config.properties");
             return null;
         }
     }
+
     private void setStatement(PreparedStatement statement, Object... parameters) {
         try {
             for (int i = 0; i < parameters.length; i++) {
@@ -56,6 +63,7 @@ public class AbstractParentDao {
         }
 
     }
+
     protected <T> List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters) {
         List<T> results = new ArrayList<>();
         Connection connection = null;
@@ -65,7 +73,7 @@ public class AbstractParentDao {
             connection = getConnection();
             statement = connection.prepareStatement(sql);
             setStatement(statement, parameters);
-            System.out.println("Query statement: " + statement.toString());
+            LOGGER.info(statement.toString());
             resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 results.add(rowMapper.mapRow(resultSet));
@@ -89,6 +97,7 @@ public class AbstractParentDao {
             }
         }
     }
+
     protected Integer insert(String sql, Object... parameters) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -99,6 +108,7 @@ public class AbstractParentDao {
             System.out.println(connection);
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            LOGGER.info(statement.toString());
             setStatement(statement, parameters);
             statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
@@ -132,6 +142,7 @@ public class AbstractParentDao {
         }
         return null;
     }
+
     protected void update(String sql, Object... parameter) {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -139,6 +150,7 @@ public class AbstractParentDao {
             connection = getConnection();
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(sql);
+            LOGGER.info(statement.toString());
             setStatement(statement, parameter);
             statement.executeUpdate();
             connection.commit();
