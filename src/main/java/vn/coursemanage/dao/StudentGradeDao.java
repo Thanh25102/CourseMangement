@@ -40,16 +40,17 @@ public class StudentGradeDao extends BaseDao implements Repository<StudentGrade>
     }
 
     @Override
-    public void update(StudentGrade studentGrade) {
+    public Long update(StudentGrade studentGrade) {
         update("update StudentGrade set courseId = ?,studentId = ?,grade = ? where enrollmentId = ?",
                 studentGrade.getCourseID(), studentGrade.getStudentID(), studentGrade.getGrade(), studentGrade.getEnrollmentID()
         );
+        return studentGrade.getEnrollmentID();
     }
 
     @Override
-    public void insert(StudentGrade studentGrade) {
-        update("insert into StudentGrade(courseId,studentId,grade) values(?,?,?)",
+    public Long insert(StudentGrade studentGrade) {
+        return Long.valueOf(insert("insert into StudentGrade(courseId,studentId,grade) values(?,?,?)",
                 studentGrade.getCourseID(), studentGrade.getStudentID(), studentGrade.getGrade()
-        );
+        ));
     }
 }

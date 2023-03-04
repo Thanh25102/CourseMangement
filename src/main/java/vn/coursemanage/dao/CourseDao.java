@@ -34,16 +34,17 @@ public class CourseDao extends BaseDao implements Repository<Course> {
         return query(sql.toString(), new CourseMapper());
     }
 
-    public void update(Course course) {
+    public Long update(Course course) {
         update("update Course set title = ?, credits = ?, departmentId = ? where courseId = ?",
                 course.getTitle(), course.getCredits(), course.getDepartmentId(), course.getCourseId()
         );
+        return course.getCourseId();
     }
 
-    public void insert(Course course) {
-        update("insert into Course(title,credits,departmentId) values(?,?,?)",
+    public Long insert(Course course) {
+        return Long.valueOf(insert("insert into Course(title,credits,departmentId) values(?,?,?)",
                 course.getTitle(), course.getCredits(), course.getDepartmentId()
-        );
+        ));
     }
 
 }

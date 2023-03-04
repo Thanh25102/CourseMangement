@@ -13,7 +13,7 @@ public interface Repository<T> {
 
     List<T> findByFields(List<SearchByFields> searchMap);
 
-    void update(T t);
+    Long update(T t);
 
-    void insert(T t);
+    Long insert(T t);
 }

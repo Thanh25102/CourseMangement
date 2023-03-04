@@ -3,12 +3,21 @@ package vn.coursemanage.gui.tablemodel;
 import org.apache.commons.text.WordUtils;
 
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
-public class BaseTable<T> extends AbstractTableModel {
+public class BaseTable<T> extends DefaultTableModel {
     private List<T> data;
+
+    public List<T> getData() {
+        return data;
+    }
+
+    public void setData(List<T> data) {
+        this.data = data;
+    }
 
     private Field[] fields;
 
@@ -17,7 +26,6 @@ public class BaseTable<T> extends AbstractTableModel {
     public BaseTable(List<T> data, Field... fieldIgnores) {
         this.ignoreFields = fieldIgnores;
         this.data = data;
-
         Field[] rawField = data.get(0).getClass().getDeclaredFields();
 
         this.fields = Arrays.stream(ignoreFields).flatMap(ignore ->
@@ -27,7 +35,7 @@ public class BaseTable<T> extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return data.size();
+        return data == null ? 0 : data.size();
     }
 
     @Override
@@ -40,7 +48,7 @@ public class BaseTable<T> extends AbstractTableModel {
         Field field = fields[columnIndex];
         try {
             field.setAccessible(true);
-            return field.get(data.get(0));
+            return field.get(data.get(rowIndex));
         } catch (IllegalAccessException e) {
             return null;
         }

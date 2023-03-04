@@ -35,14 +35,15 @@ public class PersonDao extends BaseDao implements Repository<Person> {
     }
 
 
-    public void update(Person person) {
+    public Long update(Person person) {
         update("update Person set LastName = ?, FirstName = ?, HireDate = ?, EnrollmentDate = ? where PersonID = ?",
                 person.getLastName(), person.getFirstName(), person.getHireDate(), person.getEnrollmentDate(),
                 person.getPersonId());
+        return person.getPersonId();
     }
 
-    public void insert(Person person) {
-        update("insert into Person(LastName,FirstName,HireDate,EnrollmentDate) values(?,?,?,?)", person.getLastName(),
-                person.getFirstName(), person.getHireDate(), person.getEnrollmentDate());
+    public Long insert(Person person) {
+        return  Long.valueOf(insert("insert into Person(LastName,FirstName,HireDate,EnrollmentDate) values(?,?,?,?)", person.getLastName(),
+                person.getFirstName(), person.getHireDate(), person.getEnrollmentDate()));
     }
 }

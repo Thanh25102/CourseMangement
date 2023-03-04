@@ -40,16 +40,17 @@ public class OnsiteCourseDao extends BaseDao implements Repository<OnsiteCourse>
     }
 
     @Override
-    public void update(OnsiteCourse onsiteCourse) {
+    public Long update(OnsiteCourse onsiteCourse) {
         update("update onsiteCourse set location = ?, days = ?, time = ? where CourseID = ?",
                 onsiteCourse.getLocation(), onsiteCourse.getDays(), onsiteCourse.getTime(), onsiteCourse.getCourseID()
         );
+        return onsiteCourse.getCourseID();
     }
 
     @Override
-    public void insert(OnsiteCourse onsiteCourse) {
-        update("insert into onsiteCourse(location, days, time) values(?,?,?)",
+    public Long insert(OnsiteCourse onsiteCourse) {
+        return Long.valueOf(insert("insert into onsiteCourse(location, days, time) values(?,?,?)",
                 onsiteCourse.getLocation(), onsiteCourse.getDays(), onsiteCourse.getTime()
-        );
+        ));
     }
 }

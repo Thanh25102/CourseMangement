@@ -4,6 +4,7 @@ import vn.coursemanage.dao.CourseInstructorDao;
 import vn.coursemanage.exception.FieldNotValidException;
 import vn.coursemanage.exception.NotFoundRecordException;
 import vn.coursemanage.model.CourseInstructor;
+import vn.coursemanage.model.SearchByFields;
 
 import java.util.List;
 
@@ -15,12 +16,18 @@ public class CourseInstructorService extends BaseServices<CourseInstructor> {
         this.courseInstructorDao = courseInstructorDao;
     }
 
+    public List<CourseInstructor> findAll() {
+        return courseInstructorDao.findAll();
+    }
+
     @Override
-    protected List<CourseInstructor> findByField(String fieldName, String searchKey) throws FieldNotValidException, NotFoundRecordException {
+    protected List<CourseInstructor> findByField(String fieldName, String searchKey){
         return courseInstructorDao.findByField(fieldName, searchKey);
     }
 
-    private List<CourseInstructor> findAll() {
-        return courseInstructorDao.findAll();
+    @Override
+    protected List<CourseInstructor> findByFields(List<SearchByFields> searchMap) {
+        return courseInstructorDao.findByFields(searchMap);
     }
+
 }

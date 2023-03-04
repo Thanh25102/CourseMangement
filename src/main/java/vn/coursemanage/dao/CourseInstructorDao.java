@@ -39,16 +39,17 @@ public class CourseInstructorDao extends BaseDao implements Repository<CourseIns
     }
 
     @Override
-    public void update(CourseInstructor courseInstructor) {
+    public Long update(CourseInstructor courseInstructor) {
         update("update courseInstructor set personId = ? where CourseID = ?",
                 courseInstructor.getPersonId(), courseInstructor.getCourseId()
         );
+        return courseInstructor.getCourseId();
     }
 
     @Override
-    public void insert(CourseInstructor courseInstructor) {
-        update("insert into CourseInstructor(personId, CourseID) values(?,?)",
+    public Long insert(CourseInstructor courseInstructor) {
+        return Long.valueOf(insert("insert into CourseInstructor(personId, CourseID) values(?,?)",
                 courseInstructor.getPersonId(), courseInstructor.getCourseId()
-        );
+        ));
     }
 }
