@@ -1,6 +1,5 @@
 package vn.coursemanage.model;
 
-import vn.coursemanage.enums.PersonType;
 
 import java.util.Date;
 
@@ -10,7 +9,6 @@ public class Person {
     private String lastName;
     private Date hireDate;
     private Date enrollmentDate;
-    private PersonType type;
     public Long getPersonId() {
         return personId;
     }
