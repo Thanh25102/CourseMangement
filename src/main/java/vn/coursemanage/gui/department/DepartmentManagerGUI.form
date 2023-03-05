@@ -176,7 +176,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtBucget" alignment="0" min="-2" pref="234" max="-2" attributes="0"/>
+                      <Component id="txtBudget" alignment="0" min="-2" pref="234" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -188,7 +188,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="txtBucget" pref="28" max="32767" attributes="0"/>
+                  <Component id="txtBudget" pref="28" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -196,10 +196,10 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
-            <Property name="text" type="java.lang.String" value="BUCGET (SEARCH)"/>
+            <Property name="text" type="java.lang.String" value="BUDGET (SEARCH)"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtBucget">
+        <Component class="javax.swing.JTextField" name="txtBudget">
         </Component>
       </SubComponents>
     </Container>

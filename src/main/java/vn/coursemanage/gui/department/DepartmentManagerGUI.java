@@ -4,35 +4,42 @@
  */
 package vn.coursemanage.gui.department;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import vn.coursemanage.bll.DepartmentService;
 import vn.coursemanage.dao.DepartmentDao;
 import vn.coursemanage.gui.tablemodel.BaseTable;
 import vn.coursemanage.model.Department;
+import vn.coursemanage.model.Person;
 
 /**
  * @author popu
  */
 public class DepartmentManagerGUI extends javax.swing.JPanel {
-    private List<Department> department;
+
+    private final DepartmentService departmentService = new DepartmentService(new DepartmentDao());
+    private List<Department> departments;
     private BaseTable model;
+
     /**
      * Creates new form OnlineCourseManagerGUI
      */
-    private final DepartmentService departmentService = new DepartmentService(new DepartmentDao());
-    
     public DepartmentManagerGUI() {
         initComponents();
         initTable();
     }
-    
-    private void initTable(){
-        department = departmentService.findAll();
-        model = new BaseTable<>(department);
+
+    private void initTable() {
+        departments = departmentService.findAll();
+        departments.forEach(dp -> {
+            System.out.println(dp.toString());
+        });
+        model = new BaseTable<>(departments);
         tableDepartment.setModel(model);
 
+ 
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -53,7 +60,7 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
         txtName = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        txtBucget = new javax.swing.JTextField();
+        txtBudget = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         dateStartDate = new com.toedter.calendar.JDateChooser();
@@ -150,7 +157,7 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
                 .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
         );
 
-        jLabel5.setText("BUCGET (SEARCH)");
+        jLabel5.setText("BUDGET (SEARCH)");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -160,7 +167,7 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(txtBucget, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBudget, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -169,7 +176,7 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtBucget, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
+                .addComponent(txtBudget, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
         );
 
         jLabel9.setText("START DATE (SEARCH)");
@@ -248,9 +255,7 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 332, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane2)
-                .addGap(0, 0, 0))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -315,7 +320,7 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tableDepartment;
     private javax.swing.JTextField txtAdminister;
-    private javax.swing.JTextField txtBucget;
+    private javax.swing.JTextField txtBudget;
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 }

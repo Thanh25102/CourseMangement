@@ -11,29 +11,29 @@ import java.util.Date;
  */
 public class Department {
     
-    private Long departmentID;
+    private Long departmentId;
     private String name;
     private Double budget;
-    private Date startdate; 
+    private Date startDate; 
     private String administrator;
 
     public Department() {
     }
 
-    public Department(Long departmentID, String name, Double budget, Date startdate, String administrator) {
-        this.departmentID = departmentID;
+    public Department(Long departmentId, String name, Double budget, Date startDate, String administrator) {
+        this.departmentId = departmentId;
         this.name = name;
         this.budget = budget;
-        this.startdate = startdate;
+        this.startDate = startDate;
         this.administrator = administrator;
     }
     
     public Long getDepartmentID() {
-        return departmentID;
+        return departmentId;
     }
 
-    public void setDepartmentID(Long departmentID) {
-        this.departmentID = departmentID;
+    public void setDepartmentID(Long departmentId) {
+        this.departmentId = departmentId;
     }
 
     public String getName() {
@@ -53,11 +53,11 @@ public class Department {
     }
 
     public Date getStartdate() {
-        return startdate;
+        return startDate;
     }
 
-    public void setStartdate(Date startdate) {
-        this.startdate = startdate;
+    public void setStartdate(Date startDate) {
+        this.startDate = startDate;
     }
 
     public String getAdministrator() {
@@ -70,6 +70,6 @@ public class Department {
 
     @Override
     public String toString() {
-        return "Department{" + "departmentID=" + departmentID + ", name=" + name + ", budget=" + budget + ", startdate=" + startdate + ", administrator=" + administrator + '}';
+        return "Department{" + "departmentId=" + departmentId + ", name=" + name + ", budget=" + budget + ", startDate=" + startDate + ", administrator=" + administrator + '}';
     }
 }
