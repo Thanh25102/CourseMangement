@@ -20,4 +20,16 @@ public class NotificationUtil {
     public static int showYesNo(Component _this, String title, String mess) {
         return JOptionPane.showConfirmDialog(_this, mess, title, JOptionPane.YES_NO_OPTION);   
     }
+    
+    public static void showInformation(Component _this, String mess) {
+        JOptionPane.showMessageDialog(_this, mess, "Information", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public static void showWaring(Component _this, String mess) {
+        JOptionPane.showMessageDialog(_this, mess, "Waring", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    public static void showError(Component _this, String mess) {
+        JOptionPane.showMessageDialog(_this, mess, "Error", JOptionPane.ERROR_MESSAGE);
+    }
 }

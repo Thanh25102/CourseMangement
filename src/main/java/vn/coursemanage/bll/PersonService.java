@@ -6,6 +6,8 @@ import vn.coursemanage.model.SearchByFields;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import vn.coursemanage.exception.FieldNotValidException;
+import vn.coursemanage.exception.NotFoundRecordException;
 
 public class PersonService extends BaseServices<Person> {
     private PersonDao personDao;
@@ -23,6 +25,11 @@ public class PersonService extends BaseServices<Person> {
     public List<Person> findStudent() {
         List<Person> persons = findAll();
         return persons.stream().filter(p -> p.getEnrollmentDate() != null).collect(Collectors.toList());
+    }
+    
+    public List<Person> findIntructor() {
+        List<Person> persons = findAll();
+        return persons.stream().filter(p -> p.getHireDate()!= null).collect(Collectors.toList());
     }
 
     public Person findOne(Long id){
@@ -44,6 +51,16 @@ public class PersonService extends BaseServices<Person> {
     @Override
     protected List<Person> findByFields(List<SearchByFields> searchMap) {
         return personDao.findByFields(searchMap);
+    }
+    
+    public  List<Person> searchByFieldsForStudent(List<SearchByFields> searchMap) throws NotFoundRecordException, FieldNotValidException, NoSuchFieldException {
+        List<Person> persons = super.searchByFields(searchMap);
+        return persons.stream().filter(p -> p.getEnrollmentDate()!= null).collect(Collectors.toList());
+    }
+    
+    public  List<Person> searchByFieldsForIntructor(List<SearchByFields> searchMap) throws NotFoundRecordException, FieldNotValidException, NoSuchFieldException {
+        List<Person> persons = super.searchByFields(searchMap);
+        return persons.stream().filter(p -> p.getHireDate()!= null).collect(Collectors.toList());
     }
 
 }

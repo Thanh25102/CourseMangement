@@ -4,16 +4,65 @@
  */
 package vn.coursemanage.gui.person;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import vn.coursemanage.bll.PersonService;
+import vn.coursemanage.dao.PersonDao;
+import vn.coursemanage.gui.tablemodel.BaseTable;
+import vn.coursemanage.model.Person;
+import vn.coursemanage.model.SearchByFields;
+import vn.coursemanage.utils.NotificationUtil;
+
 /**
  * @author popu
  */
 public class IntructorPersonManagerGUI extends javax.swing.JPanel {
+
+    private final PersonService personService = new PersonService(new PersonDao());
+    private List<Person> persons;
+    private BaseTable model;
 
     /**
      * Creates new form OnlineCourseManagerGUI
      */
     public IntructorPersonManagerGUI() {
         initComponents();
+        initTable();
+    }
+
+    private void initTable() {
+        try {
+            Field hireDate = Person.class.getDeclaredField("enrollmentDate");
+            persons = personService.findIntructor();
+            model = new BaseTable<>(persons, hireDate);
+            tableIntructor.setModel(model);
+        } catch (NoSuchFieldException e) {
+            persons = personService.findIntructor();
+            model = new BaseTable<>(persons);
+            tableIntructor.setModel(model);
+        }
+    }
+
+    private void reloadTable() {
+        model.setData(persons);
+        model.fireTableDataChanged();
+    }
+
+    private void updateTable(Person student) {
+        persons = persons.stream()
+                .map(person -> person.getPersonId() != student.getPersonId() ? person : student)
+                .collect(Collectors.toList());
+        reloadTable();
+    }
+
+    private void resetForm() {
+        txtFirstName.setText("");
+        txtLastName.setText("");
+        dateHireDate.setCalendar(null);
     }
 
     /**
@@ -230,10 +279,39 @@ public class IntructorPersonManagerGUI extends javax.swing.JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
+        if (choice == NotificationUtil.NO) {
+            return;
+        }
+
+        Person student = new Person();
+        student.setFirstName(txtFirstName.getText());
+        student.setLastName(txtLastName.getText());
+        student.setHireDate(dateHireDate.getDate());
+        student.setPersonId(personService.saveOrUpdate(student));
+
+        persons.add(student);
+        reloadTable();
+        resetForm();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update");
+        if (choice == NotificationUtil.NO) {
+            return;
+        }
+
+        Integer selected = tableIntructor.getSelectedRow();
+        if (selected >= 0) {
+            Long id = (Long) tableIntructor.getValueAt(selected, 0);
+            Person student = personService.findOne(id);
+            student.setLastName(txtLastName.getText());
+            student.setFirstName(txtFirstName.getText());
+            student.setHireDate(dateHireDate.getDate());
+
+            updateTable(student);
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -242,14 +320,49 @@ public class IntructorPersonManagerGUI extends javax.swing.JPanel {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
+        List<SearchByFields> searchList = new ArrayList<>();
+        searchList.add(new SearchByFields(txtFirstName.getText(), "firstName"));
+        searchList.add(new SearchByFields(txtLastName.getText(), "lastName"));
+
+        if (dateHireDate.getDate() != null) {
+            java.sql.Date sqlDate = new java.sql.Date(((Date) dateHireDate.getDate()).getTime());
+            String date = sqlDate.toLocalDate().toString();
+            searchList.add(new SearchByFields(date, "hireDate"));
+        }
+
+        try {
+            persons = personService.searchByFieldsForIntructor(searchList);
+            reloadTable();
+        } catch (Exception e) {
+            persons.clear();
+            reloadTable();
+        }
+
+        NotificationUtil.showInformation(this, "Search successful");
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
+        resetForm();
+        initTable();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void tableIntructorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableIntructorMouseClicked
         // TODO add your handling code here:
+        Integer selected = tableIntructor.getSelectedRow();
+        if (selected >= 0) {
+            Long id = (Long) tableIntructor.getValueAt(selected, 0);
+            persons.stream().forEach(person -> {
+                if (person.getPersonId() == id) {
+                    txtFirstName.setText(person.getFirstName());
+                    txtLastName.setText(person.getLastName());
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(person.getHireDate());
+                    dateHireDate.setCalendar(calendar);
+                }
+            });
+
+        }
     }//GEN-LAST:event_tableIntructorMouseClicked
 
 

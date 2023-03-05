@@ -24,6 +24,7 @@ public class PersonDao extends BaseDao implements Repository<Person> {
     public List<Person> findByField(String fieldName, String searchKey) {
         // create sql query statement
         StringBuilder sql = new StringBuilder("select * from Person as p");
+
         sql.append(" where p." + fieldName + " like '%" + searchKey + "%'");
 
         return query(sql.toString(), new PersonMapper());
@@ -33,14 +34,21 @@ public class PersonDao extends BaseDao implements Repository<Person> {
     public List<Person> findByFields(List<SearchByFields> searchMap) {
 
         // create sql query statement
-        StringBuilder sql = new StringBuilder("select * from Person as p");
-        searchMap.forEach(search -> sql.append(" where p." + search.getFieldName() + " like '%" + search.getSearchKey() + "%'"));
+        StringBuilder sql = new StringBuilder("select * from Person as p where");
+  
+        int count = 0;
+        for(SearchByFields search: searchMap) {
+            count++;
+            sql.append(" p." + search.getFieldName() + " like '%" + search.getSearchKey() + "%'");
+ 
+            if(count != searchMap.size()) sql.append(" and ");
+        }
 
         return query(sql.toString(), new PersonMapper());
     }
 
     public Long update(Person person) {
-         LOGGER.info(person.toString()+ "UPDATE");
+        LOGGER.info(person.toString() + "UPDATE");
         update("update Person set LastName = ?, FirstName = ?, HireDate = ?, EnrollmentDate = ? where PersonID = ?",
                 person.getLastName(), person.getFirstName(), person.getHireDate(), person.getEnrollmentDate(),
                 person.getPersonId());

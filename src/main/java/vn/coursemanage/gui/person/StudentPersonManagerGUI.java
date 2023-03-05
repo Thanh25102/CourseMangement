@@ -13,9 +13,13 @@ import vn.coursemanage.model.Person;
 
 import javax.swing.table.DefaultTableModel;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import vn.coursemanage.exception.NotFoundRecordException;
+import vn.coursemanage.model.SearchByFields;
 import vn.coursemanage.utils.NotificationUtil;
 
 /**
@@ -24,13 +28,13 @@ import vn.coursemanage.utils.NotificationUtil;
 public class StudentPersonManagerGUI extends javax.swing.JPanel {
 
     private static final Logger LOGGER = LogManager.getLogger(StudentPersonManagerGUI.class);
+    private final PersonService personService = new PersonService(new PersonDao());
     private List<Person> persons;
     private BaseTable model;
+
     /**
      * Creates new form OnlineCourseManagerGUI
      */
-    private final PersonService personService = new PersonService(new PersonDao());
-
     public StudentPersonManagerGUI() {
         initComponents();
         initTable();
@@ -60,6 +64,12 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
                 .map(person -> person.getPersonId() != student.getPersonId() ? person : student)
                 .collect(Collectors.toList());
         reloadTable();
+    }
+
+    private void resetForm() {
+        txtFirstName.setText("");
+        txtLastName.setText("");
+        dateEnrollment.setCalendar(null);
     }
 
     /**
@@ -281,23 +291,30 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        
-        int choice = NotificationUtil.showYesNo(this, "Hỏi", "Bạn có muốn thêm dữ liệu");
-        if(choice == NotificationUtil.NO) return;
-        
+
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
+        if (choice == NotificationUtil.NO) {
+            return;
+        }
+
         Person student = new Person();
         student.setFirstName(txtFirstName.getText());
         student.setLastName(txtLastName.getText());
         student.setEnrollmentDate(dateEnrollment.getDate());
         student.setPersonId(personService.saveOrUpdate(student));
-        
+
         persons.add(student);
         reloadTable();
+        resetForm();
     }//GEN-LAST:event_btnAddActionPerformed
-
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update");
+        if (choice == NotificationUtil.NO) {
+            return;
+        }
+
         Integer selected = tableStudent.getSelectedRow();
         if (selected >= 0) {
             Long id = (Long) tableStudent.getValueAt(selected, 0);
@@ -305,21 +322,47 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
             student.setLastName(txtLastName.getText());
             student.setFirstName(txtFirstName.getText());
             student.setEnrollmentDate(dateEnrollment.getDate());
+
             updateTable(student);
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to delete");
+        if (choice == NotificationUtil.NO) {
+            return;
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:       
+        List<SearchByFields> searchList = new ArrayList<>();
+        searchList.add(new SearchByFields(txtFirstName.getText(), "firstname"));
+        searchList.add(new SearchByFields(txtLastName.getText(), "lastname"));
+
+        if (dateEnrollment.getDate() != null) {
+            java.sql.Date sqlDate = new java.sql.Date(((Date) dateEnrollment.getDate()).getTime());
+            String date = sqlDate.toLocalDate().toString();
+            searchList.add(new SearchByFields(date, "enrollmentdate"));
+        }
+
+        try {
+            persons = personService.searchByFieldsForStudent(searchList);
+            reloadTable();
+        } catch (Exception e) {
+            persons.clear();
+            reloadTable();
+        }
+
+        NotificationUtil.showInformation(this, "Search successful");
+
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
-
+        resetForm();
+        initTable();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void tableStudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableStudentMouseClicked

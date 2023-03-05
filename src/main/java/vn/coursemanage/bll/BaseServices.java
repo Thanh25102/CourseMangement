@@ -7,7 +7,9 @@ import vn.coursemanage.exception.NotFoundRecordException;
 import vn.coursemanage.model.SearchByFields;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.List;
+import vn.coursemanage.model.Person;
 
 abstract class BaseServices<T> {
     private static final Logger LOGGER = LogManager.getLogger(BaseServices.class);
@@ -48,13 +50,13 @@ abstract class BaseServices<T> {
         return result;
     }
 
-    public List<T> searchByFields(List<SearchByFields> searchMap) throws NotFoundRecordException, FieldNotValidException {
+    public List<T> searchByFields(List<SearchByFields> searchMap) throws NotFoundRecordException, FieldNotValidException, NoSuchFieldException {
         for (SearchByFields search : searchMap) {
             // check field is exist in Object class ??
             if (!isObjContainField(type, search.getFieldName())) {
                 LOGGER.error("Field " + search.getFieldName() + " isn't exist in class :" + type.getSimpleName());
                 throw new FieldNotValidException(search.getFieldName() + " isn't exist in class " + type.getSimpleName());
-            }
+            }     
         }
 
         List<T> result = findByFields(searchMap);
