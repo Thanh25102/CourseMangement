@@ -16,11 +16,13 @@ import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
+import vn.coursemanage.utils.NotificationUtil;
 
 /**
  * @author popu
  */
 public class StudentPersonManagerGUI extends javax.swing.JPanel {
+
     private static final Logger LOGGER = LogManager.getLogger(StudentPersonManagerGUI.class);
     private List<Person> persons;
     private BaseTable model;
@@ -46,6 +48,18 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
             model = new BaseTable<>(persons);
             tableStudent.setModel(model);
         }
+    }
+
+    private void reloadTable() {
+        model.setData(persons);
+        model.fireTableDataChanged();
+    }
+
+    private void updateTable(Person student) {
+        persons = persons.stream()
+                .map(person -> person.getPersonId() != student.getPersonId() ? person : student)
+                .collect(Collectors.toList());
+        reloadTable();
     }
 
     /**
@@ -264,27 +278,23 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
+        
+        int choice = NotificationUtil.showYesNo(this, "Hỏi", "Bạn có muốn thêm dữ liệu");
+        if(choice == NotificationUtil.NO) return;
+        
         Person student = new Person();
         student.setFirstName(txtFirstName.getText());
         student.setLastName(txtLastName.getText());
         student.setEnrollmentDate(dateEnrollment.getDate());
-        personService.saveOrUpdate(student);
-        updateTable(student);
+        student.setPersonId(personService.saveOrUpdate(student));
+        
+        persons.add(student);
+        reloadTable();
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void reloadTable(List<Person> student) {
-        model.setData(student);
-        model.fireTableDataChanged();
-    }
-
-    private void updateTable(Person student) {
-        persons = persons.stream()
-                .map(person -> person.getPersonId() != student.getPersonId() ? person : student)
-                .collect(Collectors.toList());
-        reloadTable(persons);
-    }
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:

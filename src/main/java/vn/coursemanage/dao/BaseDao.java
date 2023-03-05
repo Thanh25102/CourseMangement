@@ -56,6 +56,8 @@ public class BaseDao {
                 } else if (parameter instanceof Date) {
                     java.sql.Date sqlDate = new java.sql.Date(((Date) parameter).getTime());
                     statement.setDate(index, sqlDate);
+                } else {
+                    statement.setString(index, null);
                 }
             }
         } catch (SQLException e) {

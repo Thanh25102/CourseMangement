@@ -5,8 +5,13 @@ import vn.coursemanage.model.Person;
 import vn.coursemanage.model.SearchByFields;
 
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PersonDao extends BaseDao implements Repository<Person> {
+
+    private static final Logger LOGGER = LogManager.getLogger(PersonDao.class);
+
     public Person findOne(Long id) {
         List<Person> person = query("select * from Person where PersonID = ?", new PersonMapper(), id);
         return person != null ? person.get(0) : null;
@@ -34,8 +39,8 @@ public class PersonDao extends BaseDao implements Repository<Person> {
         return query(sql.toString(), new PersonMapper());
     }
 
-
     public Long update(Person person) {
+         LOGGER.info(person.toString()+ "UPDATE");
         update("update Person set LastName = ?, FirstName = ?, HireDate = ?, EnrollmentDate = ? where PersonID = ?",
                 person.getLastName(), person.getFirstName(), person.getHireDate(), person.getEnrollmentDate(),
                 person.getPersonId());
@@ -43,7 +48,8 @@ public class PersonDao extends BaseDao implements Repository<Person> {
     }
 
     public Long insert(Person person) {
-        return  Long.valueOf(insert("insert into Person(LastName,FirstName,HireDate,EnrollmentDate) values(?,?,?,?)", person.getLastName(),
+        LOGGER.info(person.toString());
+        return Long.valueOf(insert("insert into Person(LastName,FirstName,HireDate,EnrollmentDate) values(?,?,?,?)", person.getLastName(),
                 person.getFirstName(), person.getHireDate(), person.getEnrollmentDate()));
     }
 }

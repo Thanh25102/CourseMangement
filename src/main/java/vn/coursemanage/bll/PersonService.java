@@ -30,7 +30,7 @@ public class PersonService extends BaseServices<Person> {
     }
 
     public Long saveOrUpdate(Person person) {
-        if (person.getPersonId() == null)
+        if (person.getPersonId() != null)
             return personDao.update(person);
         else
             return personDao.insert(person);
