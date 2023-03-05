@@ -87,3 +87,5 @@ nb-configuration.xml
 .docker
 dump.sql
 ##############################
+### Log4j2 ###
+logs

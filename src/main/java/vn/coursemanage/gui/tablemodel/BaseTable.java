@@ -8,17 +8,12 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
-public class BaseTable<T> extends DefaultTableModel {
+public class BaseTable<T> extends AbstractTableModel {
     private List<T> data;
-
-    public List<T> getData() {
-        return data;
-    }
 
     public void setData(List<T> data) {
         this.data = data;
     }
-
     private Field[] fields;
 
     private Field[] ignoreFields;
