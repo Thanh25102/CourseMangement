@@ -4,18 +4,35 @@
  */
 package vn.coursemanage.gui.department;
 
+import java.util.List;
+import vn.coursemanage.bll.DepartmentService;
+import vn.coursemanage.dao.DepartmentDao;
+import vn.coursemanage.gui.tablemodel.BaseTable;
+import vn.coursemanage.model.Department;
+
 /**
  * @author popu
  */
 public class DepartmentManagerGUI extends javax.swing.JPanel {
-
+    private List<Department> department;
+    private BaseTable model;
     /**
      * Creates new form OnlineCourseManagerGUI
      */
+    private final DepartmentService departmentService = new DepartmentService(new DepartmentDao());
+    
     public DepartmentManagerGUI() {
         initComponents();
+        initTable();
     }
+    
+    private void initTable(){
+        department = departmentService.findAll();
+        model = new BaseTable<>(department);
+        tableDepartment.setModel(model);
 
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
