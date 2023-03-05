@@ -42,7 +42,7 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
 
     private void initTable() {
         try {
-            Field hireDate = Person.class.getDeclaredField("hireDate");
+            Field hireDate = Person.class.getDeclaredField("hireDate"); 
             persons = personService.findStudent();
             model = new BaseTable<>(persons, hireDate);
             tableStudent.setModel(model);
