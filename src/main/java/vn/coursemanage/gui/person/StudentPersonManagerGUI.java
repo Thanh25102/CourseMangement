@@ -289,7 +289,7 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
 
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
@@ -308,7 +308,7 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
         resetForm();
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update");
         if (choice == NotificationUtil.NO) {
@@ -327,7 +327,7 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to delete");
         if (choice == NotificationUtil.NO) {
@@ -335,7 +335,7 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:       
         List<SearchByFields> searchList = new ArrayList<>();
         searchList.add(new SearchByFields(txtFirstName.getText(), "firstname"));
@@ -359,13 +359,13 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         resetForm();
         initTable();
     }//GEN-LAST:event_btnResetActionPerformed
 
-    private void tableStudentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableStudentMouseClicked
+    private void tableStudentMouseClicked(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
         Integer selected = tableStudent.getSelectedRow();
         if (selected >= 0) {

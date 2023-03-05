@@ -4,10 +4,13 @@
  */
 package vn.coursemanage.gui.course;
 
+import vn.coursemanage.model.OnsiteCourse;
+
 /**
  * @author popu
  */
 public class OnlineCourseManagerGUI extends javax.swing.JPanel {
+
 
     /**
      * Creates new form OnlineCourseManagerGUI

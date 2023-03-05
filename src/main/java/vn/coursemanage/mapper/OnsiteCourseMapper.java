@@ -10,7 +10,12 @@ public class OnsiteCourseMapper implements RowMapper<OnsiteCourse> {
     public OnsiteCourse mapRow(ResultSet rs) {
         OnsiteCourse onsiteCourse = new OnsiteCourse();
         try {
-            onsiteCourse.setCourseID(rs.getLong("CourseID"));
+            onsiteCourse.setCourseId(rs.getLong("CourseID"));
+
+            onsiteCourse.setTitle(rs.getString("Title"));
+            onsiteCourse.setCredits(rs.getDouble("Credits"));
+            onsiteCourse.setDepartmentId(rs.getLong("DepartmentID"));
+
             onsiteCourse.setLocation(rs.getString("Location"));
             onsiteCourse.setDays(rs.getInt("Days"));
             onsiteCourse.setTime(rs.getDate("Time"));

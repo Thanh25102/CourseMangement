@@ -1,12 +1,13 @@
 package vn.coursemanage.gui.tablemodel;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.text.WordUtils;
 
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BaseTable<T> extends AbstractTableModel {
     private List<T> data;
@@ -14,6 +15,7 @@ public class BaseTable<T> extends AbstractTableModel {
     public void setData(List<T> data) {
         this.data = data;
     }
+
     private Field[] fields;
 
     private Field[] ignoreFields;
@@ -21,11 +23,18 @@ public class BaseTable<T> extends AbstractTableModel {
     public BaseTable(List<T> data, Field... fieldIgnores) {
         this.ignoreFields = fieldIgnores;
         this.data = data;
-        Field[] rawField = data.get(0).getClass().getDeclaredFields();
+        setFields(fieldIgnores);
+    }
+    private void setFields(Field... fieldIgnores){
+        Class clazz = data.get(0).getClass();
+        Field[] rawFieldChild = clazz.getDeclaredFields();
+        Field[] rawFieldParent = clazz.getSuperclass().getDeclaredFields();
+        Field[] rawField = ArrayUtils.addAll(rawFieldParent,rawFieldChild);
 
-        this.fields = Arrays.stream(ignoreFields).flatMap(ignore ->
-                Arrays.stream(rawField).filter(field -> !field.getName().equalsIgnoreCase(ignore.getName()))
-        ).toArray(Field[]::new);
+        this.fields = fieldIgnores.length == 0 ? rawField :
+                Arrays.stream(ignoreFields).flatMap(ignore ->
+                        Arrays.stream(rawField).filter(field -> !field.getName().equalsIgnoreCase(ignore.getName()))
+                ).toArray(Field[]::new);
     }
 
     @Override

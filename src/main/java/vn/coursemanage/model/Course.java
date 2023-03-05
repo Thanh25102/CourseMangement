@@ -49,13 +49,4 @@ public class Course {
         this.departmentId = departmentId;
     }
 
-    @Override
-    public String toString() {
-        return "Course{" +
-                "courseId=" + courseId +
-                ", title='" + title + '\'' +
-                ", credits=" + credits +
-                ", departmentId=" + departmentId +
-                '}';
-    }
 }

@@ -9,13 +9,13 @@ import java.util.List;
 public class OnsiteCourseDao extends BaseDao implements Repository<OnsiteCourse> {
     @Override
     public List<OnsiteCourse> findAll() {
-        String sql = "select * from onsite";
+        String sql = "select * from OnsiteCourse as o inner join course as c where o.courseId = c.courseId";
         return query(sql, new OnsiteCourseMapper());
     }
 
     @Override
     public OnsiteCourse findOne(Long id) {
-        String sql = "select * from onsite where courseId = ?";
+        String sql = "select * from OnsiteCourse as o inner join course as c where o.courseId = ?";
         List<OnsiteCourse> onsiteCourses = query(sql, new OnsiteCourseMapper(), id);
         return onsiteCourses != null ? onsiteCourses.get(0) : null;
     }
@@ -23,8 +23,8 @@ public class OnsiteCourseDao extends BaseDao implements Repository<OnsiteCourse>
     @Override
     public List<OnsiteCourse> findByField(String fieldName, String searchKey) {
         // create sql query statement
-        StringBuilder sql = new StringBuilder("select * from onsite as p");
-        sql.append(" where p." + fieldName + " like '%" + searchKey + "%'");
+        StringBuilder sql = new StringBuilder("select * from OnsiteCourse as p inner join course as c");
+        sql.append(" where " + fieldName + " like '%" + searchKey + "%'");
 
         return query(sql.toString(), new OnsiteCourseMapper());
     }
@@ -32,8 +32,8 @@ public class OnsiteCourseDao extends BaseDao implements Repository<OnsiteCourse>
     @Override
     public List<OnsiteCourse> findByFields(List<SearchByFields> searchMap) {
         // create sql query statement
-        StringBuilder sql = new StringBuilder("select * from onsite as p");
-        searchMap.forEach(search -> sql.append(" where p." + search.getFieldName() + " like '%" + search.getSearchKey() + "%'"));
+        StringBuilder sql = new StringBuilder("select * from OnsiteCourse as p inner join course as c");
+        searchMap.forEach(search -> sql.append(" where " + search.getFieldName() + " like '%" + search.getSearchKey() + "%'"));
 
 
         return query(sql.toString(), new OnsiteCourseMapper());
@@ -42,15 +42,22 @@ public class OnsiteCourseDao extends BaseDao implements Repository<OnsiteCourse>
     @Override
     public Long update(OnsiteCourse onsiteCourse) {
         update("update onsiteCourse set location = ?, days = ?, time = ? where CourseID = ?",
-                onsiteCourse.getLocation(), onsiteCourse.getDays(), onsiteCourse.getTime(), onsiteCourse.getCourseID()
+                onsiteCourse.getLocation(), onsiteCourse.getDays(), onsiteCourse.getTime(), onsiteCourse.getCourseId()
         );
-        return onsiteCourse.getCourseID();
+        update("update Course set title = ?, credits = ?, departmentID = ? where CourseID = ?",
+                onsiteCourse.getTitle(), onsiteCourse.getCredits(), onsiteCourse.getDepartmentId(), onsiteCourse.getCourseId()
+        );
+        return onsiteCourse.getCourseId();
     }
 
     @Override
     public Long insert(OnsiteCourse onsiteCourse) {
-        return Long.valueOf(insert("insert into onsiteCourse(location, days, time) values(?,?,?)",
-                onsiteCourse.getLocation(), onsiteCourse.getDays(), onsiteCourse.getTime()
+        Long id = Long.valueOf(insert("insert into Course(title, credits, departmentsId) values(?,?,?)",
+                onsiteCourse.getTitle(), onsiteCourse.getCredits(), onsiteCourse.getDepartmentId()
         ));
+        insert("insert into onsiteCourse(location, days, time) values(?,?,?)",
+                onsiteCourse.getLocation(), onsiteCourse.getDays(), onsiteCourse.getTime()
+        );
+        return id;
     }
 }
