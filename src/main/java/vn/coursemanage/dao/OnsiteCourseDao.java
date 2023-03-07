@@ -52,11 +52,11 @@ public class OnsiteCourseDao extends BaseDao implements Repository<OnsiteCourse>
 
     @Override
     public Long insert(OnsiteCourse onsiteCourse) {
-        Long id = Long.valueOf(insert("insert into Course(title, credits, departmentsId) values(?,?,?)",
+        Long id = Long.valueOf(insert("insert into Course(title, credits, departmentId) values(?,?,?)",
                 onsiteCourse.getTitle(), onsiteCourse.getCredits(), onsiteCourse.getDepartmentId()
         ));
-        insert("insert into onsiteCourse(location, days, time) values(?,?,?)",
-                onsiteCourse.getLocation(), onsiteCourse.getDays(), onsiteCourse.getTime()
+        insert("insert into onsiteCourse(CourseId,location, days, time) values(?,?,?,?)",
+                id, onsiteCourse.getLocation(), onsiteCourse.getDays(), onsiteCourse.getTime()
         );
         return id;
     }

@@ -10,17 +10,15 @@ import vn.coursemanage.bll.PersonService;
 import vn.coursemanage.dao.PersonDao;
 import vn.coursemanage.gui.tablemodel.BaseTable;
 import vn.coursemanage.model.Person;
+import vn.coursemanage.model.SearchByFields;
+import vn.coursemanage.utils.FormatDate;
+import vn.coursemanage.utils.NotificationUtil;
 
-import javax.swing.table.DefaultTableModel;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import vn.coursemanage.exception.NotFoundRecordException;
-import vn.coursemanage.model.SearchByFields;
-import vn.coursemanage.utils.NotificationUtil;
 
 /**
  * @author popu
@@ -42,7 +40,7 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
 
     private void initTable() {
         try {
-            Field hireDate = Person.class.getDeclaredField("hireDate"); 
+            Field hireDate = Person.class.getDeclaredField("hireDate");
             persons = personService.findStudent();
             model = new BaseTable<>(persons, hireDate);
             tableStudent.setModel(model);
@@ -291,12 +289,10 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
         if (choice == NotificationUtil.NO) {
             return;
         }
-
         Person student = new Person();
         student.setFirstName(txtFirstName.getText());
         student.setLastName(txtLastName.getText());
@@ -322,7 +318,7 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
             student.setLastName(txtLastName.getText());
             student.setFirstName(txtFirstName.getText());
             student.setEnrollmentDate(dateEnrollment.getDate());
-
+            personService.saveOrUpdate(student);
             updateTable(student);
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
@@ -342,11 +338,10 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
         searchList.add(new SearchByFields(txtLastName.getText(), "lastname"));
 
         if (dateEnrollment.getDate() != null) {
-            java.sql.Date sqlDate = new java.sql.Date(((Date) dateEnrollment.getDate()).getTime());
-            String date = sqlDate.toLocalDate().toString();
-            searchList.add(new SearchByFields(date, "enrollmentdate"));
+            searchList.add(
+                    new SearchByFields(FormatDate.dateToString(dateEnrollment.getDate(), null),
+                            "enrollmentdate"));
         }
-
         try {
             persons = personService.searchByFieldsForStudent(searchList);
             reloadTable();

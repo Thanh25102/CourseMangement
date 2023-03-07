@@ -4,13 +4,11 @@
  */
 package vn.coursemanage.gui.department;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import vn.coursemanage.bll.DepartmentService;
 import vn.coursemanage.dao.DepartmentDao;
 import vn.coursemanage.gui.tablemodel.BaseTable;
 import vn.coursemanage.model.Department;
-import vn.coursemanage.model.Person;
 
 /**
  * @author popu

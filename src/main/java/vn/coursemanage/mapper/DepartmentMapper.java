@@ -16,7 +16,7 @@ public class DepartmentMapper implements RowMapper<Department>{
     @Override
     public Department mapRow(ResultSet rs) {
         try {
-            Department department = new Department();
+            var department = new Department();
             department.setDepartmentID(rs.getLong("departmentID"));
             department.setName(rs.getString("name"));
             department.setBudget(rs.getDouble("budget"));

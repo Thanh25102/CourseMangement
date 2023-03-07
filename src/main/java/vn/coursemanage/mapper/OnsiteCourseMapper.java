@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class OnsiteCourseMapper implements RowMapper<OnsiteCourse> {
     @Override
     public OnsiteCourse mapRow(ResultSet rs) {
-        OnsiteCourse onsiteCourse = new OnsiteCourse();
+        var onsiteCourse = new OnsiteCourse();
         try {
             onsiteCourse.setCourseId(rs.getLong("CourseID"));
 
@@ -18,7 +18,7 @@ public class OnsiteCourseMapper implements RowMapper<OnsiteCourse> {
 
             onsiteCourse.setLocation(rs.getString("Location"));
             onsiteCourse.setDays(rs.getInt("Days"));
-            onsiteCourse.setTime(rs.getDate("Time"));
+            onsiteCourse.setTime(rs.getLong("Time"));
             return onsiteCourse;
         } catch (SQLException e) {
             System.out.println(e);

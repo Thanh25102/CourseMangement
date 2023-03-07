@@ -10,7 +10,7 @@ public class CourseMapper implements RowMapper<Course> {
     @Override
     public Course mapRow(ResultSet rs) {
         try {
-            Course course = new Course();
+            var course = new Course();
             course.setCourseId(rs.getLong("CourseID"));
             course.setTitle(rs.getString("Title"));
             course.setCredits(rs.getDouble("Credits"));

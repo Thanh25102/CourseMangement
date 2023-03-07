@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class CourseInstructorMapper implements RowMapper<CourseInstructor> {
     @Override
     public CourseInstructor mapRow(ResultSet rs) {
-        CourseInstructor courseInstructor = new CourseInstructor();
+        var courseInstructor = new CourseInstructor();
         try {
             courseInstructor.setCourseId(rs.getLong("CourseID"));
             courseInstructor.setPersonId(rs.getLong("PersonID"));

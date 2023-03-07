@@ -9,7 +9,7 @@ public class StudentGradeMapper implements RowMapper<StudentGrade> {
     @Override
     public StudentGrade mapRow(ResultSet rs) {
         try {
-            StudentGrade studentGrade = new StudentGrade();
+            var studentGrade = new StudentGrade();
             studentGrade.setCourseID(rs.getLong("CourseID"));
             studentGrade.setStudentID(rs.getLong("StudentID"));
             studentGrade.setGrade(rs.getFloat("Grade"));

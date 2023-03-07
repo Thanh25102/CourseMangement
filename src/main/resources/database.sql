@@ -1,5 +1,6 @@
 create database QLKHOAHOC;
 use QLKHOAHOC;
+
 # drop database QLKHOAHOC;
 create table StudentGrade
 (
@@ -30,10 +31,10 @@ create table OnlineCourse
 );
 create table OnsiteCourse
 (
-    CourseID bigint primary key auto_increment,
+    CourseID bigint primary key,
     Location varchar(500),
     Days     int  not null,
-    Time     date not null
+    Time     bigint not null
 );
 create table CourseInstructor
 (
@@ -103,8 +104,8 @@ values (3,'https://bikiptangai/p1'),
        (4,'https://bikiptangai/p2');
 
 insert into OnsiteCourse
-values (1,'Trần Duy Hưng, Hà Nội',30,'2023-02-03'),
-       (2,'Ngã tư sinh tử, CSGO',23,'2023-03-04');
+values (1,'Trần Duy Hưng, Hà Nội',30,10.2),
+       (2,'Ngã tư sinh tử, CSGO',23,30.8);
 
 insert into StudentGrade
 values (null,3,1,10),

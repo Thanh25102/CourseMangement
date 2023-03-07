@@ -9,7 +9,7 @@ public class PersonMapper implements RowMapper<Person> {
     @Override
     public Person mapRow(ResultSet rs) {
         try {
-            Person person = new Person();
+            var person = new Person();
             person.setPersonId(rs.getLong("PersonID"));
             person.setFirstName(rs.getString("FirstName"));
             person.setLastName(rs.getString("LastName"));

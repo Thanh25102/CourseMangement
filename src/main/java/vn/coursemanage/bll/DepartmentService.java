@@ -23,6 +23,7 @@ public class DepartmentService extends BaseServices<Department>{
     public List<Department> findAll() {
         return departmentDAO.findAll();
     }
+
     @Override
     protected List<Department> findByField(String fieldName, String searchKey) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

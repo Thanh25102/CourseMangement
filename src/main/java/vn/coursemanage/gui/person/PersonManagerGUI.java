@@ -27,7 +27,7 @@ public class PersonManagerGUI extends javax.swing.JPanel {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         studentPersonManagerGUI1 = new vn.coursemanage.gui.person.StudentPersonManagerGUI();
-        intructorPersonManagerGUI1 = new vn.coursemanage.gui.person.IntructorPersonManagerGUI();
+        intructorPersonManagerGUI1 = new InstructorPersonManagerGUI();
 
         jTabbedPane1.addTab("STUDENT", studentPersonManagerGUI1);
         jTabbedPane1.addTab("INTRUCTOR", intructorPersonManagerGUI1);
@@ -44,7 +44,7 @@ public class PersonManagerGUI extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private vn.coursemanage.gui.person.IntructorPersonManagerGUI intructorPersonManagerGUI1;
+    private InstructorPersonManagerGUI intructorPersonManagerGUI1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private vn.coursemanage.gui.person.StudentPersonManagerGUI studentPersonManagerGUI1;
     // End of variables declaration//GEN-END:variables

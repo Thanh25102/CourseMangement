@@ -1,13 +1,24 @@
 package vn.coursemanage.model;
 
+import lombok.Builder;
+import lombok.Getter;
+
 import java.util.Date;
 
 public class OnsiteCourse extends Course {
     private String location;
     private Integer days;
-    private Date time;
+    private Long time;
 
-    public OnsiteCourse( String location, Integer days, Date time) {
+    public OnsiteCourse( String location, Integer days, Long time) {
+        this.location = location;
+        this.days = days;
+        this.time = time;
+    }
+
+    @Builder
+    public OnsiteCourse(Long courseId, String title, Double credits, Long departmentId, String location, Integer days, Long time) {
+        super(courseId, title, credits, departmentId);
         this.location = location;
         this.days = days;
         this.time = time;
@@ -33,11 +44,11 @@ public class OnsiteCourse extends Course {
         this.days = days;
     }
 
-    public Date getTime() {
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 

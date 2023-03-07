@@ -6,11 +6,18 @@ package vn.coursemanage.gui.course;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import vn.coursemanage.bll.DepartmentService;
 import vn.coursemanage.bll.OnsiteCourseService;
+import vn.coursemanage.dao.DepartmentDao;
 import vn.coursemanage.dao.OnsiteCourseDao;
 import vn.coursemanage.gui.tablemodel.BaseTable;
+import vn.coursemanage.gui.tablemodel.ItemRenderer;
+import vn.coursemanage.model.Department;
+import vn.coursemanage.model.Item;
 import vn.coursemanage.model.OnsiteCourse;
+import vn.coursemanage.utils.NotificationUtil;
 
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -21,8 +28,11 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
     private static final Logger LOGGER = LogManager.getLogger(OnsiteCourseManagerGUI.class);
 
     private List<OnsiteCourse> onsiteCourses;
+    private List<Department> departments;
 
     private final OnsiteCourseService onsiteCourseService = new OnsiteCourseService(new OnsiteCourseDao());
+    private final DepartmentService departmentService = new DepartmentService(new DepartmentDao());
+
     private BaseTable model;
 
     /**
@@ -184,7 +194,6 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
 
         jLabel15.setText("DEPARTMENT");
 
-        cbbDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
 
         jLabel19.setText("LOCATION (SEARCH)");
 
@@ -373,10 +382,65 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
         onsiteCourses.forEach(System.out::println);
         model = new BaseTable<>(onsiteCourses);
         tableOnsiteCourse.setModel(model);
+
+        /**
+         * set up combobox department
+         */
+        cbbDepartment.removeAll();
+        cbbDepartment.setRenderer(new ItemRenderer());
+        cbbDepartment.addItem(new Item(null, "### DEPARTMENT NAME ###"));
+        departmentService.findAll()
+                .forEach(department ->
+                        cbbDepartment.addItem(new Item(department.getDepartmentID(), department.getName())));
+        cbbDepartment.addActionListener(this::onItemCbbDepartmentClick);
+    }
+
+    private void onItemCbbDepartmentClick(java.awt.event.ActionEvent evt) {
+        JComboBox c = (JComboBox) evt.getSource();
+        Item item = (Item) c.getSelectedItem();
+    }
+
+    private void reloadTable() {
+        model.setData(onsiteCourses);
+        model.fireTableDataChanged();
+    }
+
+    private void resetForm() {
+        txtLocation.setText("");
+        spHour.setValue(0);
+        txtDays.setText("");
+        txtCredits.setText("");
+        txtTitle.setText("");
+        cbbDepartment.setSelectedIndex(0);
     }
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
+        if (choice == NotificationUtil.NO) {
+            return;
+        }
+        try {
+            OnsiteCourse onsiteCourse = OnsiteCourse.builder()
+                    .location(txtLocation.getText())
+                    .time(Long.parseLong(spHour.getValue().toString()))
+                    .days(Integer.parseInt(txtDays.getText()))
+                    .credits(Double.parseDouble(txtCredits.getText()))
+                    .title(txtTitle.getText())
+                    .departmentId(((Item) cbbDepartment.getSelectedItem()).getId())
+                    .build();
+            Long id = onsiteCourseService.saveOrUpdate(onsiteCourse);
+            if (id != null) {
+                onsiteCourse.setCourseId(id);
+                onsiteCourses.add(onsiteCourse);
+                reloadTable();
+                resetForm();
+            } else {
+                NotificationUtil.showInformation(this, "Add Onsite Course Failed");
+            }
+        } catch (NullPointerException | NumberFormatException e) {
+            NotificationUtil.showInformation(this, "Fields isn't able empty");
+        }
+
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -391,14 +455,40 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnResetActionPerformed
 
-    private void tableOnsiteCourseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableOnsiteCourseMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tableOnsiteCourseMouseClicked
+    private void tableOnsiteCourseMouseClicked(java.awt.event.MouseEvent evt) {
+        Integer selected = tableOnsiteCourse.getSelectedRow();
+        if (selected >= 0) {
+            Long id = (Long) tableOnsiteCourse.getValueAt(selected, 0);
+            onsiteCourses.stream()
+                    .anyMatch(course -> {
+                        if (course.getCourseId() == id) {
+                            txtTitle.setText(course.getTitle());
+                            txtCredits.setText(course.getCredits().toString());
+                            setSelectedValue(cbbDepartment, course.getDepartmentId());
+                            txtDays.setText(course.getDays().toString());
+                            spHour.setValue(course.getTime());
+                            txtLocation.setText(course.getLocation());
+                            return true;
+                        }
+                        return false;
+                    });
+        }
+    }
 
+    public void setSelectedValue(JComboBox comboBox, Long value) {
+        Item item;
+        for (int i = 0; i < comboBox.getItemCount(); i++) {
+            item = (Item) comboBox.getItemAt(i);
+            if (item.getId() == value) {
+                comboBox.setSelectedIndex(i);
+                break;
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -406,7 +496,7 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JComboBox<String> cbbDepartment;
+    private javax.swing.JComboBox<Item> cbbDepartment;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;

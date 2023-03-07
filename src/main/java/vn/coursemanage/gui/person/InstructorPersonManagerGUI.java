@@ -20,7 +20,7 @@ import vn.coursemanage.utils.NotificationUtil;
 /**
  * @author popu
  */
-public class IntructorPersonManagerGUI extends javax.swing.JPanel {
+public class InstructorPersonManagerGUI extends javax.swing.JPanel {
 
     private final PersonService personService = new PersonService(new PersonDao());
     private List<Person> persons;
@@ -29,7 +29,7 @@ public class IntructorPersonManagerGUI extends javax.swing.JPanel {
     /**
      * Creates new form OnlineCourseManagerGUI
      */
-    public IntructorPersonManagerGUI() {
+    public InstructorPersonManagerGUI() {
         initComponents();
         initTable();
     }

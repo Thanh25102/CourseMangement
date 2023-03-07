@@ -1,5 +1,8 @@
 package vn.coursemanage.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 public class Course {
     private Long courseId;
     private String title;
