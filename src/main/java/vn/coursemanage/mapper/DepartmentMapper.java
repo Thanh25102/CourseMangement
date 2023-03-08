@@ -4,9 +4,10 @@
  */
 package vn.coursemanage.mapper;
 
+import vn.coursemanage.model.Department;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import vn.coursemanage.model.Department;
 
 /**
  *

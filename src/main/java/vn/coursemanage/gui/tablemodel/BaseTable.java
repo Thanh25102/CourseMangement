@@ -5,33 +5,39 @@ import org.apache.commons.text.WordUtils;
 
 import javax.swing.table.AbstractTableModel;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class BaseTable<T> extends AbstractTableModel {
     private List<T> data;
+    private Class<T> clazz;
 
     public void setData(List<T> data) {
+        if(data != null)
         this.data = data;
+        else this.data = new ArrayList<>();
     }
 
     private Field[] fields;
 
     private Field[] ignoreFields;
 
-    public BaseTable(List<T> data, Field... fieldIgnores) {
+    public BaseTable(List<T> data,Class clazz, Field... fieldIgnores) {
+        this.clazz = clazz;
         this.ignoreFields = fieldIgnores;
         this.data = data;
         setFields(fieldIgnores);
     }
-    private void setFields(Field... fieldIgnores){
-        Class clazz = data.get(0).getClass();
+
+    private void setFields(Field... fieldIgnores) {
         Field[] rawFieldChild = clazz.getDeclaredFields();
         Field[] rawFieldParent = clazz.getSuperclass().getDeclaredFields();
-        Field[] rawField = ArrayUtils.addAll(rawFieldParent,rawFieldChild);
+        Field[] rawField = ArrayUtils.addAll(rawFieldParent, rawFieldChild);
 
-        this.fields = fieldIgnores.length == 0 ? rawField :
+        this.fields = fieldIgnores == null || fieldIgnores.length == 0 ? rawField :
                 Arrays.stream(ignoreFields).flatMap(ignore ->
                         Arrays.stream(rawField).filter(field -> !field.getName().equalsIgnoreCase(ignore.getName()))
                 ).toArray(Field[]::new);
@@ -53,7 +59,7 @@ public class BaseTable<T> extends AbstractTableModel {
         try {
             field.setAccessible(true);
             return field.get(data.get(rowIndex));
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | NullPointerException e) {
             return null;
         }
     }

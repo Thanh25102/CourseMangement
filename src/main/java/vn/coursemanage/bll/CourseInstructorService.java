@@ -1,8 +1,6 @@
 package vn.coursemanage.bll;
 
 import vn.coursemanage.dao.CourseInstructorDao;
-import vn.coursemanage.exception.FieldNotValidException;
-import vn.coursemanage.exception.NotFoundRecordException;
 import vn.coursemanage.model.CourseInstructor;
 import vn.coursemanage.model.SearchByFields;
 

@@ -12,13 +12,13 @@ import vn.coursemanage.dao.DepartmentDao;
 import vn.coursemanage.dao.OnsiteCourseDao;
 import vn.coursemanage.gui.tablemodel.BaseTable;
 import vn.coursemanage.gui.tablemodel.ItemRenderer;
-import vn.coursemanage.model.Department;
 import vn.coursemanage.model.Item;
 import vn.coursemanage.model.OnsiteCourse;
 import vn.coursemanage.utils.NotificationUtil;
 
 import javax.swing.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author popu
@@ -26,13 +26,9 @@ import java.util.List;
 public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
 
     private static final Logger LOGGER = LogManager.getLogger(OnsiteCourseManagerGUI.class);
-
     private List<OnsiteCourse> onsiteCourses;
-    private List<Department> departments;
-
     private final OnsiteCourseService onsiteCourseService = new OnsiteCourseService(new OnsiteCourseDao());
     private final DepartmentService departmentService = new DepartmentService(new DepartmentDao());
-
     private BaseTable model;
 
     /**
@@ -380,7 +376,7 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
     private void initTable() {
         onsiteCourses = onsiteCourseService.findAll();
         onsiteCourses.forEach(System.out::println);
-        model = new BaseTable<>(onsiteCourses);
+        model = new BaseTable<>(onsiteCourses,OnsiteCourse.class);
         tableOnsiteCourse.setModel(model);
 
         /**
@@ -400,6 +396,13 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
         Item item = (Item) c.getSelectedItem();
     }
 
+    private void updateTable(OnsiteCourse onsiteCourse) {
+        onsiteCourses = onsiteCourses.stream()
+                .map(course -> course.getCourseId() != onsiteCourse.getCourseId() ? course : onsiteCourse)
+                .collect(Collectors.toList());
+        reloadTable();
+    }
+
     private void reloadTable() {
         model.setData(onsiteCourses);
         model.fireTableDataChanged();
@@ -416,9 +419,8 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
-        if (choice == NotificationUtil.NO) {
+        if (choice == NotificationUtil.NO)
             return;
-        }
         try {
             OnsiteCourse onsiteCourse = OnsiteCourse.builder()
                     .location(txtLocation.getText())
@@ -444,7 +446,31 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
+        if (choice == NotificationUtil.NO)
+            return;
+        Integer selected = tableOnsiteCourse.getSelectedRow();
+        try {
+            Long id = (Long) tableOnsiteCourse.getValueAt(selected, 0);
+            OnsiteCourse onsiteCourse = OnsiteCourse.builder()
+                    .courseId(id)
+                    .location(txtLocation.getText())
+                    .time(Long.parseLong(spHour.getValue().toString()))
+                    .days(Integer.parseInt(txtDays.getText()))
+                    .credits(Double.parseDouble(txtCredits.getText()))
+                    .title(txtTitle.getText())
+                    .departmentId(((Item) cbbDepartment.getSelectedItem()).getId())
+                    .build();
+            Long resultId = onsiteCourseService.saveOrUpdate(onsiteCourse);
+            if (resultId != null) {
+                updateTable(onsiteCourse);
+                resetForm();
+            } else {
+                NotificationUtil.showInformation(this, "Update Onsite Course Failed");
+            }
+        } catch (NullPointerException | NumberFormatException e) {
+            NotificationUtil.showInformation(this, "Fields isn't able empty");
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -456,7 +482,7 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
+        resetForm();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void tableOnsiteCourseMouseClicked(java.awt.event.MouseEvent evt) {

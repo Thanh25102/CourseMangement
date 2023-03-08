@@ -4,18 +4,19 @@
  */
 package vn.coursemanage.gui.person;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 import vn.coursemanage.bll.PersonService;
 import vn.coursemanage.dao.PersonDao;
 import vn.coursemanage.gui.tablemodel.BaseTable;
 import vn.coursemanage.model.Person;
 import vn.coursemanage.model.SearchByFields;
 import vn.coursemanage.utils.NotificationUtil;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author popu
@@ -38,11 +39,11 @@ public class InstructorPersonManagerGUI extends javax.swing.JPanel {
         try {
             Field hireDate = Person.class.getDeclaredField("enrollmentDate");
             persons = personService.findIntructor();
-            model = new BaseTable<>(persons, hireDate);
+            model = new BaseTable<>(persons,Person.class, hireDate);
             tableIntructor.setModel(model);
         } catch (NoSuchFieldException e) {
             persons = personService.findIntructor();
-            model = new BaseTable<>(persons);
+            model = new BaseTable<>(persons,Person.class);
             tableIntructor.setModel(model);
         }
     }

@@ -7,9 +7,7 @@ import vn.coursemanage.exception.NotFoundRecordException;
 import vn.coursemanage.model.SearchByFields;
 
 import java.lang.reflect.Field;
-import java.util.Date;
 import java.util.List;
-import vn.coursemanage.model.Person;
 
 abstract class BaseServices<T> {
     private static final Logger LOGGER = LogManager.getLogger(BaseServices.class);

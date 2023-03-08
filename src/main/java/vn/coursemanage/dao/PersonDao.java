@@ -1,12 +1,12 @@
 package vn.coursemanage.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import vn.coursemanage.mapper.PersonMapper;
 import vn.coursemanage.model.Person;
 import vn.coursemanage.model.SearchByFields;
 
 import java.util.List;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class PersonDao extends BaseDao implements Repository<Person> {
 

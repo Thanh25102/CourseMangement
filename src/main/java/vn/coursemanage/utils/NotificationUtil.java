@@ -4,8 +4,8 @@
  */
 package vn.coursemanage.utils;
 
-import java.awt.Component;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *

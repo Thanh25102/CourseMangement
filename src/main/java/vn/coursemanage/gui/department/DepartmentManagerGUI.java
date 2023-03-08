@@ -4,11 +4,12 @@
  */
 package vn.coursemanage.gui.department;
 
-import java.util.List;
 import vn.coursemanage.bll.DepartmentService;
 import vn.coursemanage.dao.DepartmentDao;
 import vn.coursemanage.gui.tablemodel.BaseTable;
 import vn.coursemanage.model.Department;
+
+import java.util.List;
 
 /**
  * @author popu
@@ -32,7 +33,7 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
         departments.forEach(dp -> {
             System.out.println(dp.toString());
         });
-        model = new BaseTable<>(departments);
+        model = new BaseTable<>(departments,Department.class);
         tableDepartment.setModel(model);
 
  

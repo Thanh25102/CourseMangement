@@ -4,10 +4,11 @@
  */
 package vn.coursemanage.bll;
 
-import java.util.List;
 import vn.coursemanage.dao.DepartmentDao;
 import vn.coursemanage.model.Department;
 import vn.coursemanage.model.SearchByFields;
+
+import java.util.List;
 
 /**
  *

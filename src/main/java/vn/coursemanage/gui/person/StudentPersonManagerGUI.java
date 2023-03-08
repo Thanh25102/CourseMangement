@@ -24,12 +24,10 @@ import java.util.stream.Collectors;
  * @author popu
  */
 public class StudentPersonManagerGUI extends javax.swing.JPanel {
-
     private static final Logger LOGGER = LogManager.getLogger(StudentPersonManagerGUI.class);
     private final PersonService personService = new PersonService(new PersonDao());
     private List<Person> persons;
     private BaseTable model;
-
     /**
      * Creates new form OnlineCourseManagerGUI
      */
@@ -37,33 +35,29 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
         initComponents();
         initTable();
     }
-
     private void initTable() {
         try {
             Field hireDate = Person.class.getDeclaredField("hireDate");
             persons = personService.findStudent();
-            model = new BaseTable<>(persons, hireDate);
+            model = new BaseTable<>(persons,Person.class, hireDate);
             tableStudent.setModel(model);
         } catch (NoSuchFieldException e) {
             LOGGER.error("Field isn't exist in Model class !");
             persons = personService.findStudent();
-            model = new BaseTable<>(persons);
+            model = new BaseTable<>(persons,Person.class);
             tableStudent.setModel(model);
         }
     }
-
     private void reloadTable() {
         model.setData(persons);
         model.fireTableDataChanged();
     }
-
     private void updateTable(Person student) {
         persons = persons.stream()
                 .map(person -> person.getPersonId() != student.getPersonId() ? person : student)
                 .collect(Collectors.toList());
         reloadTable();
     }
-
     private void resetForm() {
         txtFirstName.setText("");
         txtLastName.setText("");
@@ -285,8 +279,6 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
                                 .addGap(0, 0, 0))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
@@ -305,12 +297,10 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update");
         if (choice == NotificationUtil.NO) {
             return;
         }
-
         Integer selected = tableStudent.getSelectedRow();
         if (selected >= 0) {
             Long id = (Long) tableStudent.getValueAt(selected, 0);

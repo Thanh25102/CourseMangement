@@ -4,10 +4,11 @@
  */
 package vn.coursemanage.dao;
 
-import java.util.List;
 import vn.coursemanage.mapper.DepartmentMapper;
 import vn.coursemanage.model.Department;
 import vn.coursemanage.model.SearchByFields;
+
+import java.util.List;
 
 /**
  *

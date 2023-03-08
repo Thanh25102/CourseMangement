@@ -1,9 +1,6 @@
 package vn.coursemanage.model;
 
 import lombok.Builder;
-import lombok.Getter;
-
-import java.util.Date;
 
 public class OnsiteCourse extends Course {
     private String location;

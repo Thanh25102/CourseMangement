@@ -1,6 +1,5 @@
 create database QLKHOAHOC;
 use QLKHOAHOC;
-
 # drop database QLKHOAHOC;
 create table StudentGrade
 (

@@ -4,21 +4,81 @@
  */
 package vn.coursemanage.gui.course;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import vn.coursemanage.bll.DepartmentService;
+import vn.coursemanage.bll.OnlineCourseService;
+import vn.coursemanage.dao.DepartmentDao;
+import vn.coursemanage.dao.OnlineCourseDao;
+import vn.coursemanage.gui.tablemodel.BaseTable;
+import vn.coursemanage.gui.tablemodel.ItemRenderer;
+import vn.coursemanage.model.Item;
+import vn.coursemanage.model.OnlineCourse;
 import vn.coursemanage.model.OnsiteCourse;
+import vn.coursemanage.utils.NotificationUtil;
+
+import javax.swing.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author popu
  */
 public class OnlineCourseManagerGUI extends javax.swing.JPanel {
 
+    private static final Logger LOGGER = LogManager.getLogger(OnlineCourseManagerGUI.class);
+
+    private List<OnlineCourse> onlineCourses;
+    private final OnlineCourseService onlineCourseService = new OnlineCourseService(new OnlineCourseDao());
+    private final DepartmentService departmentService = new DepartmentService(new DepartmentDao());
+    private BaseTable model;
 
     /**
      * Creates new form OnlineCourseManagerGUI
      */
     public OnlineCourseManagerGUI() {
         initComponents();
+        initTable();
+    }
+    private void initTable() {
+        onlineCourses = onlineCourseService.findAll();
+        onlineCourses.forEach(System.out::println);
+        model = new BaseTable<>(onlineCourses,OnlineCourse.class);
+        tableOnlineCourse.setModel(model);
+
+        /**
+         * set up combobox department
+         */
+        cbbDepartment.removeAll();
+        cbbDepartment.setRenderer(new ItemRenderer());
+        cbbDepartment.addItem(new Item(null, "### DEPARTMENT NAME ###"));
+        departmentService.findAll()
+                .forEach(department ->
+                        cbbDepartment.addItem(new Item(department.getDepartmentID(), department.getName())));
+        cbbDepartment.addActionListener(this::onItemCbbDepartmentClick);
+    }
+    private void onItemCbbDepartmentClick(java.awt.event.ActionEvent evt) {
+        JComboBox c = (JComboBox) evt.getSource();
+        Item item = (Item) c.getSelectedItem();
     }
 
+    private void updateTable(OnlineCourse onlineCourse) {
+        onlineCourses = onlineCourses.stream()
+                .map(course -> course.getCourseId() != onlineCourse.getCourseId() ? course : onlineCourse)
+                .collect(Collectors.toList());
+        reloadTable();
+    }
+    private void reloadTable() {
+        model.setData(onlineCourses);
+        model.fireTableDataChanged();
+    }
+
+    private void resetForm() {
+        txtCredits.setText("");
+        txtTitle.setText("");
+        cbbDepartment.setSelectedIndex(0);
+        txtUrl.setText("");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -163,8 +223,6 @@ public class OnlineCourseManagerGUI extends javax.swing.JPanel {
 
         jLabel6.setText("DEPARTMENT");
 
-        cbbDepartment.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -289,11 +347,55 @@ public class OnlineCourseManagerGUI extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
+        if (choice == NotificationUtil.NO)
+            return;
+        try {
+            OnlineCourse onlineCourse = OnlineCourse.builder()
+                    .credits(Double.parseDouble(txtCredits.getText()))
+                    .title(txtTitle.getText())
+                    .departmentId(((Item) cbbDepartment.getSelectedItem()).getId())
+                    .url(txtUrl.getText())
+                    .build();
+            Long id = onlineCourseService.saveOrUpdate(onlineCourse);
+            if (id != null) {
+                onlineCourse.setCourseId(id);
+                onlineCourses.add(onlineCourse);
+                reloadTable();
+                resetForm();
+            } else {
+                NotificationUtil.showInformation(this, "Add Online Course Failed");
+            }
+        } catch (NullPointerException | NumberFormatException e) {
+            NotificationUtil.showInformation(this, "Fields isn't able empty");
+        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
+        if (choice == NotificationUtil.NO)
+            return;
+        Integer selected = tableOnlineCourse.getSelectedRow();
+        try {
+            Long id = (Long) tableOnlineCourse.getValueAt(selected, 0);
+            OnlineCourse onlineCourse = OnlineCourse.builder()
+                    .courseId(id)
+                    .credits(Double.parseDouble(txtCredits.getText()))
+                    .title(txtTitle.getText())
+                    .departmentId(((Item) cbbDepartment.getSelectedItem()).getId())
+                    .url(txtUrl.getText())
+                    .build();
+            Long resultId = onlineCourseService.saveOrUpdate(onlineCourse);
+            if (resultId != null) {
+                updateTable(onlineCourse);
+                resetForm();
+            } else {
+                NotificationUtil.showInformation(this, "Update Online Course Failed");
+            }
+        } catch (NullPointerException | NumberFormatException e) {
+            NotificationUtil.showInformation(this, "Fields isn't able empty");
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -306,20 +408,45 @@ public class OnlineCourseManagerGUI extends javax.swing.JPanel {
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
+        resetForm();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void tableOnlineCourseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableOnlineCourseMouseClicked
         // TODO add your handling code here:
+        Integer selected = tableOnlineCourse.getSelectedRow();
+        if (selected >= 0) {
+            Long id = (Long) tableOnlineCourse.getValueAt(selected, 0);
+            onlineCourses.stream()
+                    .anyMatch(course -> {
+                        if (course.getCourseId() == id) {
+                            txtTitle.setText(course.getTitle());
+                            txtCredits.setText(course.getCredits().toString());
+                            txtUrl.setText(course.getUrl());
+                            setSelectedValue(cbbDepartment, course.getDepartmentId());
+                            return true;
+                        }
+                        return false;
+                    });
+        }
     }//GEN-LAST:event_tableOnlineCourseMouseClicked
 
-
+    public void setSelectedValue(JComboBox comboBox, Long value) {
+        Item item;
+        for (int i = 0; i < comboBox.getItemCount(); i++) {
+            item = (Item) comboBox.getItemAt(i);
+            if (item.getId() == value) {
+                comboBox.setSelectedIndex(i);
+                break;
+            }
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JComboBox<String> cbbDepartment;
+    private javax.swing.JComboBox<Item> cbbDepartment;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
