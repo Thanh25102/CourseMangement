@@ -9,7 +9,7 @@ public interface Repository<T> {
 
     T findOne(Long id);
 
-    List<T> findByField(String fieldName, String searchKey);
+    List<T> findByField(String fieldName, Object searchKey);
 
     List<T> findByFields(List<SearchByFields> searchMap);
 

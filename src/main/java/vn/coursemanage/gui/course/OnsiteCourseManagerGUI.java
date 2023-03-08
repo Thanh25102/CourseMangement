@@ -10,13 +10,17 @@ import vn.coursemanage.bll.DepartmentService;
 import vn.coursemanage.bll.OnsiteCourseService;
 import vn.coursemanage.dao.DepartmentDao;
 import vn.coursemanage.dao.OnsiteCourseDao;
+import vn.coursemanage.exception.FieldNotValidException;
+import vn.coursemanage.exception.NotFoundRecordException;
 import vn.coursemanage.gui.tablemodel.BaseTable;
 import vn.coursemanage.gui.tablemodel.ItemRenderer;
 import vn.coursemanage.model.Item;
 import vn.coursemanage.model.OnsiteCourse;
+import vn.coursemanage.model.SearchByFields;
 import vn.coursemanage.utils.NotificationUtil;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -376,7 +380,7 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
     private void initTable() {
         onsiteCourses = onsiteCourseService.findAll();
         onsiteCourses.forEach(System.out::println);
-        model = new BaseTable<>(onsiteCourses,OnsiteCourse.class);
+        model = new BaseTable<>(onsiteCourses, OnsiteCourse.class);
         tableOnsiteCourse.setModel(model);
 
         /**
@@ -447,29 +451,29 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
-        if (choice == NotificationUtil.NO)
-            return;
-        Integer selected = tableOnsiteCourse.getSelectedRow();
-        try {
-            Long id = (Long) tableOnsiteCourse.getValueAt(selected, 0);
-            OnsiteCourse onsiteCourse = OnsiteCourse.builder()
-                    .courseId(id)
-                    .location(txtLocation.getText())
-                    .time(Long.parseLong(spHour.getValue().toString()))
-                    .days(Integer.parseInt(txtDays.getText()))
-                    .credits(Double.parseDouble(txtCredits.getText()))
-                    .title(txtTitle.getText())
-                    .departmentId(((Item) cbbDepartment.getSelectedItem()).getId())
-                    .build();
-            Long resultId = onsiteCourseService.saveOrUpdate(onsiteCourse);
-            if (resultId != null) {
-                updateTable(onsiteCourse);
-                resetForm();
-            } else {
-                NotificationUtil.showInformation(this, "Update Onsite Course Failed");
+        if (choice == NotificationUtil.YES){
+            Integer selected = tableOnsiteCourse.getSelectedRow();
+            try {
+                Long id = (Long) tableOnsiteCourse.getValueAt(selected, 0);
+                OnsiteCourse onsiteCourse = OnsiteCourse.builder()
+                        .courseId(id)
+                        .location(txtLocation.getText())
+                        .time(Long.parseLong(spHour.getValue().toString()))
+                        .days(Integer.parseInt(txtDays.getText()))
+                        .credits(Double.parseDouble(txtCredits.getText()))
+                        .title(txtTitle.getText())
+                        .departmentId(((Item) cbbDepartment.getSelectedItem()).getId())
+                        .build();
+                Long resultId = onsiteCourseService.saveOrUpdate(onsiteCourse);
+                if (resultId != null) {
+                    updateTable(onsiteCourse);
+                    resetForm();
+                } else {
+                    NotificationUtil.showInformation(this, "Update Onsite Course Failed");
+                }
+            } catch (NullPointerException | NumberFormatException e) {
+                NotificationUtil.showInformation(this, "Fields isn't able empty");
             }
-        } catch (NullPointerException | NumberFormatException e) {
-            NotificationUtil.showInformation(this, "Fields isn't able empty");
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -479,10 +483,35 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
+        try {
+            List<OnsiteCourse> searchList = onsiteCourseService.searchByFields(
+                    setSearchFields()
+            );
+            onsiteCourses = searchList;
+            reloadTable();
+        } catch (NotFoundRecordException e) {
+            NotificationUtil.showInformation(this, "Can't not find any record of OnsiteCourse");
+        } catch (FieldNotValidException | NoSuchFieldException e) {
+            LOGGER.error("Field isn't exist in OnsiteCourse");
+            throw new RuntimeException(e);
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private List<SearchByFields> setSearchFields() {
+        List<SearchByFields> searchMap = new ArrayList<>();
+        searchMap.add(new SearchByFields(txtTitle.getText(), "title"));
+        searchMap.add(new SearchByFields(txtLocation.getText(), "location"));
+        searchMap.add(new SearchByFields(((Item) cbbDepartment.getSelectedItem()).getId(), "departmentId"));
+        if (!txtCredits.getText().equals(""))
+            searchMap.add(new SearchByFields(Long.parseLong(txtCredits.getText()), "credits"));
+        if (!txtDays.getText().equals(""))
+            searchMap.add(new SearchByFields(Integer.parseInt(txtDays.getText()), "days"));
+        return searchMap;
+    }
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {
         resetForm();
+        initTable();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void tableOnsiteCourseMouseClicked(java.awt.event.MouseEvent evt) {

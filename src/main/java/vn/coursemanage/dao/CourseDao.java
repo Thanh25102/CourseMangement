@@ -17,7 +17,7 @@ public class CourseDao extends BaseDao implements Repository<Course> {
         return courses != null ? courses.get(0) : null;
     }
 
-    public List<Course> findByField(String filedName, String searchKey) {
+    public List<Course> findByField(String filedName, Object searchKey) {
         // create sql query statement
         StringBuilder sql = new StringBuilder("select * from Course as p");
         sql.append(" where p." + filedName + " like '%" + searchKey + "%'");

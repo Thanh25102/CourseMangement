@@ -1,12 +1,17 @@
 package vn.coursemanage.dao;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import vn.coursemanage.mapper.OnsiteCourseMapper;
 import vn.coursemanage.model.OnsiteCourse;
 import vn.coursemanage.model.SearchByFields;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class OnsiteCourseDao extends BaseDao implements Repository<OnsiteCourse> {
+    private final static Logger LOGGER = LogManager.getLogger(OnsiteCourseDao.class);
+
     @Override
     public List<OnsiteCourse> findAll() {
         String sql = "select * from OnsiteCourse as o inner join course as c where o.courseId = c.courseId";
@@ -20,11 +25,16 @@ public class OnsiteCourseDao extends BaseDao implements Repository<OnsiteCourse>
         return onsiteCourses != null ? onsiteCourses.get(0) : null;
     }
 
+
     @Override
-    public List<OnsiteCourse> findByField(String fieldName, String searchKey) {
+    public List<OnsiteCourse> findByField(String fieldName, Object searchKey) {
         // create sql query statement
-        StringBuilder sql = new StringBuilder("select * from OnsiteCourse as p inner join course as c");
-        sql.append(" where " + fieldName + " like '%" + searchKey + "%'");
+        StringBuilder sql = new StringBuilder("select * from OnsiteCourse as o inner join course c on o.courseId = c.courseId ");
+        if (searchKey instanceof String) {
+            sql.append(" where " + fieldName + " like '%" + searchKey + "%'");
+        } else {
+            sql.append(" where " + fieldName + " = " + searchKey + "");
+        }
 
         return query(sql.toString(), new OnsiteCourseMapper());
     }
@@ -32,8 +42,21 @@ public class OnsiteCourseDao extends BaseDao implements Repository<OnsiteCourse>
     @Override
     public List<OnsiteCourse> findByFields(List<SearchByFields> searchMap) {
         // create sql query statement
-        StringBuilder sql = new StringBuilder("select * from OnsiteCourse as p inner join course as c");
-        searchMap.forEach(search -> sql.append(" where " + search.getFieldName() + " like '%" + search.getSearchKey() + "%'"));
+        StringBuilder sql = new StringBuilder("select * from OnsiteCourse as o inner join course c on o.courseId = c.courseId ");
+
+        if (searchMap.size() >= 1) {
+            sql.append(" where ");
+        }
+        AtomicInteger count = new AtomicInteger(0);
+        searchMap.forEach(search -> {
+            count.getAndIncrement();
+            if (search.getSearchKey() instanceof String) {
+                sql.append(search.getFieldName() + " like '%" + search.getSearchKey() + "%'");
+            } else {
+                sql.append(search.getFieldName() + " = " + search.getSearchKey() + "");
+            }
+            if (count.get() != searchMap.size()) sql.append(" and ");
+        });
 
 
         return query(sql.toString(), new OnsiteCourseMapper());

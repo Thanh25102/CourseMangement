@@ -22,7 +22,7 @@ public class OnlineCourseDao extends BaseDao implements Repository<OnlineCourse>
     }
 
     @Override
-    public List<OnlineCourse> findByField(String fieldName, String searchKey) {
+    public List<OnlineCourse> findByField(String fieldName, Object searchKey) {
         // create sql query statement
         StringBuilder sql = new StringBuilder("select * from OnlineCourse as p inner join course as c");
         sql.append(" where " + fieldName + " like '%" + searchKey + "%'");

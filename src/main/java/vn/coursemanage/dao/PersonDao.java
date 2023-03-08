@@ -21,7 +21,7 @@ public class PersonDao extends BaseDao implements Repository<Person> {
         return query("select * from Person", new PersonMapper());
     }
 
-    public List<Person> findByField(String fieldName, String searchKey) {
+    public List<Person> findByField(String fieldName, Object searchKey) {
         // create sql query statement
         StringBuilder sql = new StringBuilder("select * from Person as p");
 

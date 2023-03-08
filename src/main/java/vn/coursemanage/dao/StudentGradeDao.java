@@ -22,7 +22,7 @@ public class StudentGradeDao extends BaseDao implements Repository<StudentGrade>
     }
 
     @Override
-    public List<StudentGrade> findByField(String fieldName, String searchKey) {
+    public List<StudentGrade> findByField(String fieldName, Object searchKey) {
         // create sql query statement
         StringBuilder sql = new StringBuilder("select * from StudentGrade as p");
         sql.append(" where p." + fieldName + " like '%" + searchKey + "%'");

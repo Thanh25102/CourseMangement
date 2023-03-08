@@ -21,7 +21,7 @@ public class CourseInstructorDao extends BaseDao implements Repository<CourseIns
     }
 
     @Override
-    public List<CourseInstructor> findByField(String fieldName, String searchKey) {
+    public List<CourseInstructor> findByField(String fieldName, Object searchKey) {
         // create sql query statement
         StringBuilder sql = new StringBuilder("select * from CourseInstructor as p");
         sql.append(" where p." + fieldName + " like '%" + searchKey + "%'");
