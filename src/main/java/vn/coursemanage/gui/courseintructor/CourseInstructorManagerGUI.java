@@ -12,18 +12,12 @@ import vn.coursemanage.bll.PersonService;
 import vn.coursemanage.dao.CourseDao;
 import vn.coursemanage.dao.CourseInstructorDao;
 import vn.coursemanage.dao.PersonDao;
-import vn.coursemanage.exception.FieldNotValidException;
-import vn.coursemanage.exception.NotFoundRecordException;
 import vn.coursemanage.gui.tablemodel.BaseTable;
 import vn.coursemanage.gui.tablemodel.ItemRenderer;
 import vn.coursemanage.model.CourseInstructor;
 import vn.coursemanage.model.Item;
-import vn.coursemanage.model.OnlineCourse;
-import vn.coursemanage.model.SearchByFields;
 import vn.coursemanage.utils.NotificationUtil;
 
-import javax.swing.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +42,9 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
 
     private void initTable() {
         courseInstructors = courseInstructorService.findAll();
+        courseInstructors.forEach(dp -> {
+            System.out.println(dp.toString());
+        });
         model = new BaseTable<>(courseInstructors, CourseInstructor.class);
         jTable1.setModel(model);
         /**
@@ -313,6 +310,7 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
         if (choice == NotificationUtil.NO) {
             return;
@@ -337,6 +335,7 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
     }
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
         if (choice == NotificationUtil.NO)
             return;
@@ -352,62 +351,35 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        try {
-            List<CourseInstructor> searchList = courseInstructorService.searchByFields(
-                    setSearchFields()
-            );
-            searchList.forEach(System.out::println);
-            courseInstructors = searchList;
-            reloadTable();
-        } catch (NotFoundRecordException e) {
-            NotificationUtil.showInformation(this, "Can't not find any record of CourseInstructor");
-        } catch (FieldNotValidException | NoSuchFieldException e) {
-            LOGGER.error("Field isn't exist in CourseInstructor");
-            throw new RuntimeException(e);
+        // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update");
+        if (choice == NotificationUtil.NO) {
+            return;
         }
-    }//GEN-LAST:event_btnSearchActionPerformed
 
-    private List<SearchByFields> setSearchFields() {
-        List<SearchByFields> searchMap = new ArrayList<>();
-        searchMap.add(new SearchByFields(((Item) cbbCourse.getSelectedItem()).getId(), "courseId"));
-        searchMap.add(new SearchByFields(((Item) cbbPerson.getSelectedItem()).getId(), "personId"));
-        return searchMap;
-    }
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        resetForm();
-        initTable();
-        reloadTable();
-    }//GEN-LAST:event_btnResetActionPerformed
-
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         Integer selected = jTable1.getSelectedRow();
         if (selected >= 0) {
             Long courseId = (Long) jTable1.getValueAt(selected, 0);
             Long personId = (Long) jTable1.getValueAt(selected, 1);
-            courseInstructors.stream()
-                    .anyMatch(courseInstructor -> {
-                        if (courseInstructor.getCourseId() == courseId && courseInstructor.getPersonId() == personId) {
-                            setSelectedValue(cbbCourse, courseInstructor.getCourseId());
-                            setSelectedValue(cbbPerson, courseInstructor.getPersonId());
-                            return true;
-                        }
-                        return false;
-                    });
+
+            courseInstructorService.deleteOne(courseId, personId);
+            initTable();
+            resetForm();
         }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
-    public void setSelectedValue(JComboBox comboBox, Long value) {
-        Item item;
-        for (int i = 0; i < comboBox.getItemCount(); i++) {
-            item = (Item) comboBox.getItemAt(i);
-            if (item.getId() == value) {
-                comboBox.setSelectedIndex(i);
-                break;
-            }
-        }
-    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;

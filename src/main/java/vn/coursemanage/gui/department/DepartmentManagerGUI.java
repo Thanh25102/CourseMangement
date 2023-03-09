@@ -30,6 +30,9 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
 
     private void initTable() {
         departments = departmentService.findAll();
+        departments.forEach(dp -> {
+            System.out.println(dp.toString());
+        });
         model = new BaseTable<>(departments,Department.class);
         tableDepartment.setModel(model);
 

@@ -62,8 +62,8 @@ public class PersonDao extends BaseDao implements Repository<Person> {
     }
     
     public void deleteOne(Long id) {
-        update("delete from StudentGrade where PersonId = ?", id.toString());       
-        update("delete from CourseIntructor where PersonId = ?", id.toString());
-        update(" delete from Person where PersonId = ?", id.toString());
+        update("delete from StudentGrade where StudentID = ?", id.toString());    
+        update("delete from CourseIntructor where PersonID = ?", id.toString());
+        update(" delete from Person where PersonID = ?", id.toString());
     }
 }

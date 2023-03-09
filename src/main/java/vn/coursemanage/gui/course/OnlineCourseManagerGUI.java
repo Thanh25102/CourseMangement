@@ -44,10 +44,11 @@ public class OnlineCourseManagerGUI extends javax.swing.JPanel {
         initComponents();
         initTable();
     }
+
     private void initTable() {
         onlineCourses = onlineCourseService.findAll();
         onlineCourses.forEach(System.out::println);
-        model = new BaseTable<>(onlineCourses,OnlineCourse.class);
+        model = new BaseTable<>(onlineCourses, OnlineCourse.class);
         tableOnlineCourse.setModel(model);
 
         /**
@@ -57,10 +58,11 @@ public class OnlineCourseManagerGUI extends javax.swing.JPanel {
         cbbDepartment.setRenderer(new ItemRenderer());
         cbbDepartment.addItem(new Item(null, "### DEPARTMENT NAME ###"));
         departmentService.findAll()
-                .forEach(department ->
-                        cbbDepartment.addItem(new Item(department.getDepartmentID(), department.getName())));
+                .forEach(department
+                        -> cbbDepartment.addItem(new Item(department.getDepartmentID(), department.getName())));
         cbbDepartment.addActionListener(this::onItemCbbDepartmentClick);
     }
+
     private void onItemCbbDepartmentClick(java.awt.event.ActionEvent evt) {
         JComboBox c = (JComboBox) evt.getSource();
         Item item = (Item) c.getSelectedItem();
@@ -72,6 +74,7 @@ public class OnlineCourseManagerGUI extends javax.swing.JPanel {
                 .collect(Collectors.toList());
         reloadTable();
     }
+
     private void reloadTable() {
         model.setData(onlineCourses);
         model.fireTableDataChanged();
@@ -83,6 +86,7 @@ public class OnlineCourseManagerGUI extends javax.swing.JPanel {
         cbbDepartment.setSelectedIndex(0);
         txtUrl.setText("");
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -352,8 +356,9 @@ public class OnlineCourseManagerGUI extends javax.swing.JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
-        if (choice == NotificationUtil.NO)
+        if (choice == NotificationUtil.NO) {
             return;
+        }
         try {
             OnlineCourse onlineCourse = OnlineCourse.builder()
                     .credits(Double.parseDouble(txtCredits.getText()))
@@ -376,9 +381,11 @@ public class OnlineCourseManagerGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
-        if (choice == NotificationUtil.NO)
+        if (choice == NotificationUtil.NO) {
             return;
+        }
         Integer selected = tableOnlineCourse.getSelectedRow();
         try {
             Long id = (Long) tableOnlineCourse.getValueAt(selected, 0);
@@ -402,6 +409,18 @@ public class OnlineCourseManagerGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to delete ?");
+        if (choice == NotificationUtil.NO) {
+            return;
+        }
+        
+        Integer selected = tableOnlineCourse.getSelectedRow();
+        if (selected >= 0) {
+            Long id = (Long) tableOnlineCourse.getValueAt(selected, 0);
+            onlineCourseService.deleteOne(id);
+            initTable();
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -425,8 +444,9 @@ public class OnlineCourseManagerGUI extends javax.swing.JPanel {
         searchMap.add(new SearchByFields(txtTitle.getText(), "title"));
         searchMap.add(new SearchByFields(txtUrl.getText(), "url"));
         searchMap.add(new SearchByFields(((Item) cbbDepartment.getSelectedItem()).getId(), "departmentId"));
-        if (!txtCredits.getText().equals(""))
+        if (!txtCredits.getText().equals("")) {
             searchMap.add(new SearchByFields(Long.parseLong(txtCredits.getText()), "credits"));
+        }
         return searchMap;
     }
 
