@@ -49,4 +49,5 @@ public class Course {
         this.departmentId = departmentId;
     }
 
+
 }

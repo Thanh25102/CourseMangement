@@ -20,7 +20,7 @@ public class OnsiteCourseService extends BaseServices<OnsiteCourse> {
         return onsiteCourseDao.findAll();
     }
     @Override
-    protected List<OnsiteCourse> findByField(String fieldName, String searchKey){
+    protected List<OnsiteCourse> findByField(String fieldName, String searchKey) throws NoSuchFieldException {
         return onsiteCourseDao.findByField(fieldName, searchKey);
     }
     @Override

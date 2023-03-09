@@ -6,7 +6,7 @@ create table StudentGrade
     EnrollmentID bigint primary key auto_increment,
     CourseID     bigint not null,
     StudentID    bigint not null,
-    Gradle       float  not null
+    Grade       float  not null
 );
 create table Department
 (

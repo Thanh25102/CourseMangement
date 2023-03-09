@@ -63,7 +63,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="vn.coursemanage.gui.courseintructor.CourseIntructorManagerGUI" name="courseIntructorManagerGUI2">
+        <Component class="vn.coursemanage.gui.courseintructor.CourseInstructorManagerGUI" name="courseIntructorManagerGUI2">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="COURCE INTRUCTOR">

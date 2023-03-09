@@ -9,13 +9,17 @@ import java.util.List;
 public class CourseInstructorService extends BaseServices<CourseInstructor> {
     private final CourseInstructorDao courseInstructorDao;
 
-    protected CourseInstructorService(CourseInstructorDao courseInstructorDao) {
+    public CourseInstructorService(CourseInstructorDao courseInstructorDao) {
         super(CourseInstructor.class);
         this.courseInstructorDao = courseInstructorDao;
     }
 
     public List<CourseInstructor> findAll() {
         return courseInstructorDao.findAll();
+    }
+
+    public Long saveOrUpdate(CourseInstructor courseInstructor){
+        return courseInstructorDao.update(courseInstructor);
     }
 
     @Override

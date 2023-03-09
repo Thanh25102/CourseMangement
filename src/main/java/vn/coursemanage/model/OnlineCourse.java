@@ -18,4 +18,11 @@ public class OnlineCourse extends Course {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public String toString() {
+        return "OnlineCourse{" +
+                "url='" + url + '\'' +
+                "} ";
+    }
 }

@@ -27,7 +27,7 @@ public class DepartmentDao extends BaseDao implements Repository<Department>  {
     }
 
     @Override
-    public List<Department> findByField(String fieldName, String searchKey) {
+    public List<Department> findByField(String fieldName, Object searchKey) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
