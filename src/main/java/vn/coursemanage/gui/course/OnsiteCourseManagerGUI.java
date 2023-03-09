@@ -448,7 +448,6 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_btnAddActionPerformed
-
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
         if (choice == NotificationUtil.YES){
@@ -476,13 +475,10 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
-
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnDeleteActionPerformed
-
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
         try {
             List<OnsiteCourse> searchList = onsiteCourseService.searchByFields(
                     setSearchFields()
@@ -496,7 +492,6 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
             throw new RuntimeException(e);
         }
     }//GEN-LAST:event_btnSearchActionPerformed
-
     private List<SearchByFields> setSearchFields() {
         List<SearchByFields> searchMap = new ArrayList<>();
         searchMap.add(new SearchByFields(txtTitle.getText(), "title"));
@@ -508,12 +503,10 @@ public class OnsiteCourseManagerGUI extends javax.swing.JPanel {
             searchMap.add(new SearchByFields(Integer.parseInt(txtDays.getText()), "days"));
         return searchMap;
     }
-
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {
         resetForm();
         initTable();
     }//GEN-LAST:event_btnResetActionPerformed
-
     private void tableOnsiteCourseMouseClicked(java.awt.event.MouseEvent evt) {
         Integer selected = tableOnsiteCourse.getSelectedRow();
         if (selected >= 0) {

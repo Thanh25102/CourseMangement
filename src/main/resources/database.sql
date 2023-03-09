@@ -1,13 +1,12 @@
 create database QLKHOAHOC;
 use QLKHOAHOC;
 # drop database QLKHOAHOC;
-select * from OnsiteCourse inner join course  where days = 323;
 create table StudentGrade
 (
     EnrollmentID bigint primary key auto_increment,
     CourseID     bigint not null,
     StudentID    bigint not null,
-    Gradle       float  not null
+    Grade       float  not null
 );
 create table Department
 (

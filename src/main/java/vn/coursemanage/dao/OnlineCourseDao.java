@@ -24,7 +24,7 @@ public class OnlineCourseDao extends BaseDao implements Repository<OnlineCourse>
     @Override
     public List<OnlineCourse> findByField(String fieldName, Object searchKey) {
         // create sql query statement
-        StringBuilder sql = new StringBuilder("select * from OnlineCourse as p inner join course as c");
+        StringBuilder sql = new StringBuilder("select * from OnlineCourse as p inner join course as c on p.courseId = c.courseId ");
         sql.append(" where " + fieldName + " like '%" + searchKey + "%'");
 
         return query(sql.toString(), new OnlineCourseMapper());
@@ -33,7 +33,7 @@ public class OnlineCourseDao extends BaseDao implements Repository<OnlineCourse>
     @Override
     public List<OnlineCourse> findByFields(List<SearchByFields> searchMap) {
         // create sql query statement
-        StringBuilder sql = new StringBuilder("select * from OnlineCourse as p inner join course as c");
+        StringBuilder sql = new StringBuilder("select * from OnlineCourse as p inner join course as c on p.courseId = c.courseId ");
         searchMap.forEach(search -> sql.append(" where " + search.getFieldName() + " like '%" + search.getSearchKey() + "%'"));
 
         return query(sql.toString(), new OnlineCourseMapper());

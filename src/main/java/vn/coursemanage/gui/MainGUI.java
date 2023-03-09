@@ -4,6 +4,8 @@
  */
 package vn.coursemanage.gui;
 
+import vn.coursemanage.gui.courseintructor.CourseInstructorManagerGUI;
+
 /**
  * @author popu
  */
@@ -27,7 +29,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         courseManagerGUI1 = new vn.coursemanage.gui.course.CourseManagerGUI();
-        courseIntructorManagerGUI2 = new vn.coursemanage.gui.courseintructor.CourseIntructorManagerGUI();
+        courseInstructorManagerGUI2 = new CourseInstructorManagerGUI();
         studentGradeManagerGUI2 = new vn.coursemanage.gui.studentgrade.StudentGradeManagerGUI();
         personManagerGUI1 = new vn.coursemanage.gui.person.PersonManagerGUI();
         departmentManagerGUI2 = new vn.coursemanage.gui.department.DepartmentManagerGUI();
@@ -37,7 +39,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTabbedPane1.addTab("COURSE", courseManagerGUI1);
-        jTabbedPane1.addTab("COURCE INTRUCTOR", courseIntructorManagerGUI2);
+        jTabbedPane1.addTab("COURCE INTRUCTOR", courseInstructorManagerGUI2);
         jTabbedPane1.addTab("STUDENT GRADE", studentGradeManagerGUI2);
         jTabbedPane1.addTab("PERSON", personManagerGUI1);
         jTabbedPane1.addTab("DEPARTMENT", departmentManagerGUI2);
@@ -105,7 +107,7 @@ public class MainGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private vn.coursemanage.gui.courseintructor.CourseIntructorManagerGUI courseIntructorManagerGUI2;
+    private CourseInstructorManagerGUI courseInstructorManagerGUI2;
     private vn.coursemanage.gui.course.CourseManagerGUI courseManagerGUI1;
     private vn.coursemanage.gui.department.DepartmentManagerGUI departmentManagerGUI2;
     private javax.swing.JLabel jLabel1;

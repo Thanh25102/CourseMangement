@@ -10,14 +10,18 @@ import vn.coursemanage.bll.DepartmentService;
 import vn.coursemanage.bll.OnlineCourseService;
 import vn.coursemanage.dao.DepartmentDao;
 import vn.coursemanage.dao.OnlineCourseDao;
+import vn.coursemanage.exception.FieldNotValidException;
+import vn.coursemanage.exception.NotFoundRecordException;
 import vn.coursemanage.gui.tablemodel.BaseTable;
 import vn.coursemanage.gui.tablemodel.ItemRenderer;
 import vn.coursemanage.model.Item;
 import vn.coursemanage.model.OnlineCourse;
 import vn.coursemanage.model.OnsiteCourse;
+import vn.coursemanage.model.SearchByFields;
 import vn.coursemanage.utils.NotificationUtil;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -403,16 +407,37 @@ public class OnlineCourseManagerGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
+        try {
+            List<OnlineCourse> searchList = onlineCourseService.searchByFields(
+                    setSearchFields()
+            );
+            searchList.forEach(System.out::println);
+            onlineCourses = searchList;
+            reloadTable();
+        } catch (NotFoundRecordException e) {
+            NotificationUtil.showInformation(this, "Can't not find any record of OnsiteCourse");
+        } catch (FieldNotValidException | NoSuchFieldException e) {
+            LOGGER.error("Field isn't exist in OnsiteCourse");
+            throw new RuntimeException(e);
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
+    private List<SearchByFields> setSearchFields() {
+        List<SearchByFields> searchMap = new ArrayList<>();
+        searchMap.add(new SearchByFields(txtTitle.getText(), "title"));
+        searchMap.add(new SearchByFields(txtUrl.getText(), "url"));
+        searchMap.add(new SearchByFields(((Item) cbbDepartment.getSelectedItem()).getId(), "departmentId"));
+        if (!txtCredits.getText().equals(""))
+            searchMap.add(new SearchByFields(Long.parseLong(txtCredits.getText()), "credits"));
+        return searchMap;
+    }
+
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        // TODO add your handling code here:
         resetForm();
+        initTable();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void tableOnlineCourseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableOnlineCourseMouseClicked
-        // TODO add your handling code here:
         Integer selected = tableOnlineCourse.getSelectedRow();
         if (selected >= 0) {
             Long id = (Long) tableOnlineCourse.getValueAt(selected, 0);
