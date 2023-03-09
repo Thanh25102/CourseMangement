@@ -294,7 +294,7 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
         persons.add(student);
         reloadTable();
         resetForm();
-    }//GEN-LAST:event_btnAddActionPerformed
+    }                                      
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update");
@@ -311,15 +311,21 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
             personService.saveOrUpdate(student);
             updateTable(student);
         }
-    }//GEN-LAST:event_btnUpdateActionPerformed
+    }                                         
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to delete");
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update");
         if (choice == NotificationUtil.NO) {
             return;
         }
-    }//GEN-LAST:event_btnDeleteActionPerformed
+        Integer selected = tableStudent.getSelectedRow();
+        if (selected >= 0) {
+            Long id = (Long) tableStudent.getValueAt(selected, 0);
+            personService.deleteOne(id);
+            initTable();
+        }
+    }                                         
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:       
@@ -342,13 +348,13 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
 
         NotificationUtil.showInformation(this, "Search successful");
 
-    }//GEN-LAST:event_btnSearchActionPerformed
+    }                                         
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         resetForm();
         initTable();
-    }//GEN-LAST:event_btnResetActionPerformed
+    }                                        
 
     private void tableStudentMouseClicked(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
@@ -367,7 +373,7 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
 
         }
 
-    }//GEN-LAST:event_tableStudentMouseClicked
+    }                                         
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

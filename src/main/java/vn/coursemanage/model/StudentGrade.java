@@ -45,4 +45,9 @@ public class StudentGrade {
     public void setGrade(float grade) {
         this.grade = grade;
     }
+
+    @Override
+    public String toString() {
+        return "StudentGrade{" + "enrollmentID=" + enrollmentID + ", courseID=" + courseID + ", studentID=" + studentID + ", grade=" + grade + '}';
+    }
 }

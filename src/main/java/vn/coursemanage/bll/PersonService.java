@@ -62,5 +62,9 @@ public class PersonService extends BaseServices<Person> {
         List<Person> persons = super.searchByFields(searchMap);
         return persons.stream().filter(p -> p.getHireDate()!= null).collect(Collectors.toList());
     }
+    
+    public void deleteOne(Long id) {
+        personDao.deleteOne(id);
+    }
 
 }

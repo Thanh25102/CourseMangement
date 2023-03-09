@@ -60,4 +60,10 @@ public class PersonDao extends BaseDao implements Repository<Person> {
         return Long.valueOf(insert("insert into Person(LastName,FirstName,HireDate,EnrollmentDate) values(?,?,?,?)", person.getLastName(),
                 person.getFirstName(), person.getHireDate(), person.getEnrollmentDate()));
     }
+    
+    public void deleteOne(Long id) {
+        update("delete from StudentGrade where PersonId = ?", id.toString());       
+        update("delete from CourseIntructor where PersonId = ?", id.toString());
+        update(" delete from Person where PersonId = ?", id.toString());
+    }
 }

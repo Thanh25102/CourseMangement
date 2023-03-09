@@ -18,7 +18,10 @@ public class NotificationUtil {
 
     
     public static int showYesNo(Component _this, String title, String mess) {
-        return JOptionPane.showConfirmDialog(_this, mess, title, JOptionPane.YES_NO_OPTION);   
+        int choice = JOptionPane.showConfirmDialog(_this, mess, title, JOptionPane.YES_NO_OPTION);   
+        if(choice == JOptionPane.YES_OPTION) return NotificationUtil.YES;
+        else return NotificationUtil.NO;
+        
     }
     
     public static void showInformation(Component _this, String mess) {

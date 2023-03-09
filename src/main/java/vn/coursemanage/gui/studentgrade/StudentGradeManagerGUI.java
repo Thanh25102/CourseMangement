@@ -4,16 +4,49 @@
  */
 package vn.coursemanage.gui.studentgrade;
 
+import java.util.List;
+import vn.coursemanage.bll.StudentGradeService;
+import vn.coursemanage.dao.StudentGradeDao;
+import vn.coursemanage.gui.tablemodel.BaseTable;
+import vn.coursemanage.gui.tablemodel.ItemRenderer;
+import vn.coursemanage.model.Item;
+import vn.coursemanage.model.StudentGrade;
+
 /**
  * @author popu
  */
 public class StudentGradeManagerGUI extends javax.swing.JPanel {
 
+    private StudentGradeService studentGradeService = new StudentGradeService(new StudentGradeDao());    
+//    private CourseService studentGradeService = new StudentGradeService(new StudentGradeDao());
+
+    private List<StudentGrade> list;
+    private BaseTable model;
     /**
      * Creates new form OnlineCourseManagerGUI
      */
     public StudentGradeManagerGUI() {
         initComponents();
+        initTable();
+    }
+    
+    private void initCombobox() {
+//        cbbCourse.removeAll();
+//        cbbCourse.setRenderer(new ItemRenderer());
+//        cbbCourse.addItem(new Item(null, "### DEPARTMENT NAME ###"));
+//        .findAll()
+//                .forEach(department ->
+//                        cbbCourse.addItem(new Item(department.getDepartmentID(), department.getName())));
+//        
+//        cbbCourse.addActionListener(this::onItemCbbDepartmentClick);
+    }
+    
+    private void initTable() {
+        list = studentGradeService.findAll();
+        model = new BaseTable(list, StudentGrade.class);
+        tableStudentGrade.setModel(model);
+        
+        
     }
 
     /**
@@ -31,9 +64,6 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
         btnDelete = new javax.swing.JButton();
         btnSearch = new javax.swing.JButton();
         btnReset = new javax.swing.JButton();
-        jPanel19 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        txtCourseNameSearch = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         cbbCourse = new javax.swing.JComboBox<>();
@@ -43,9 +73,6 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
         jPanel23 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         txtGrade = new javax.swing.JTextField();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        txtPersonNameSearch = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableStudentGrade = new javax.swing.JTable();
 
@@ -94,37 +121,8 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jLabel5.setText("COURCE NAME SEARCH");
-
-        txtCourseNameSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCourseNameSearchActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
-        jPanel19.setLayout(jPanel19Layout);
-        jPanel19Layout.setHorizontalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel19Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(txtCourseNameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel19Layout.setVerticalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel19Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtCourseNameSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
-        );
-
         jLabel8.setText("COURSE");
 
-        cbbCourse.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbbCourse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbCourseActionPerformed(evt);
@@ -217,35 +215,6 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel10.setText("PERSON NAME SEARCH");
-
-        txtPersonNameSearch.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPersonNameSearchActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10)
-                    .addComponent(txtPersonNameSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtPersonNameSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
         tableStudentGrade.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -265,24 +234,16 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(69, 69, 69)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 807, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -291,15 +252,8 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnAddActionPerformed
-
-    private void txtCourseNameSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCourseNameSearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCourseNameSearchActionPerformed
-
-    private void txtPersonNameSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPersonNameSearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPersonNameSearchActionPerformed
 
     private void txtGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGradeActionPerformed
         // TODO add your handling code here:
@@ -316,23 +270,17 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JComboBox<String> cbbCourse;
+    private javax.swing.JComboBox<Item> cbbCourse;
     private javax.swing.JComboBox<String> cbbPerson;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tableStudentGrade;
-    private javax.swing.JTextField txtCourseNameSearch;
     private javax.swing.JTextField txtGrade;
-    private javax.swing.JTextField txtPersonNameSearch;
     // End of variables declaration//GEN-END:variables
 }
