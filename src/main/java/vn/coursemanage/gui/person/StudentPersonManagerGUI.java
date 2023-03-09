@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 /**
  * @author popu
  */
-public class StudentPersonManagerGUI extends javax.swing.JPanel {
+public class    StudentPersonManagerGUI extends javax.swing.JPanel {
     private static final Logger LOGGER = LogManager.getLogger(StudentPersonManagerGUI.class);
     private final PersonService personService = new PersonService(new PersonDao());
     private List<Person> persons;

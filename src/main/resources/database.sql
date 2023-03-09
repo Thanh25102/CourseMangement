@@ -1,5 +1,6 @@
 create database QLKHOAHOC;
 use QLKHOAHOC;
+select * from OnlineCourse as p inner join course as c on p.courseId = c.courseId  where credits = 18;
 # drop database QLKHOAHOC;
 create table StudentGrade
 (
