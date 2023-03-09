@@ -306,12 +306,13 @@ public class InstructorPersonManagerGUI extends javax.swing.JPanel {
         Integer selected = tableIntructor.getSelectedRow();
         if (selected >= 0) {
             Long id = (Long) tableIntructor.getValueAt(selected, 0);
-            Person student = personService.findOne(id);
-            student.setLastName(txtLastName.getText());
-            student.setFirstName(txtFirstName.getText());
-            student.setHireDate(dateHireDate.getDate());
+            Person instructor = personService.findOne(id);
+            instructor.setLastName(txtLastName.getText());
+            instructor.setFirstName(txtFirstName.getText());
+            instructor.setHireDate(dateHireDate.getDate());
 
-            updateTable(student);
+            personService.saveOrUpdate(instructor);
+            updateTable(instructor);
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 

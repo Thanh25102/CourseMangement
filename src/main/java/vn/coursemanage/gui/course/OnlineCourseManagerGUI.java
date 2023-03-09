@@ -445,7 +445,7 @@ public class OnlineCourseManagerGUI extends javax.swing.JPanel {
         searchMap.add(new SearchByFields(txtUrl.getText(), "url"));
         searchMap.add(new SearchByFields(((Item) cbbDepartment.getSelectedItem()).getId(), "departmentId"));
         if (!txtCredits.getText().equals("")) {
-            searchMap.add(new SearchByFields(Long.parseLong(txtCredits.getText()), "credits"));
+            searchMap.add(new SearchByFields(Double.parseDouble(txtCredits.getText()), "credits"));
         }
         return searchMap;
     }

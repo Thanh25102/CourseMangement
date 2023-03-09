@@ -10,12 +10,17 @@ import vn.coursemanage.bll.StudentGradeService;
 import vn.coursemanage.dao.CourseDao;
 import vn.coursemanage.dao.PersonDao;
 import vn.coursemanage.dao.StudentGradeDao;
+import vn.coursemanage.exception.FieldNotValidException;
+import vn.coursemanage.exception.NotFoundRecordException;
 import vn.coursemanage.gui.tablemodel.BaseTable;
 import vn.coursemanage.gui.tablemodel.ItemRenderer;
 import vn.coursemanage.model.Item;
+import vn.coursemanage.model.OnlineCourse;
+import vn.coursemanage.model.SearchByFields;
 import vn.coursemanage.model.StudentGrade;
 import vn.coursemanage.utils.NotificationUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -280,6 +285,8 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
             studentGrade.setCourseID(((Item) cbbCourse.getSelectedItem()).getId());
             studentGrade.setGrade(Float.parseFloat(txtGrade.getText()));
 
+            Long id = studentGradeService.saveOrUpdate(studentGrade);
+            studentGrade.setEnrollmentID(id);
             studentGrades.add(studentGrade);
             reloadTable();
             resetForm();
@@ -338,11 +345,27 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
+        try {
+            List<StudentGrade> searchList = studentGradeService.searchByFields(
+                    setSearchFields()
+            );
+            studentGrades = searchList;
+            reloadTable();
+        } catch (NotFoundRecordException e) {
+            NotificationUtil.showInformation(this, "Can't not find any record of StudentGrade");
+        } catch (FieldNotValidException | NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
-
+    private List<SearchByFields> setSearchFields() {
+        List<SearchByFields> searchMap = new ArrayList<>();
+        searchMap.add(new SearchByFields(((Item) cbbPerson.getSelectedItem()).getId(), "studentId"));
+        searchMap.add(new SearchByFields(((Item) cbbCourse.getSelectedItem()).getId(), "courseId"));
+        return searchMap;
+    }
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        // TODO add your handling code here:
+        resetForm();
+        initTable();
     }//GEN-LAST:event_btnResetActionPerformed
 
 

@@ -21,7 +21,7 @@ public class DepartmentMapper implements RowMapper<Department>{
             department.setDepartmentID(rs.getLong("departmentID"));
             department.setName(rs.getString("name"));
             department.setBudget(rs.getDouble("budget"));
-            department.setStartdate(rs.getDate("startdate"));
+            department.setStartdate(rs.getDate("startDate"));
             department.setAdministrator(rs.getString("administrator"));
             return department;
         } catch (SQLException e) {

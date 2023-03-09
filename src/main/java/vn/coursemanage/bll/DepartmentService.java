@@ -24,15 +24,25 @@ public class DepartmentService extends BaseServices<Department>{
     public List<Department> findAll() {
         return departmentDAO.findAll();
     }
+    public Department findOne(Long id){
+        return  departmentDAO.findOne(id);
+    }
 
+    public Long saveOrUpdate(Department department){
+        if(department.getDepartmentID() == null){
+            return this.departmentDAO.insert(department);
+        }else{
+            return this.departmentDAO.update(department);
+        }
+    }
     @Override
     protected List<Department> findByField(String fieldName, String searchKey) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return  departmentDAO.findByField(fieldName,searchKey);
     }
 
     @Override
     protected List<Department> findByFields(List<SearchByFields> searchMap) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return departmentDAO.findByFields(searchMap);
     }
     
 }

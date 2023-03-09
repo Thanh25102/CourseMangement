@@ -26,17 +26,19 @@ public class StudentGradeService extends BaseServices<StudentGrade> {
 
     public Long saveOrUpdate(StudentGrade studentGrade) {
         if(studentGrade.getEnrollmentID() == null){
+            return this.studentGradeDao.insert(studentGrade);
+        }else {
+            return this.studentGradeDao.update(studentGrade);
         }
-        return null;
     }
     @Override
     protected List<StudentGrade> findByField(String fieldName, String searchKey) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       return studentGradeDao.findByField(fieldName,searchKey);
     }
 
     @Override
     protected List<StudentGrade> findByFields(List<SearchByFields> searchMap) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return studentGradeDao.findByFields(searchMap);
     }
     
     public void deleteOne(Long enrollmentId) {

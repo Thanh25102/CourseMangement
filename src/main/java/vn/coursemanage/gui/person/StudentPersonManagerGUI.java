@@ -308,7 +308,7 @@ public class    StudentPersonManagerGUI extends javax.swing.JPanel {
             student.setLastName(txtLastName.getText());
             student.setFirstName(txtFirstName.getText());
             student.setEnrollmentDate(dateEnrollment.getDate());
-            personService.saveOrUpdate(student);
+                personService.saveOrUpdate(student);
             updateTable(student);
         }
     }                                         

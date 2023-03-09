@@ -36,7 +36,7 @@ public class BaseDao {
                     statement.setTimestamp(index, param);
                 } else if (parameter instanceof Float param) {
                     statement.setFloat(index, param);
-                } else if (parameter instanceof Date param) {
+                } else if (parameter instanceof java.util.Date param) {
                     java.sql.Date sqlDate = new java.sql.Date((param).getTime());
                     statement.setDate(index, sqlDate);
                 } else {

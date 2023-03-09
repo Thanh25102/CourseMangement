@@ -12,12 +12,18 @@ import vn.coursemanage.bll.PersonService;
 import vn.coursemanage.dao.CourseDao;
 import vn.coursemanage.dao.CourseInstructorDao;
 import vn.coursemanage.dao.PersonDao;
+import vn.coursemanage.exception.FieldNotValidException;
+import vn.coursemanage.exception.NotFoundRecordException;
 import vn.coursemanage.gui.tablemodel.BaseTable;
 import vn.coursemanage.gui.tablemodel.ItemRenderer;
 import vn.coursemanage.model.CourseInstructor;
 import vn.coursemanage.model.Item;
+import vn.coursemanage.model.SearchByFields;
+import vn.coursemanage.model.StudentGrade;
 import vn.coursemanage.utils.NotificationUtil;
 
+import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -319,6 +325,7 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
         courseInstructor.setCourseId(((Item) cbbCourse.getSelectedItem()).getId());
         courseInstructor.setPersonId(((Item) cbbPerson.getSelectedItem()).getId());
 
+        courseInstructorService.saveOrUpdate(courseInstructor);
         courseInstructors.add(courseInstructor);
         reloadTable();
         resetForm();
@@ -363,23 +370,64 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
             Long personId = (Long) jTable1.getValueAt(selected, 1);
 
             courseInstructorService.deleteOne(courseId, personId);
-            initTable();
             resetForm();
+            initTable();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
+        try {
+            List<CourseInstructor> searchList = courseInstructorService.searchByFields(
+                    setSearchFields()
+            );
+            courseInstructors = searchList;
+            reloadTable();
+        } catch (NotFoundRecordException e) {
+            NotificationUtil.showInformation(this, "Can't not find any record of CourseInstructor");
+        } catch (FieldNotValidException | NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
-
+    private List<SearchByFields> setSearchFields() {
+        List<SearchByFields> searchMap = new ArrayList<>();
+        searchMap.add(new SearchByFields(((Item) cbbPerson.getSelectedItem()).getId(), "personId"));
+        searchMap.add(new SearchByFields(((Item) cbbCourse.getSelectedItem()).getId(), "courseId"));
+        return searchMap;
+    }
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
+        resetForm();
+        initTable();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        // TODO add your handling code here:
+        Integer selected = jTable1.getSelectedRow();
+        if (selected >= 0) {
+            Long id1 = (Long) jTable1.getValueAt(selected, 0);
+            Long id2 = (Long) jTable1.getValueAt(selected, 1);
+            courseInstructors.stream()
+                    .anyMatch(courseInstructor -> {
+                        if (courseInstructor.getCourseId() == id1 && courseInstructor.getPersonId() == id2) {
+                            setSelectedValue(cbbCourse, id1);
+                            setSelectedValue(cbbPerson, id2);
+                            return true;
+                        }
+                        return false;
+                    });
+        }
     }//GEN-LAST:event_jTable1MouseClicked
 
+    public void setSelectedValue(JComboBox comboBox, Long value) {
+        Item item;
+        for (int i = 0; i < comboBox.getItemCount(); i++) {
+            item = (Item) comboBox.getItemAt(i);
+            if (item.getId() == value) {
+                comboBox.setSelectedIndex(i);
+                break;
+            }
+        }
+    }
+    //
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;

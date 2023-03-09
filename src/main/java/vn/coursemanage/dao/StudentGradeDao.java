@@ -5,6 +5,7 @@ import vn.coursemanage.model.SearchByFields;
 import vn.coursemanage.model.StudentGrade;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class StudentGradeDao extends BaseDao implements Repository<StudentGrade> {
 
@@ -25,16 +26,31 @@ public class StudentGradeDao extends BaseDao implements Repository<StudentGrade>
     public List<StudentGrade> findByField(String fieldName, Object searchKey) {
         // create sql query statement
         StringBuilder sql = new StringBuilder("select * from StudentGrade as p");
-        sql.append(" where p." + fieldName + " like '%" + searchKey + "%'");
-
+        if (searchKey instanceof String) {
+            sql.append(" where p." + fieldName + " like '%" + searchKey + "%'");
+        } else {
+            sql.append(" where p." + fieldName + " = " + searchKey + "");
+        }
         return query(sql.toString(), new StudentGradeMapper());
     }
 
     @Override
     public List<StudentGrade> findByFields(List<SearchByFields> searchMap) {
         // create sql query statement
-        StringBuilder sql = new StringBuilder("select * from StudentGrade as p");
-        searchMap.forEach(search -> sql.append(" where p." + search.getFieldName() + " like '%" + search.getSearchKey() + "%'"));
+        StringBuilder sql = new StringBuilder("select * from StudentGrade ");
+        if (searchMap.size() >= 1) {
+            sql.append(" where ");
+        }
+        AtomicInteger count = new AtomicInteger(0);
+        searchMap.forEach(search -> {
+            count.getAndIncrement();
+            if (search.getSearchKey() instanceof String) {
+                sql.append(search.getFieldName() + " like '%" + search.getSearchKey() + "%'");
+            } else {
+                sql.append(search.getFieldName() + " = " + search.getSearchKey() + "");
+            }
+            if (count.get() != searchMap.size()) sql.append(" and ");
+        });
 
         return query(sql.toString(), new StudentGradeMapper());
     }
