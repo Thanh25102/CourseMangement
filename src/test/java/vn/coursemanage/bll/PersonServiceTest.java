@@ -85,7 +85,7 @@ class PersonServiceTest {
             "lastName:Thanh",
             "lastName:Thi",
     }, delimiter = ':')
-    void searchWithLastNameHasRecord(String fieldName, String searchKey) {
+    void searchWithLastNameHasRecord(String fieldName, String searchKey) throws NoSuchFieldException {
         List<Person> person = null;
         try {
             person = personService.searchByField(fieldName, searchKey);
@@ -107,7 +107,7 @@ class PersonServiceTest {
             "personId:-1000000",
             "personId:1",
     }, delimiter = ':')
-    void searchWithPersonIdHasRecord(String fieldName, String searchKey) {
+    void searchWithPersonIdHasRecord(String fieldName, String searchKey) throws NoSuchFieldException {
         List<Person> person = null;
         try {
             person = personService.searchByField(fieldName, searchKey);

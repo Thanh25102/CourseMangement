@@ -11,6 +11,7 @@ import vn.coursemanage.gui.tablemodel.BaseTable;
 import vn.coursemanage.gui.tablemodel.ItemRenderer;
 import vn.coursemanage.model.Item;
 import vn.coursemanage.model.StudentGrade;
+import vn.coursemanage.utils.NotificationUtil;
 
 /**
  * @author popu
@@ -45,9 +46,12 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
         list = studentGradeService.findAll();
         model = new BaseTable(list, StudentGrade.class);
         tableStudentGrade.setModel(model);
-        
-        
     }
+    
+    private void resetForm() {
+        txtGrade.setText("");
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -77,6 +81,11 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
         tableStudentGrade = new javax.swing.JTable();
 
         btnUpdate.setText("UPDATE");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnAdd.setText("ADD");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -86,10 +95,25 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
         });
 
         btnDelete.setText("DELETE");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnSearch.setText("SEARCH");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         btnReset.setText("RESET");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -123,15 +147,7 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
 
         jLabel8.setText("COURSE");
 
-        cbbCourse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbCourseActionPerformed(evt);
-            }
-        });
-
         jLabel9.setText("PERSON");
-
-        cbbPerson.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -157,12 +173,6 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
         );
 
         jLabel11.setText("GRADE (SEARCH)");
-
-        txtGrade.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtGradeActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
         jPanel23.setLayout(jPanel23Layout);
@@ -252,16 +262,34 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void txtGradeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGradeActionPerformed
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtGradeActionPerformed
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void cbbCourseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbCourseActionPerformed
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbbCourseActionPerformed
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to delete");
+        if (choice == NotificationUtil.NO) {
+            return;
+        }
+        
+        Integer selected = tableStudentGrade.getSelectedRow();
+        if (selected >= 0) {
+            Long id = (Long) tableStudentGrade.getValueAt(selected, 0);
+            studentGradeService.deleteOne(id);
+            initTable();
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnResetActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -271,7 +299,7 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JComboBox<Item> cbbCourse;
-    private javax.swing.JComboBox<String> cbbPerson;
+    private javax.swing.JComboBox<Item> cbbPerson;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;

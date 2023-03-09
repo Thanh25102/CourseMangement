@@ -38,4 +38,8 @@ public class OnsiteCourseService extends BaseServices<OnsiteCourse> {
             return null;
         }
     }
+    
+    public void deleteOne(Long id) {
+        onsiteCourseDao.deleteOne(id);
+    }
 }

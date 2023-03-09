@@ -57,11 +57,11 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
         cbbPerson.addItem(new Item(null, "### STUDENT NAME ###"));
         cbbCourse.addItem(new Item(null, "### COURSE NAME ###"));
         personService.findStudent()
-                .forEach(student ->
-                        cbbPerson.addItem(new Item(student.getPersonId(), student.getFirstName() + " " + student.getLastName())));
+                .forEach(student
+                        -> cbbPerson.addItem(new Item(student.getPersonId(), student.getFirstName() + " " + student.getLastName())));
         courseService.findAll()
-                .forEach(course ->
-                        cbbCourse.addItem(new Item(course.getCourseId(), course.getTitle())));
+                .forEach(course
+                        -> cbbCourse.addItem(new Item(course.getCourseId(), course.getTitle())));
 
     }
 
@@ -184,9 +184,7 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
 
         jLabel8.setText("COURSE");
 
-
         jLabel9.setText("PERSON");
-
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -261,13 +259,13 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{
-                        {null, null, null, null},
-                        {null, null, null, null},
-                        {null, null, null, null},
-                        {null, null, null, null}
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null}
                 },
                 new String[]{
-                        "Title 1", "Title 2", "Title 3", "Title 4"
+                    "Title 1", "Title 2", "Title 3", "Title 4"
                 }
         ));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -337,11 +335,12 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
-        if (choice == NotificationUtil.NO)
+        if (choice == NotificationUtil.NO) {
             return;
+        }
         try {
-            CourseInstructor courseInstructor =
-                    new CourseInstructor(((Item) cbbCourse.getSelectedItem()).getId(), ((Item) cbbPerson.getSelectedItem()).getId());
+            CourseInstructor courseInstructor
+                    = new CourseInstructor(((Item) cbbCourse.getSelectedItem()).getId(), ((Item) cbbPerson.getSelectedItem()).getId());
             courseInstructorService.saveOrUpdate(courseInstructor);
             reloadTable();
             resetForm();
@@ -352,6 +351,20 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update");
+        if (choice == NotificationUtil.NO) {
+            return;
+        }
+
+        Integer selected = jTable1.getSelectedRow();
+        if (selected >= 0) {
+            Long courseId = (Long) jTable1.getValueAt(selected, 0);
+            Long personId = (Long) jTable1.getValueAt(selected, 1);
+
+            courseInstructorService.deleteOne(courseId, personId);
+            initTable();
+            resetForm();
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -365,7 +378,6 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;

@@ -52,4 +52,8 @@ public class CourseInstructorDao extends BaseDao implements Repository<CourseIns
                 courseInstructor.getPersonId(), courseInstructor.getCourseId()
         ));
     }
+    
+    public void deleteOne(Long courseId, Long personID) {
+        update("delete from CourseInstructor where CourseID = ? and personID = ?", courseId.toString(), personID.toString());
+    }
 }
