@@ -4,12 +4,14 @@
  */
 package vn.coursemanage.gui.department;
 
+import java.util.Calendar;
 import vn.coursemanage.bll.DepartmentService;
 import vn.coursemanage.dao.DepartmentDao;
 import vn.coursemanage.gui.tablemodel.BaseTable;
 import vn.coursemanage.model.Department;
 
 import java.util.List;
+import vn.coursemanage.utils.NotificationUtil;
 
 /**
  * @author popu
@@ -30,10 +32,24 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
 
     private void initTable() {
         departments = departmentService.findAll();
-        model = new BaseTable<>(departments,Department.class);
+        departments.forEach(dp -> {
+            System.out.println(dp.toString());
+        });
+        model = new BaseTable<>(departments, Department.class);
         tableDepartment.setModel(model);
+    }
 
- 
+    private void reloadTable() {
+        model.setData(departments);
+        model.fireTableDataChanged();
+    }
+
+    private void resetForm() {
+        txtName.setText("");
+        txtAdminister.setText("");
+        txtBudget.setText("");
+        dateStartDate.cleanup();
+
     }
 
     /**
@@ -274,10 +290,41 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
+        if (choice == NotificationUtil.NO) {
+            return;
+        }
+        Department department = new Department();
+        department.setName(txtName.getText());
+        department.setBudget(Double.valueOf(txtBudget.getText()));
+        department.setAdministrator(txtAdminister.getText());
+        department.setStartdate(dateStartDate.getDate());
+//        Long id = departmentService.saveOrUpdate(department);
+//        department.setDepartmentID(id);
+
+        departments.add(department);
+        reloadTable();
+        resetForm();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update ?");
+        if (choice == NotificationUtil.NO) {
+            return;
+        }
+
+        Integer selected = tableDepartment.getSelectedRow();
+        if (selected >= 0) {
+            Long id = (Long) tableDepartment.getValueAt(selected, 0);
+//            Department department = departmentService.findOne(id);
+//            department.setName(txtName.getText());
+//            department.setBudget(Double.valueOf(txtBudget.getText()));
+//            department.setAdministrator(txtAdminister.getText());
+//            department.setStartdate(dateStartDate.getDate());
+//            departmentService.saveOrUpdate(department);
+//            updateTable(student);
+        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -290,10 +337,26 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
+        resetForm();
+        initTable();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void tableDepartmentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDepartmentMouseClicked
         // TODO add your handling code here:
+//        Integer selected = tableDepartment.getSelectedRow();
+//        if (selected >= 0) {
+//            Long id = (Long) tableDepartment.getValueAt(selected, 0);
+//            departments.stream().forEach(department -> {
+//                if (department.get() == id) {
+//                    txtFirstName.setText(person.getFirstName());
+//                    txtLastName.setText(person.getLastName());
+//                    Calendar calendar = Calendar.getInstance();
+//                    calendar.setTime(person.getEnrollmentDate());
+//                    dateEnrollment.setCalendar(calendar);
+//                }
+//            });
+//
+//        }
     }//GEN-LAST:event_tableDepartmentMouseClicked
 
 

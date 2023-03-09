@@ -70,9 +70,17 @@ public class OnlineCourseDao extends BaseDao implements Repository<OnlineCourse>
         Long id = Long.valueOf(insert("insert into Course(title, credits, departmentId) values(?,?,?)",
                 onlineCourse.getTitle(), onlineCourse.getCredits(), onlineCourse.getDepartmentId()
         ));
-        insert("insert into onlineCourse(CourseId,url) values(?,?,?,?)",
-                id, onlineCourse.getCourseId(), onlineCourse.getUrl()
+        insert("insert into onlineCourse(CourseId,url) values(?,?)",
+                id, onlineCourse.getUrl()
         );
         return id;
+    }
+
+    public void deleteOne(Long id) {
+        update("delete from OnsiteCourse where CourseID = ?", id.toString());
+        update("delete from OnlineCourse where CourseID = ?", id.toString());
+        update("delete from CourseInstructor where CourseID = ?", id.toString());
+        update("delete from StudentGrade where CourseID = ?", id.toString());
+        update("delete from Course where CourseID = ?", id.toString());
     }
 }

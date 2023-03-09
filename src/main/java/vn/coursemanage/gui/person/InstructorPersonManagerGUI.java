@@ -317,6 +317,17 @@ public class InstructorPersonManagerGUI extends javax.swing.JPanel {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update");
+        if (choice == NotificationUtil.NO) {
+            return;
+        }
+        Integer selected = tableIntructor.getSelectedRow();
+        if (selected >= 0) {
+            Long id = (Long) tableIntructor.getValueAt(selected, 0);
+            personService.deleteOne(id);
+            initTable();
+            resetForm();
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed

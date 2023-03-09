@@ -38,5 +38,9 @@ public class StudentGradeService extends BaseServices<StudentGrade> {
     protected List<StudentGrade> findByFields(List<SearchByFields> searchMap) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
+    public void deleteOne(Long enrollmentId) {
+        studentGradeDao.deleteOne(enrollmentId);
+    }
 
 }
