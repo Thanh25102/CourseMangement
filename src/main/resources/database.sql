@@ -6,7 +6,7 @@ create table StudentGrade
     EnrollmentID bigint primary key auto_increment,
     CourseID     bigint not null,
     StudentID    bigint not null,
-    Grade       float  not null
+    Grade        float  not null
 );
 create table Department
 (
@@ -32,7 +32,7 @@ create table OnsiteCourse
 (
     CourseID bigint primary key,
     Location varchar(500),
-    Days     int  not null,
+    Days     int    not null,
     Time     bigint not null
 );
 create table CourseInstructor
@@ -46,8 +46,8 @@ create table Person
     PersonID       bigint primary key auto_increment,
     Lastname       varchar(100) not null,
     Firstname      varchar(100) not null,
-    HireDate       date          null,
-    EnrollmentDate date          null
+    HireDate       date         null,
+    EnrollmentDate date         null
 );
 create table OfficeAssignment
 (
@@ -94,21 +94,26 @@ values (null, 'Dạy làm giàu phần 1', 100, 1),
        (null, 'Cách đu idol thành công', 20, 1),
        (null, 'Cách trờ để sở hữu tánh nóng như kem', 5, 1);
 
+insert into CourseInstructor
+values (1, 2),
+       (2, 3),
+       (3, 4);
+
 insert into OfficeAssignment
 values (1, 'Tân Xuân, Hóc Môn, Sài Gòn', '2023-10-10 21:22:01'),
        (2, 'Niu dót, Ờ me ri cà', '2023-12-09 12:18:03');
 
 insert into OnlineCourse
-values (3,'https://bikiptangai/p1'),
-       (4,'https://bikiptangai/p2');
+values (3, 'https://bikiptangai/p1'),
+       (4, 'https://bikiptangai/p2');
 
 insert into OnsiteCourse
-values (1,'Trần Duy Hưng, Hà Nội',30,10.2),
-       (2,'Ngã tư sinh tử, CSGO',23,30.8);
+values (1, 'Trần Duy Hưng, Hà Nội', 30, 10.2),
+       (2, 'Ngã tư sinh tử, CSGO', 23, 30.8);
 
 insert into StudentGrade
-values (null,3,1,10),
-       (null,4,2,9);
+values (null, 3, 1, 10),
+       (null, 4, 2, 9);
 
 -- ##################################### end ##################################### --
 

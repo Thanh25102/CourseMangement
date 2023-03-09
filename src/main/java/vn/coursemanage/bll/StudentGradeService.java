@@ -24,9 +24,11 @@ public class StudentGradeService extends BaseServices<StudentGrade> {
         return list;
     }
 
-//    public Long saveOrUpdate(StudentGrade studentGrade) {
-//        
-//    }
+    public Long saveOrUpdate(StudentGrade studentGrade) {
+        if(studentGrade.getEnrollmentID() == null){
+        }
+        return null;
+    }
     @Override
     protected List<StudentGrade> findByField(String fieldName, String searchKey) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

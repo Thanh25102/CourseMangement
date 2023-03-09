@@ -5,6 +5,7 @@ import vn.coursemanage.model.OnlineCourse;
 import vn.coursemanage.model.SearchByFields;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class OnlineCourseDao extends BaseDao implements Repository<OnlineCourse> {
 
@@ -25,8 +26,11 @@ public class OnlineCourseDao extends BaseDao implements Repository<OnlineCourse>
     public List<OnlineCourse> findByField(String fieldName, Object searchKey) {
         // create sql query statement
         StringBuilder sql = new StringBuilder("select * from OnlineCourse as p inner join course as c on p.courseId = c.courseId ");
-        sql.append(" where " + fieldName + " like '%" + searchKey + "%'");
-
+        if (searchKey instanceof String) {
+            sql.append(" where " + fieldName + " like '%" + searchKey + "%'");
+        } else {
+            sql.append(" where " + fieldName + " = " + searchKey + "");
+        }
         return query(sql.toString(), new OnlineCourseMapper());
     }
 
@@ -34,8 +38,19 @@ public class OnlineCourseDao extends BaseDao implements Repository<OnlineCourse>
     public List<OnlineCourse> findByFields(List<SearchByFields> searchMap) {
         // create sql query statement
         StringBuilder sql = new StringBuilder("select * from OnlineCourse as p inner join course as c on p.courseId = c.courseId ");
-        searchMap.forEach(search -> sql.append(" where " + search.getFieldName() + " like '%" + search.getSearchKey() + "%'"));
-
+        if (searchMap.size() >= 1) {
+            sql.append(" where ");
+        }
+        AtomicInteger count = new AtomicInteger(0);
+        searchMap.forEach(search -> {
+            count.getAndIncrement();
+            if (search.getSearchKey() instanceof String) {
+                sql.append(search.getFieldName() + " like '%" + search.getSearchKey() + "%'");
+            } else {
+                sql.append(search.getFieldName() + " = " + search.getSearchKey() + "");
+            }
+            if (count.get() != searchMap.size()) sql.append(" and ");
+        });
         return query(sql.toString(), new OnlineCourseMapper());
     }
 

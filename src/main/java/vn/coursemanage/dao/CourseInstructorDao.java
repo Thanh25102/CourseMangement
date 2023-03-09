@@ -5,6 +5,7 @@ import vn.coursemanage.model.CourseInstructor;
 import vn.coursemanage.model.SearchByFields;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CourseInstructorDao extends BaseDao implements Repository<CourseInstructor> {
     @Override
@@ -24,8 +25,11 @@ public class CourseInstructorDao extends BaseDao implements Repository<CourseIns
     public List<CourseInstructor> findByField(String fieldName, Object searchKey) {
         // create sql query statement
         StringBuilder sql = new StringBuilder("select * from CourseInstructor as p");
-        sql.append(" where p." + fieldName + " like '%" + searchKey + "%'");
-
+        if (searchKey instanceof String) {
+            sql.append(" where " + fieldName + " like '%" + searchKey + "%'");
+        } else {
+            sql.append(" where " + fieldName + " = " + searchKey + "");
+        }
         return query(sql.toString(), new CourseInstructorMapper());
     }
 
@@ -33,8 +37,19 @@ public class CourseInstructorDao extends BaseDao implements Repository<CourseIns
     public List<CourseInstructor> findByFields(List<SearchByFields> searchMap) {
         // create sql query statement
         StringBuilder sql = new StringBuilder("select * from CourseInstructor as p");
-        searchMap.forEach(search -> sql.append(" where p." + search.getFieldName() + " like '%" + search.getSearchKey() + "%'"));
-
+        if (searchMap.size() >= 1) {
+            sql.append(" where ");
+        }
+        AtomicInteger count = new AtomicInteger(0);
+        searchMap.forEach(search -> {
+            count.getAndIncrement();
+            if (search.getSearchKey() instanceof String) {
+                sql.append(search.getFieldName() + " like '%" + search.getSearchKey() + "%'");
+            } else {
+                sql.append(search.getFieldName() + " = " + search.getSearchKey() + "");
+            }
+            if (count.get() != searchMap.size()) sql.append(" and ");
+        });
         return query(sql.toString(), new CourseInstructorMapper());
     }
 

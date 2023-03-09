@@ -1,8 +1,6 @@
 package vn.coursemanage.bll;
 
 import vn.coursemanage.dao.CourseDao;
-import vn.coursemanage.exception.FieldNotValidException;
-import vn.coursemanage.exception.NotFoundRecordException;
 import vn.coursemanage.model.Course;
 import vn.coursemanage.model.SearchByFields;
 
@@ -16,7 +14,7 @@ public class CourseService extends BaseServices<Course> {
         this.courseDao = courseDao;
     }
 
-    public List<Course> findAll(){
+    public List<Course> findAll() {
         return courseDao.findAll();
     }
 
@@ -31,14 +29,12 @@ public class CourseService extends BaseServices<Course> {
     }
 
     @Override
-    public List<Course> searchByField(String fieldName, String searchKey) throws NotFoundRecordException, FieldNotValidException, NoSuchFieldException {
-//        return super.searchByField(fieldName, searchKey);
-        return null;
+    public List<Course> searchByField(String fieldName, String searchKey) {
+        return courseDao.findByField(fieldName, searchKey);
     }
 
     @Override
-    public List<Course> searchByFields(List<SearchByFields> searchMap) throws NotFoundRecordException, FieldNotValidException, NoSuchFieldException {
-//        return super.searchByFields(searchMap);
-        return null;
+    public List<Course> searchByFields(List<SearchByFields> searchMap) {
+        return courseDao.findByFields(searchMap);
     }
 }
