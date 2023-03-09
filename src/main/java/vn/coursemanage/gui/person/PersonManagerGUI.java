@@ -26,19 +26,26 @@ public class PersonManagerGUI extends javax.swing.JPanel {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        studentPersonManagerGUI1 = new vn.coursemanage.gui.person.StudentPersonManagerGUI();
+        intructorPersonManagerGUI1 = new InstructorPersonManagerGUI();
+
+        jTabbedPane1.addTab("STUDENT", studentPersonManagerGUI1);
+        jTabbedPane1.addTab("INTRUCTOR", intructorPersonManagerGUI1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private InstructorPersonManagerGUI intructorPersonManagerGUI1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private vn.coursemanage.gui.person.StudentPersonManagerGUI studentPersonManagerGUI1;
     // End of variables declaration//GEN-END:variables
 }

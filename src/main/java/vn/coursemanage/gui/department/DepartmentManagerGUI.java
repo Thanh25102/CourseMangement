@@ -4,6 +4,7 @@
  */
 package vn.coursemanage.gui.department;
 
+import java.util.Calendar;
 import vn.coursemanage.bll.DepartmentService;
 import vn.coursemanage.dao.DepartmentDao;
 import vn.coursemanage.gui.tablemodel.BaseTable;
@@ -333,10 +334,26 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         // TODO add your handling code here:
+        resetForm();
+        initTable();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void tableDepartmentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDepartmentMouseClicked
         // TODO add your handling code here:
+//        Integer selected = tableDepartment.getSelectedRow();
+//        if (selected >= 0) {
+//            Long id = (Long) tableDepartment.getValueAt(selected, 0);
+//            departments.stream().forEach(department -> {
+//                if (department.get() == id) {
+//                    txtFirstName.setText(person.getFirstName());
+//                    txtLastName.setText(person.getLastName());
+//                    Calendar calendar = Calendar.getInstance();
+//                    calendar.setTime(person.getEnrollmentDate());
+//                    dateEnrollment.setCalendar(calendar);
+//                }
+//            });
+//
+//        }
     }//GEN-LAST:event_tableDepartmentMouseClicked
 
 
