@@ -12,9 +12,9 @@ public class CourseInstructorMapper implements RowMapper<CourseInstructor> {
         try {
             courseInstructor.setCourseId(rs.getLong("CourseID"));
             courseInstructor.setPersonId(rs.getLong("PersonID"));
+            return courseInstructor;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return null;
         }
-        return null;
     }
 }
