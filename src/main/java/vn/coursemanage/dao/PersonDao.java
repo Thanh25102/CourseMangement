@@ -35,13 +35,13 @@ public class PersonDao extends BaseDao implements Repository<Person> {
 
         // create sql query statement
         StringBuilder sql = new StringBuilder("select * from Person as p where");
-  
+
         int count = 0;
-        for(SearchByFields search: searchMap) {
+        for (SearchByFields search : searchMap) {
             count++;
             sql.append(" p." + search.getFieldName() + " like '%" + search.getSearchKey() + "%'");
- 
-            if(count != searchMap.size()) sql.append(" and ");
+
+            if (count != searchMap.size()) sql.append(" and ");
         }
 
         return query(sql.toString(), new PersonMapper());
@@ -60,10 +60,10 @@ public class PersonDao extends BaseDao implements Repository<Person> {
         return Long.valueOf(insert("insert into Person(LastName,FirstName,HireDate,EnrollmentDate) values(?,?,?,?)", person.getLastName(),
                 person.getFirstName(), person.getHireDate(), person.getEnrollmentDate()));
     }
-    
+
     public void deleteOne(Long id) {
-        update("delete from StudentGrade where StudentID = ?", id.toString());    
-        update("delete from CourseIntructor where PersonID = ?", id.toString());
-        update(" delete from Person where PersonID = ?", id.toString());
+        update("delete from StudentGrade where StudentID = ?", id);
+        update("delete from CourseInstructor where PersonID = ?", id);
+        update("delete from Person where PersonID = ?", id);
     }
 }

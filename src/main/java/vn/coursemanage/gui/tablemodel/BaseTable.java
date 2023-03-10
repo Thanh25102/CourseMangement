@@ -5,8 +5,6 @@ import org.apache.commons.text.WordUtils;
 
 import javax.swing.table.AbstractTableModel;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,8 +14,8 @@ public class BaseTable<T> extends AbstractTableModel {
     private Class<T> clazz;
 
     public void setData(List<T> data) {
-        if(data != null)
-        this.data = data;
+        if (data != null)
+            this.data = data;
         else this.data = new ArrayList<>();
     }
 
@@ -25,7 +23,7 @@ public class BaseTable<T> extends AbstractTableModel {
 
     private Field[] ignoreFields;
 
-    public BaseTable(List<T> data,Class clazz, Field... fieldIgnores) {
+    public BaseTable(List<T> data, Class clazz, Field... fieldIgnores) {
         this.clazz = clazz;
         this.ignoreFields = fieldIgnores;
         this.data = data;

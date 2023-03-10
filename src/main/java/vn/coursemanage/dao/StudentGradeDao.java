@@ -71,6 +71,6 @@ public class StudentGradeDao extends BaseDao implements Repository<StudentGrade>
     }
 
     public void deleteOne(Long enrollmentId) {
-        update("delete from StudentGrade where EnrollmentID = ?", enrollmentId.toString());
+        update("delete from StudentGrade where EnrollmentID = ?", enrollmentId);
     }
 }

@@ -3,18 +3,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package vn.coursemanage.model;
+
 import java.util.Date;
 
 /**
- *
  * @author PC
  */
 public class Department {
-    
+
     private Long departmentId;
     private String name;
     private Double budget;
-    private Date startDate; 
+    private Date startDate;
     private String administrator;
 
     public Department() {
@@ -27,7 +27,7 @@ public class Department {
         this.startDate = startDate;
         this.administrator = administrator;
     }
-    
+
     public Long getDepartmentID() {
         return departmentId;
     }

@@ -77,10 +77,10 @@ public class OnlineCourseDao extends BaseDao implements Repository<OnlineCourse>
     }
 
     public void deleteOne(Long id) {
-        update("delete from OnsiteCourse where CourseID = ?", id.toString());
-        update("delete from OnlineCourse where CourseID = ?", id.toString());
-        update("delete from CourseInstructor where CourseID = ?", id.toString());
-        update("delete from StudentGrade where CourseID = ?", id.toString());
-        update("delete from Course where CourseID = ?", id.toString());
+        update("delete from OnsiteCourse where CourseID = ?", id);
+        update("delete from OnlineCourse where CourseID = ?", id);
+        update("delete from CourseInstructor where CourseID = ?", id);
+        update("delete from StudentGrade where CourseID = ?", id);
+        update("delete from Course where CourseID = ?", id);
     }
 }

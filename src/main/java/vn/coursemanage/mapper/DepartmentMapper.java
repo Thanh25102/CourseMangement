@@ -10,10 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- *
  * @author PC
  */
-public class DepartmentMapper implements RowMapper<Department>{
+public class DepartmentMapper implements RowMapper<Department> {
     @Override
     public Department mapRow(ResultSet rs) {
         try {
@@ -29,5 +28,5 @@ public class DepartmentMapper implements RowMapper<Department>{
             return null;
         }
     }
-    
+
 }

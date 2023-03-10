@@ -9,9 +9,7 @@ import vn.coursemanage.dao.DepartmentDao;
 import vn.coursemanage.exception.FieldNotValidException;
 import vn.coursemanage.exception.NotFoundRecordException;
 import vn.coursemanage.gui.tablemodel.BaseTable;
-import vn.coursemanage.model.CourseInstructor;
 import vn.coursemanage.model.Department;
-import vn.coursemanage.model.Item;
 import vn.coursemanage.model.SearchByFields;
 import vn.coursemanage.utils.FormatDate;
 import vn.coursemanage.utils.NotificationUtil;
@@ -228,10 +226,11 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
             throw new RuntimeException(e);
         }
     }//GEN-LAST:event_btnSearchActionPerformed
+
     private List<SearchByFields> setSearchFields() {
         List<SearchByFields> searchMap = new ArrayList<>();
         searchMap.add(new SearchByFields(txtName.getText(), "name"));
-        searchMap.add(new SearchByFields(FormatDate.dateToString(dateStartDate.getDate(),null), "startDate"));
+        searchMap.add(new SearchByFields(FormatDate.dateToString(dateStartDate.getDate(), null), "startDate"));
 
         searchMap.add(new SearchByFields(txtAdminister.getText(), "administrator"));
         if (!txtBudget.getText().equals("")) {
@@ -239,6 +238,7 @@ public class DepartmentManagerGUI extends javax.swing.JPanel {
         }
         return searchMap;
     }
+
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         resetForm();
         initTable();

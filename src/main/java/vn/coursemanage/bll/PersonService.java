@@ -26,13 +26,13 @@ public class PersonService extends BaseServices<Person> {
         List<Person> persons = findAll();
         return persons.stream().filter(p -> p.getEnrollmentDate() != null).collect(Collectors.toList());
     }
-    
+
     public List<Person> findIntructor() {
         List<Person> persons = findAll();
-        return persons.stream().filter(p -> p.getHireDate()!= null).collect(Collectors.toList());
+        return persons.stream().filter(p -> p.getHireDate() != null).collect(Collectors.toList());
     }
 
-    public Person findOne(Long id){
+    public Person findOne(Long id) {
         return personDao.findOne(id);
     }
 
@@ -52,17 +52,17 @@ public class PersonService extends BaseServices<Person> {
     protected List<Person> findByFields(List<SearchByFields> searchMap) {
         return personDao.findByFields(searchMap);
     }
-    
-    public  List<Person> searchByFieldsForStudent(List<SearchByFields> searchMap) throws NotFoundRecordException, FieldNotValidException, NoSuchFieldException {
+
+    public List<Person> searchByFieldsForStudent(List<SearchByFields> searchMap) throws NotFoundRecordException, FieldNotValidException, NoSuchFieldException {
         List<Person> persons = super.searchByFields(searchMap);
-        return persons.stream().filter(p -> p.getEnrollmentDate()!= null).collect(Collectors.toList());
+        return persons.stream().filter(p -> p.getEnrollmentDate() != null).collect(Collectors.toList());
     }
-    
-    public  List<Person> searchByFieldsForIntructor(List<SearchByFields> searchMap) throws NotFoundRecordException, FieldNotValidException, NoSuchFieldException {
+
+    public List<Person> searchByFieldsForInstructor(List<SearchByFields> searchMap) throws NotFoundRecordException, FieldNotValidException, NoSuchFieldException {
         List<Person> persons = super.searchByFields(searchMap);
-        return persons.stream().filter(p -> p.getHireDate()!= null).collect(Collectors.toList());
+        return persons.stream().filter(p -> p.getHireDate() != null).collect(Collectors.toList());
     }
-    
+
     public void deleteOne(Long id) {
         personDao.deleteOne(id);
     }

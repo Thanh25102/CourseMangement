@@ -23,11 +23,12 @@ import java.util.stream.Collectors;
 /**
  * @author popu
  */
-public class    StudentPersonManagerGUI extends javax.swing.JPanel {
+public class StudentPersonManagerGUI extends javax.swing.JPanel {
     private static final Logger LOGGER = LogManager.getLogger(StudentPersonManagerGUI.class);
     private final PersonService personService = new PersonService(new PersonDao());
     private List<Person> persons;
     private BaseTable model;
+
     /**
      * Creates new form OnlineCourseManagerGUI
      */
@@ -35,29 +36,33 @@ public class    StudentPersonManagerGUI extends javax.swing.JPanel {
         initComponents();
         initTable();
     }
+
     private void initTable() {
         try {
             Field hireDate = Person.class.getDeclaredField("hireDate");
             persons = personService.findStudent();
-            model = new BaseTable<>(persons,Person.class, hireDate);
+            model = new BaseTable<>(persons, Person.class, hireDate);
             tableStudent.setModel(model);
         } catch (NoSuchFieldException e) {
             LOGGER.error("Field isn't exist in Model class !");
             persons = personService.findStudent();
-            model = new BaseTable<>(persons,Person.class);
+            model = new BaseTable<>(persons, Person.class);
             tableStudent.setModel(model);
         }
     }
+
     private void reloadTable() {
         model.setData(persons);
         model.fireTableDataChanged();
     }
+
     private void updateTable(Person student) {
         persons = persons.stream()
                 .map(person -> person.getPersonId() != student.getPersonId() ? person : student)
                 .collect(Collectors.toList());
         reloadTable();
     }
+
     private void resetForm() {
         txtFirstName.setText("");
         txtLastName.setText("");
@@ -279,6 +284,7 @@ public class    StudentPersonManagerGUI extends javax.swing.JPanel {
                                 .addGap(0, 0, 0))
         );
     }// </editor-fold>//GEN-END:initComponents
+
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
@@ -294,7 +300,7 @@ public class    StudentPersonManagerGUI extends javax.swing.JPanel {
         persons.add(student);
         reloadTable();
         resetForm();
-    }                                      
+    }
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {
         int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update");
@@ -308,14 +314,14 @@ public class    StudentPersonManagerGUI extends javax.swing.JPanel {
             student.setLastName(txtLastName.getText());
             student.setFirstName(txtFirstName.getText());
             student.setEnrollmentDate(dateEnrollment.getDate());
-                personService.saveOrUpdate(student);
+            personService.saveOrUpdate(student);
             updateTable(student);
         }
-    }                                         
+    }
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update");
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to delete");
         if (choice == NotificationUtil.NO) {
             return;
         }
@@ -325,7 +331,7 @@ public class    StudentPersonManagerGUI extends javax.swing.JPanel {
             personService.deleteOne(id);
             initTable();
         }
-    }                                         
+    }
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:       
@@ -348,13 +354,13 @@ public class    StudentPersonManagerGUI extends javax.swing.JPanel {
 
         NotificationUtil.showInformation(this, "Search successful");
 
-    }                                         
+    }
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         resetForm();
         initTable();
-    }                                        
+    }
 
     private void tableStudentMouseClicked(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
@@ -373,7 +379,7 @@ public class    StudentPersonManagerGUI extends javax.swing.JPanel {
 
         }
 
-    }                                         
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -24,7 +24,7 @@ public class DepartmentDao extends BaseDao implements Repository<Department> {
     @Override
     public Department findOne(Long id) {
         String sql = "select * from Department where departmentId = ? ";
-        List<Department> departments = query(sql, new DepartmentMapper(),id);
+        List<Department> departments = query(sql, new DepartmentMapper(), id);
         return departments != null ? departments.get(0) : null;
     }
 
@@ -64,7 +64,7 @@ public class DepartmentDao extends BaseDao implements Repository<Department> {
     @Override
     public Long update(Department department) {
         update("update Department set name = ?, budget = ?, startDate = ? , administrator = ? where departmentId = ?",
-            department.getName(),department.getBudget(),department.getStartdate(),department.getAdministrator(),department.getDepartmentID()
+                department.getName(), department.getBudget(), department.getStartdate(), department.getAdministrator(), department.getDepartmentID()
         );
         return department.getDepartmentID();
     }
@@ -72,7 +72,7 @@ public class DepartmentDao extends BaseDao implements Repository<Department> {
     @Override
     public Long insert(Department department) {
         return Long.valueOf(insert("insert into Department(name,budget, startDate, administrator) values(?,?,?,?)",
-                department.getName(),department.getBudget(),department.getStartdate(),department.getAdministrator()
+                department.getName(), department.getBudget(), department.getStartdate(), department.getAdministrator()
         ));
 
     }

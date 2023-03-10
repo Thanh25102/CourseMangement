@@ -43,6 +43,7 @@ public class PersonManagerGUI extends javax.swing.JPanel {
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private InstructorPersonManagerGUI intructorPersonManagerGUI1;
     private javax.swing.JTabbedPane jTabbedPane1;

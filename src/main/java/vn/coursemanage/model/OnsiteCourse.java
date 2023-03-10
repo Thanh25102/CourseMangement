@@ -7,7 +7,7 @@ public class OnsiteCourse extends Course {
     private Integer days;
     private Long time;
 
-    public OnsiteCourse( String location, Integer days, Long time) {
+    public OnsiteCourse(String location, Integer days, Long time) {
         this.location = location;
         this.days = days;
         this.time = time;

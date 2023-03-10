@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseDao {
+public abstract class BaseDao {
     private static final Logger LOGGER = LogManager.getLogger(BaseDao.class);
 
     private Connection getConnection() {

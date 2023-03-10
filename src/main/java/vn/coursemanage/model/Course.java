@@ -7,7 +7,6 @@ public class Course {
     private Long departmentId;
 
     public Course() {
-        // TODO Auto-generated constructor stub
     }
 
     public Course(Long courseId, String title, Double credits, Long departmentId) {
