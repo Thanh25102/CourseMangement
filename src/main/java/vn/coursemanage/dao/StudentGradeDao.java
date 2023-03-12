@@ -11,7 +11,9 @@ public class StudentGradeDao extends BaseDao implements Repository<StudentGrade>
 
     @Override
     public List<StudentGrade> findAll() {
-        String sql = "select * from StudentGrade";
+        String sql = " select * from StudentGrade as sd "
+                + "inner join Person as p on p.PersonID = sd.StudentID "
+                + "inner join Course as c on c.CourseID = sd.CourseID";
         return query(sql, new StudentGradeMapper());
     }
 
@@ -37,7 +39,9 @@ public class StudentGradeDao extends BaseDao implements Repository<StudentGrade>
     @Override
     public List<StudentGrade> findByFields(List<SearchByFields> searchMap) {
         // create sql query statement
-        StringBuilder sql = new StringBuilder("select * from StudentGrade ");
+        StringBuilder sql = new StringBuilder("select * from StudentGrade as sd "
+                + "inner join Person as p on p.PersonID = sd.StudentID "
+                + "inner join Course as c on c.CourseID = sd.CourseID");
         if (searchMap.size() >= 1) {
             sql.append(" where ");
         }
@@ -45,11 +49,13 @@ public class StudentGradeDao extends BaseDao implements Repository<StudentGrade>
         searchMap.forEach(search -> {
             count.getAndIncrement();
             if (search.getSearchKey() instanceof String) {
-                sql.append(search.getFieldName() + " like '%" + search.getSearchKey() + "%'");
+                sql.append("sd." + search.getFieldName() + " like '%" + search.getSearchKey() + "%'");
             } else {
-                sql.append(search.getFieldName() + " = " + search.getSearchKey() + "");
+                sql.append("sd." + search.getFieldName() + " = " + search.getSearchKey() + "");
             }
-            if (count.get() != searchMap.size()) sql.append(" and ");
+            if (count.get() != searchMap.size()) {
+                sql.append(" and ");
+            }
         });
 
         return query(sql.toString(), new StudentGradeMapper());

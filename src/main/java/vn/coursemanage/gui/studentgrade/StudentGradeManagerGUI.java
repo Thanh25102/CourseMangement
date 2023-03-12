@@ -294,7 +294,7 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
             Long id = studentGradeService.saveOrUpdate(studentGrade);
             studentGrade.setEnrollmentID(id);
             studentGrades.add(studentGrade);
-            reloadTable();
+            initTable();
             resetForm();
         } catch (NullPointerException | NumberFormatException e) {
             NotificationUtil.showInformation(this, "Fields isn't able empty");
@@ -328,10 +328,13 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
         if (selected >= 0) {
             Long id = (Long) tableStudentGrade.getValueAt(selected, 0);
             StudentGrade studentGrade =
-                    new StudentGrade(id, ((Item) cbbCourse.getSelectedItem()).getId(), ((Item) cbbPerson.getSelectedItem()).getId(), Float.parseFloat(txtGrade.getText()));
+                    new StudentGrade(id, ((Item) cbbCourse.getSelectedItem()).getId(), 
+                            ((Item) cbbPerson.getSelectedItem()).getId(), 
+                            Float.parseFloat(txtGrade.getText()));
 
             studentGradeService.saveOrUpdate(studentGrade);
-            updateTable(studentGrade);
+            initTable();
+            resetForm();
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -346,6 +349,7 @@ public class StudentGradeManagerGUI extends javax.swing.JPanel {
             Long id = (Long) tableStudentGrade.getValueAt(selected, 0);
             studentGradeService.deleteOne(id);
             initTable();
+            resetForm();
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 

@@ -19,9 +19,7 @@ public class StudentGradeService extends BaseServices<StudentGrade> {
     }
 
     public List<StudentGrade> findAll() {
-        List<StudentGrade> list = studentGradeDao.findAll();
-        list.forEach(i -> LOGGER.info(i.toString()));
-        return list;
+        return  studentGradeDao.findAll();
     }
 
     public Long saveOrUpdate(StudentGrade studentGrade) {

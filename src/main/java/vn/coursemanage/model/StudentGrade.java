@@ -1,7 +1,26 @@
 package vn.coursemanage.model;
 
 public class StudentGrade {
-    private Long enrollmentID, courseID, studentID;
+    private Long enrollmentID, courseID;
+    private String courseTitle;
+    private Long studentID;
+    private String studentFullName;
+
+    public String getCourseTitle() {
+        return courseTitle;
+    }
+
+    public void setCourseTitle(String courseTitle) {
+        this.courseTitle = courseTitle;
+    }
+
+    public String getStudentFullName() {
+        return studentFullName;
+    }
+
+    public void setStudentFullName(String studentFullName) {
+        this.studentFullName = studentFullName;
+    }
     private float grade;
 
     public StudentGrade(Long enrollmentID, Long courseID, Long studentID, float grade) {

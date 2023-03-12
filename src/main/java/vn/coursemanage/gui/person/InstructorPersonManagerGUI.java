@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import vn.coursemanage.exception.NotFoundRecordException;
 
 /**
  * @author popu
@@ -285,13 +286,13 @@ public class InstructorPersonManagerGUI extends javax.swing.JPanel {
             return;
         }
 
-        Person student = new Person();
-        student.setFirstName(txtFirstName.getText());
-        student.setLastName(txtLastName.getText());
-        student.setHireDate(dateHireDate.getDate());
-        student.setPersonId(personService.saveOrUpdate(student));
+        Person instructor = new Person();
+        instructor.setFirstName(txtFirstName.getText());
+        instructor.setLastName(txtLastName.getText());
+        instructor.setHireDate(dateHireDate.getDate());
+        instructor.setPersonId(personService.saveOrUpdate(instructor));
 
-        persons.add(student);
+        persons.add(instructor);
         reloadTable();
         resetForm();
     }//GEN-LAST:event_btnAddActionPerformed
@@ -346,12 +347,12 @@ public class InstructorPersonManagerGUI extends javax.swing.JPanel {
         try {
             persons = personService.searchByFieldsForInstructor(searchList);
             reloadTable();
-        } catch (Exception e) {
+        } catch (NotFoundRecordException e) {
+            NotificationUtil.showInformation(this, "Can't not find any record of Instructor");
+        }catch (Exception e) {
             persons.clear();
             reloadTable();
         }
-
-        NotificationUtil.showInformation(this, "Search successful");
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed

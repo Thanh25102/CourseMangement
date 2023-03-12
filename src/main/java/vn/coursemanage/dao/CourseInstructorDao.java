@@ -8,9 +8,12 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CourseInstructorDao extends BaseDao implements Repository<CourseInstructor> {
+
     @Override
     public List<CourseInstructor> findAll() {
-        String sql = "select * from CourseInstructor";
+        String sql = "select * from CourseInstructor as ci "
+                + "inner join Person as p on p.PersonID = ci.PersonID "
+                + "inner join Course as c on c.CourseID = ci.CourseID";
         return query(sql, new CourseInstructorMapper());
     }
 
@@ -36,7 +39,9 @@ public class CourseInstructorDao extends BaseDao implements Repository<CourseIns
     @Override
     public List<CourseInstructor> findByFields(List<SearchByFields> searchMap) {
         // create sql query statement
-        StringBuilder sql = new StringBuilder("select * from CourseInstructor as p");
+        StringBuilder sql = new StringBuilder("select * from CourseInstructor as ci "
+                + "inner join Person as p on p.PersonID = ci.PersonID "
+                + "inner join Course as c on c.CourseID = ci.CourseID");
         if (searchMap.size() >= 1) {
             sql.append(" where ");
         }
@@ -44,31 +49,41 @@ public class CourseInstructorDao extends BaseDao implements Repository<CourseIns
         searchMap.forEach(search -> {
             count.getAndIncrement();
             if (search.getSearchKey() instanceof String) {
-                sql.append(search.getFieldName() + " like '%" + search.getSearchKey() + "%'");
+                sql.append("ci." + search.getFieldName() + " like '%" + search.getSearchKey() + "%'");
             } else {
-                sql.append(search.getFieldName() + " = " + search.getSearchKey() + "");
+                sql.append("ci." + search.getFieldName() + " = " + search.getSearchKey() + "");
             }
-            if (count.get() != searchMap.size()) sql.append(" and ");
+            if (count.get() != searchMap.size()) {
+                sql.append(" and ");
+            }
         });
         return query(sql.toString(), new CourseInstructorMapper());
     }
 
+    public Long update(CourseInstructor courseInstructorPrev, CourseInstructor courseInstructorUpdate) {
+        update("update courseInstructor set CourseID = ?, PersonId = ? where CourseID = ? and PersonId = ?",
+                courseInstructorUpdate.getCourseId(),
+                courseInstructorUpdate.getPersonId(),
+                courseInstructorPrev.getCourseId(),
+                courseInstructorPrev.getPersonId()
+        );
+        return courseInstructorUpdate.getCourseId();
+    }
+
     @Override
-    public Long update(CourseInstructor courseInstructor) {
-        update("update courseInstructor set personId = ? where CourseID = ?",
+    public Long insert(CourseInstructor courseInstructor) {
+        insert("insert into CourseInstructor(personId, CourseID) values(?,?)",
                 courseInstructor.getPersonId(), courseInstructor.getCourseId()
         );
         return courseInstructor.getCourseId();
     }
 
-    @Override
-    public Long insert(CourseInstructor courseInstructor) {
-        return Long.valueOf(insert("insert into CourseInstructor(personId, CourseID) values(?,?)",
-                courseInstructor.getPersonId(), courseInstructor.getCourseId()
-        ));
-    }
-
     public void deleteOne(Long courseId, Long personID) {
         update("delete from CourseInstructor where CourseID = ? and personID = ?", courseId, personID);
+    }
+
+    @Override
+    public Long update(CourseInstructor t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

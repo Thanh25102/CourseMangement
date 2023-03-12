@@ -14,6 +14,8 @@ public class StudentGradeMapper implements RowMapper<StudentGrade> {
             studentGrade.setStudentID(rs.getLong("StudentID"));
             studentGrade.setGrade(rs.getFloat("Grade"));
             studentGrade.setEnrollmentID(rs.getLong("EnrollmentID"));
+            studentGrade.setCourseTitle(rs.getString("Title"));            
+            studentGrade.setStudentFullName(rs.getString("FirstName") + rs.getString("LastName"));
             return studentGrade;
         } catch (SQLException e) {
             System.out.println(e);

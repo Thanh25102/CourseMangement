@@ -39,7 +39,7 @@ public class MainGUI extends javax.swing.JFrame {
 
         jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTabbedPane1.addTab("COURSE", courseManagerGUI1);
-        jTabbedPane1.addTab("COURCE INTRUCTOR", courseInstructorManagerGUI2);
+        jTabbedPane1.addTab("COURCE INSTRUCTOR", courseInstructorManagerGUI2);
         jTabbedPane1.addTab("STUDENT GRADE", studentGradeManagerGUI2);
         jTabbedPane1.addTab("PERSON", personManagerGUI1);
         jTabbedPane1.addTab("DEPARTMENT", departmentManagerGUI2);

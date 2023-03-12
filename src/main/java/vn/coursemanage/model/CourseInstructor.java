@@ -1,7 +1,27 @@
 package vn.coursemanage.model;
 
 public class CourseInstructor {
-    private Long courseId, personId;
+    private Long courseId;
+    private String courseTitle;
+    private Long personId;
+    private String personFullName;
+
+
+    public String getCourseTitle() {
+        return courseTitle;
+    }
+
+    public void setCourseTitle(String courseTitle) {
+        this.courseTitle = courseTitle;
+    }
+
+    public String getPersonFullName() {
+        return personFullName;
+    }
+
+    public void setPersonFullName(String personFullName) {
+        this.personFullName = personFullName;
+    }
 
     public CourseInstructor(Long courseId, Long personId) {
         this.courseId = courseId;

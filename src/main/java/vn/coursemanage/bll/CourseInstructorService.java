@@ -19,8 +19,12 @@ public class CourseInstructorService extends BaseServices<CourseInstructor> {
         return courseInstructorDao.findAll();
     }
 
-    public Long saveOrUpdate(CourseInstructor courseInstructor) {
-        return courseInstructorDao.update(courseInstructor);
+    public Long insert(CourseInstructor courseInstructor) {
+        return courseInstructorDao.insert(courseInstructor);
+    }
+    
+    public Long update(CourseInstructor courseInstructorPrev, CourseInstructor courseInstructorUpdate) {
+        return courseInstructorDao.update(courseInstructorPrev, courseInstructorUpdate);
     }
 
     @Override

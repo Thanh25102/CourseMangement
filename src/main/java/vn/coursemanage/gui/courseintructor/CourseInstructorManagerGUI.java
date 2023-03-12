@@ -44,9 +44,6 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
 
     private void initTable() {
         courseInstructors = courseInstructorService.findAll();
-        courseInstructors.forEach(dp -> {
-            System.out.println(dp.toString());
-        });
         model = new BaseTable<>(courseInstructors, CourseInstructor.class);
         tableCourseInstructor.setModel(model);
         /**
@@ -56,11 +53,12 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
         cbbPerson.removeAll();
         cbbCourse.setRenderer(new ItemRenderer());
         cbbPerson.setRenderer(new ItemRenderer());
-        cbbPerson.addItem(new Item(null, "### STUDENT NAME ###"));
+        cbbPerson.addItem(new Item(null, "### INSTRUCTOR NAME ###"));
         cbbCourse.addItem(new Item(null, "### COURSE NAME ###"));
-        personService.findStudent()
-                .forEach(student
-                        -> cbbPerson.addItem(new Item(student.getPersonId(), student.getFirstName() + " " + student.getLastName())));
+        personService.findIntructor()
+                .forEach(instructor
+                        -> cbbPerson.addItem(new Item(instructor.getPersonId(), 
+                                instructor.getFirstName() + " " + instructor.getLastName())));
         courseService.findAll()
                 .forEach(course
                         -> cbbCourse.addItem(new Item(course.getCourseId(), course.getTitle())));
@@ -83,8 +81,6 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
         searchMap.add(new SearchByFields(((Item) cbbCourse.getSelectedItem()).getId(), "courseId"));
         return searchMap;
     }
-    //GEN-LAST:event_btnResetActionPerformed
-
 
     public void setSelectedValue(JComboBox comboBox, Long value) {
         Item item;
@@ -303,18 +299,30 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to add ?");
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update ?");
         if (choice == NotificationUtil.NO) {
             return;
         }
-        try {
-            CourseInstructor courseInstructor
-                    = new CourseInstructor(((Item) cbbCourse.getSelectedItem()).getId(), ((Item) cbbPerson.getSelectedItem()).getId());
-            courseInstructorService.saveOrUpdate(courseInstructor);
-            reloadTable();
-            resetForm();
-        } catch (NullPointerException | NumberFormatException e) {
-            NotificationUtil.showInformation(this, "Fields isn't able empty");
+
+        Integer selected = tableCourseInstructor.getSelectedRow();
+        if (selected >= 0) {
+            Long id1 = (Long) tableCourseInstructor.getValueAt(selected, 0);
+            Long id2 = (Long) tableCourseInstructor.getValueAt(selected, 2);
+            CourseInstructor courseInstructorPrev
+                    = new CourseInstructor(id1, id2);
+
+            try {
+                CourseInstructor courseInstructorUpdate
+                        = new CourseInstructor(
+                                ((Item) cbbCourse.getSelectedItem()).getId(), 
+                                ((Item) cbbPerson.getSelectedItem()).getId());
+                courseInstructorService.update(courseInstructorPrev, courseInstructorUpdate);
+                initTable();
+                resetForm();
+                
+            } catch (NullPointerException | NumberFormatException e) {
+                NotificationUtil.showInformation(this, "Fields isn't able empty");
+            }
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
@@ -327,15 +335,15 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
         courseInstructor.setCourseId(((Item) cbbCourse.getSelectedItem()).getId());
         courseInstructor.setPersonId(((Item) cbbPerson.getSelectedItem()).getId());
 
-        courseInstructorService.saveOrUpdate(courseInstructor);
-        courseInstructors.add(courseInstructor);
-        reloadTable();
+        courseInstructorService.insert(courseInstructor);
+
+        initTable();
         resetForm();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to update");
+        int choice = NotificationUtil.showYesNo(this, "Question", "Do you want to delete");
         if (choice == NotificationUtil.NO) {
             return;
         }
@@ -343,7 +351,7 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
         Integer selected = tableCourseInstructor.getSelectedRow();
         if (selected >= 0) {
             Long courseId = (Long) tableCourseInstructor.getValueAt(selected, 0);
-            Long personId = (Long) tableCourseInstructor.getValueAt(selected, 1);
+            Long personId = (Long) tableCourseInstructor.getValueAt(selected, 2);
 
             courseInstructorService.deleteOne(courseId, personId);
             resetForm();
@@ -375,7 +383,7 @@ public class CourseInstructorManagerGUI extends javax.swing.JPanel {
         Integer selected = tableCourseInstructor.getSelectedRow();
         if (selected >= 0) {
             Long id1 = (Long) tableCourseInstructor.getValueAt(selected, 0);
-            Long id2 = (Long) tableCourseInstructor.getValueAt(selected, 1);
+            Long id2 = (Long) tableCourseInstructor.getValueAt(selected, 2);
             courseInstructors.stream()
                     .anyMatch(courseInstructor -> {
                         if (courseInstructor.getCourseId() == id1 && courseInstructor.getPersonId() == id2) {

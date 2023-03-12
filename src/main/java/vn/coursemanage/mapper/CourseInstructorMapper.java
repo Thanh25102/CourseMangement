@@ -11,7 +11,9 @@ public class CourseInstructorMapper implements RowMapper<CourseInstructor> {
         var courseInstructor = new CourseInstructor();
         try {
             courseInstructor.setCourseId(rs.getLong("CourseID"));
-            courseInstructor.setPersonId(rs.getLong("PersonID"));
+            courseInstructor.setPersonId(rs.getLong("PersonID"));            
+            courseInstructor.setCourseTitle(rs.getString("Title"));            
+            courseInstructor.setPersonFullName(rs.getString("FirstName") + rs.getString("LastName"));
             return courseInstructor;
         } catch (SQLException e) {
             return null;

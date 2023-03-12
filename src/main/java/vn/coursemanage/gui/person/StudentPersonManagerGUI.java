@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
+import vn.coursemanage.exception.NotFoundRecordException;
 
 /**
  * @author popu
@@ -347,13 +348,12 @@ public class StudentPersonManagerGUI extends javax.swing.JPanel {
         try {
             persons = personService.searchByFieldsForStudent(searchList);
             reloadTable();
+        } catch (NotFoundRecordException e) {
+            NotificationUtil.showInformation(this, "Can't not find any record of Student");
         } catch (Exception e) {
             persons.clear();
             reloadTable();
         }
-
-        NotificationUtil.showInformation(this, "Search successful");
-
     }
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {

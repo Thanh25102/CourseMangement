@@ -64,17 +64,31 @@ public class DepartmentDao extends BaseDao implements Repository<Department> {
     @Override
     public Long update(Department department) {
         update("update Department set name = ?, budget = ?, startDate = ? , administrator = ? where departmentId = ?",
-                department.getName(), department.getBudget(), department.getStartdate(), department.getAdministrator(), department.getDepartmentID()
+                department.getName(), 
+                department.getBudget(), 
+                department.getStartdate(), 
+                department.getAdministrator(), 
+                department.getDepartmentID()
         );
+        
         return department.getDepartmentID();
     }
 
     @Override
     public Long insert(Department department) {
         return Long.valueOf(insert("insert into Department(name,budget, startDate, administrator) values(?,?,?,?)",
-                department.getName(), department.getBudget(), department.getStartdate(), department.getAdministrator()
+                department.getName(), 
+                department.getBudget(), 
+                department.getStartdate(), 
+                department.getAdministrator()
         ));
 
+    }
+    
+    public void deleteOne(Long departmentId) {
+//         update("delete from StudentGrade where StudentID = ?", id);
+//        update("delete from Course where departmentId = ?", departmentId);
+//        update("delete from Department where departmentId = ?", departmentId);
     }
 
 }

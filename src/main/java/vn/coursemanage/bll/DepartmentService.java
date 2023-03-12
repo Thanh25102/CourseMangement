@@ -36,6 +36,10 @@ public class DepartmentService extends BaseServices<Department> {
             return this.departmentDAO.update(department);
         }
     }
+    
+    public void deleteOne(Long departmentId) {
+        departmentDAO.deleteOne(departmentId);
+    }
 
     @Override
     protected List<Department> findByField(String fieldName, String searchKey) {
